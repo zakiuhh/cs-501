@@ -98,6 +98,7 @@ function Logo({ compact }: { compact: boolean }) {
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const routerState = useRouterState();
   const isLanding = routerState.location.pathname === "/";
 
@@ -112,8 +113,17 @@ export function Nav() {
     setIsOpen(false);
   }, [routerState.location.pathname]);
 
-  /* On non-landing pages scrolled is always "true" visually (compact) */
-  const compact = isLanding ? scrolled : true;
+  /* Detect mobile viewport (< 1024px = below lg breakpoint) */
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    setIsMobile(mq.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  /* On non-landing pages or mobile: always compact so logo is small */
+  const compact = isLanding ? (isMobile ? true : scrolled) : true;
 
   return (
     <>
@@ -130,13 +140,15 @@ export function Nav() {
               ? "var(--canvas)"           /* solid after scroll or when menu open */
               : "transparent"             /* transparent on hero */
             : "var(--canvas)",
-          height: compact ? 52 : 64,
+          height: isMobile ? 52 : compact ? 52 : 64,
+          minHeight: 52,
+          maxHeight: isMobile ? 52 : compact ? 52 : 64,
           borderBottom: isLanding && !scrolled && !isOpen ? "1px solid transparent" : undefined,
           transition:
             "height 0.45s cubic-bezier(0.4,0,0.2,1), background 0.35s ease, border-color 0.35s ease",
         }}
       >
-        <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between h-full">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex items-center justify-between h-full overflow-hidden">
           {/* Logo */}
           <Link
             to="/"
@@ -159,7 +171,7 @@ export function Nav() {
           </nav>
 
           {/* Right actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 flex-shrink-0">
             {!isOpen && (
               <>
                 <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-mono text-muted bg-surface-card border border-hairline px-2 py-1 rounded-md">
@@ -167,11 +179,12 @@ export function Nav() {
                 </span>
                 <ThemeToggle />
 
-                {/* CTA — only on landing page */}
+                {/* CTA — only on landing page, hidden on mobile (available in mobile menu) */}
                 {isLanding && (
                   <Link
                     to="/lectures"
-                    className="hidden sm:inline-block btn-primary transition-transform hover:-translate-y-0.5"
+                    className="hidden lg:inline-flex btn-primary transition-transform hover:-translate-y-0.5 whitespace-nowrap"
+                    style={{ padding: "7px 14px", fontSize: 13 }}
                   >
                     Start learning
                   </Link>
