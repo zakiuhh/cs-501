@@ -378,8 +378,11 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
       if (mainSlots[i]) assembledOrder.push(mainSlots[i]!.id);
     }
 
-    const isCorrect = assembledOrder.length === puzzle.correctOrder.length &&
-      assembledOrder.every((id, idx) => id === puzzle.correctOrder[idx]);
+    const assembledLabels = assembledOrder.map(id => puzzle.blocks.find(b => b.id === id)?.label || "");
+    const correctLabels = puzzle.correctOrder.map(id => puzzle.blocks.find(b => b.id === id)?.label || "");
+
+    const isCorrect = assembledLabels.length === correctLabels.length &&
+      assembledLabels.every((label, idx) => label === correctLabels[idx]);
 
     setChecked(true);
     setSuccess(isCorrect);
@@ -405,6 +408,17 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
   };
 
   const isDecisionPlaced = mainSlots[dIdx]?.type === "decision";
+
+  // Group available blocks by label to prevent duplicates on the UI
+  const groupedAvailable: { block: FlowchartBlock; count: number }[] = [];
+  available.forEach((b) => {
+    const existing = groupedAvailable.find((g) => g.block.label === b.label);
+    if (existing) {
+      existing.count++;
+    } else {
+      groupedAvailable.push({ block: b, count: 1 });
+    }
+  });
 
   return (
     <div className="space-y-5">
@@ -453,7 +467,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
             </div>
           ) : (
             <div className="space-y-3 py-1">
-              {available.map((block) => (
+              {groupedAvailable.map(({ block, count }) => (
                 <div
                   key={block.id}
                   className={`w-full flex items-center justify-center ${block.type === "decision" ? "min-h-[100px]" : "min-h-[48px]"}`}
@@ -467,7 +481,14 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
                   >
                     <span className="flex items-center gap-1.5">
                       <Move className="w-3.5 h-3.5 opacity-40 shrink-0 print:hidden" />
-                      <span>{block.label}</span>
+                      <span>
+                        {block.label}
+                        {count > 1 && (
+                          <span className="ml-1.5 bg-primary/20 text-primary text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md">
+                            x{count}
+                          </span>
+                        )}
+                      </span>
                     </span>
                   </div>
                 </div>
