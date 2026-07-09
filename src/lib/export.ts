@@ -955,28 +955,34 @@ export function downloadSyllabusPDF() {
 
 export async function registerCertificate(name: string) {
   const activeName = (name || "Learner").trim();
-  let success = false;
-  let attempts = 0;
-  const maxAttempts = 5;
+  try {
+    let isUnique = false;
+    let verId = "";
+    let attempts = 0;
+    const maxAttempts = 10;
 
-  while (!success && attempts < maxAttempts) {
-    const verId = getVerificationId(activeName);
-    try {
-      const { error } = await supabase.from("certificates").insert([
-        {
-          id: verId,
-          name: activeName,
-          course: "C++ Crashed: Interactive Programming Fundamentals (CS501)",
-        }
-      ]);
+    while (!isUnique && attempts < maxAttempts) {
+      verId = getVerificationId(activeName);
+      
+      // Query the database to check if this ID already exists
+      const { data, error } = await supabase
+        .from("certificates")
+        .select("id")
+        .eq("id", verId)
+        .maybeSingle();
 
-      if (!error) {
-        success = true;
-      } else if (error.code === "23505") { // 23505 is unique violation in PostgreSQL
+      if (error) {
+        console.error("Error checking ID uniqueness:", error);
+        break; // Other error, break to prevent infinite loop
+      }
+
+      if (!data) {
+        // ID is unique (no matching record found in Supabase)
+        isUnique = true;
+      } else {
+        // ID already exists, clear from cache to generate a new one
         attempts++;
-        console.warn(`Certificate ID collision detected for ${verId}. Retrying with new random ID... (Attempt ${attempts}/${maxAttempts})`);
-        
-        // Remove colliding ID from cache so next getVerificationId call generates a new one
+        console.warn(`ID collision found for ${verId}. Regenerating a new unique ID... (Attempt ${attempts}/${maxAttempts})`);
         if (typeof window !== "undefined") {
           try {
             const storageKey = "pf-certificates-v1";
@@ -984,16 +990,26 @@ export async function registerCertificate(name: string) {
             delete cachedIds[activeName];
             localStorage.setItem(storageKey, JSON.stringify(cachedIds));
           } catch (e) {
-            console.error("Failed to clear colliding certificate ID from cache", e);
+            console.error("Failed to clear colliding ID from cache", e);
           }
         }
-      } else {
-        console.error("Supabase insert error:", error);
-        break; // Other database error, break to prevent infinite loop
       }
-    } catch (err) {
-      console.error("Failed to register certificate:", err);
-      break;
     }
+
+    // Now insert the verified unique ID
+    if (isUnique) {
+      const { error } = await supabase.from("certificates").insert([
+        {
+          id: verId,
+          name: activeName,
+          course: "C++ Crashed: Interactive Programming Fundamentals (CS501)",
+        }
+      ]);
+      if (error) {
+        console.error("Failed to insert certificate after uniqueness check:", error);
+      }
+    }
+  } catch (err) {
+    console.error("Failed to register certificate:", err);
   }
 }
