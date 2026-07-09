@@ -261,16 +261,46 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
 }
 
 export function getVerificationId(name: string) {
-  let hash = 0;
-  const str = (name || "Learner") + "CS501-VERIFIED";
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
+  const activeName = (name || "Learner").trim();
+  const storageKey = "pf-certificates-v1";
+  
+  // Try to get cached IDs
+  let cachedIds: Record<string, string> = {};
+  if (typeof window !== "undefined") {
+    try {
+      cachedIds = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    } catch (e) {
+      console.error("Failed to parse cached certificate IDs", e);
+    }
   }
-  const hex = Math.abs(hash).toString(16).toUpperCase().padStart(8, "0");
-  const randomPart = Math.abs(hash * 31) % 65536;
-  const hex2 = randomPart.toString(16).toUpperCase().padStart(4, "0");
-  return `CS501-${hex.slice(0, 4)}-${hex.slice(4, 8)}-${hex2}`;
+
+  // If we already have a generated ID for this name, return it
+  if (cachedIds[activeName]) {
+    return cachedIds[activeName];
+  }
+
+  // Otherwise, generate a completely random and unique ID
+  const chars = "0123456789ABCDEF";
+  const genSegment = (len: number) => {
+    let s = "";
+    for (let i = 0; i < len; i++) {
+      s += chars[Math.floor(Math.random() * 16)];
+    }
+    return s;
+  };
+  const newId = `CS501-${genSegment(4)}-${genSegment(4)}-${genSegment(4)}`;
+
+  // Save the new ID in cache
+  if (typeof window !== "undefined") {
+    cachedIds[activeName] = newId;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(cachedIds));
+    } catch (e) {
+      console.error("Failed to save certificate ID", e);
+    }
+  }
+
+  return newId;
 }
 
 function drawSignature(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
