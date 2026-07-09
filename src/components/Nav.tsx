@@ -160,19 +160,23 @@ export function Nav() {
 
           {/* Right actions */}
           <div className="flex items-center gap-2">
-            <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-mono text-muted bg-surface-card border border-hairline px-2 py-1 rounded-md">
-              <kbd>⌘</kbd><kbd>K</kbd>
-            </span>
-            <ThemeToggle />
+            {!isOpen && (
+              <>
+                <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-mono text-muted bg-surface-card border border-hairline px-2 py-1 rounded-md">
+                  <kbd>⌘</kbd><kbd>K</kbd>
+                </span>
+                <ThemeToggle />
 
-            {/* CTA — only on landing page */}
-            {isLanding && (
-              <Link
-                to="/lectures"
-                className="hidden sm:inline-block btn-primary transition-transform hover:-translate-y-0.5"
-              >
-                Start learning
-              </Link>
+                {/* CTA — only on landing page */}
+                {isLanding && (
+                  <Link
+                    to="/lectures"
+                    className="hidden sm:inline-block btn-primary transition-transform hover:-translate-y-0.5"
+                  >
+                    Start learning
+                  </Link>
+                )}
+              </>
             )}
 
             {/* Mobile Menu Button */}
@@ -199,6 +203,12 @@ export function Nav() {
         }}
       >
         <nav className="flex flex-col px-6 py-6 gap-4 text-[15px] font-medium text-body">
+          {/* Mobile Theme Toggle */}
+          <div className="flex items-center justify-between pb-3 border-b border-hairline/40">
+            <span className="text-muted text-[13px] font-mono uppercase tracking-wider">Switch Theme</span>
+            <ThemeToggle />
+          </div>
+
           <Link 
             to="/lectures" 
             className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
@@ -246,7 +256,7 @@ export function Nav() {
           {isLanding && (
             <Link
               to="/lectures"
-              className="btn-primary mt-2 text-center py-2.5"
+              className="btn-primary mt-2 text-center py-2.5 w-full justify-center"
             >
               Start learning
             </Link>
