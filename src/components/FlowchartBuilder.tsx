@@ -392,78 +392,78 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
   const getShapeStyle = (type: string) => {
     switch (type) {
       case "terminal":
-        return "border-2 border-accent-teal bg-accent-teal/10 rounded-full py-3 px-6 text-center font-semibold";
+        return "border-2 border-accent-teal bg-accent-teal/10 rounded-full py-2 px-5 text-center font-semibold";
       case "process":
-        return "border-2 border-primary bg-primary/10 rounded-md py-3 px-6 text-center font-medium";
+        return "border-2 border-primary bg-primary/10 rounded-md py-2 px-5 text-center font-medium";
       case "decision":
-        return "border-2 border-accent-amber bg-accent-amber/10 py-4 px-6 text-center font-medium aspect-square max-w-[140px] flex items-center justify-center rotate-45 [&>*]:-rotate-45";
+        return "border-2 border-accent-amber bg-accent-amber/10 py-3.5 px-4.5 text-center font-medium aspect-square max-w-[120px] flex items-center justify-center rotate-45 [&>*]:-rotate-45";
       case "io":
-        return "border-2 border-indigo-400 bg-indigo-400/10 skew-x-12 py-3 px-6 text-center font-medium [&>*]:-skew-x-12";
+        return "border-2 border-indigo-400 bg-indigo-400/10 skew-x-12 py-2 px-5 text-center font-medium [&>*]:-skew-x-12";
       default:
-        return "border border-hairline bg-surface-card rounded-lg py-3 px-6 text-center";
+        return "border border-hairline bg-surface-card rounded-lg py-2 px-5 text-center";
     }
   };
 
   const isDecisionPlaced = mainSlots[dIdx]?.type === "decision";
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       {/* Game Header */}
-      <div className="bg-surface-card border border-hairline rounded-xl p-5 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-surface-card border border-hairline rounded-xl p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif text-2xl text-ink">{puzzle.title}</h2>
-          <p className="text-body text-[14px] mt-1 leading-relaxed">{puzzle.description}</p>
+          <h2 className="font-serif text-xl text-ink">{puzzle.title}</h2>
+          <p className="text-body text-[13.5px] mt-0.5 leading-relaxed">{puzzle.description}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <button 
             onClick={resetPuzzle}
-            className="flex items-center gap-1.5 text-body hover:text-ink border border-hairline bg-canvas rounded-lg px-4 py-2 text-[13px] font-medium transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-body hover:text-ink border border-hairline bg-canvas rounded-lg px-3.5 py-1.5 text-[12.5px] font-medium transition-colors cursor-pointer"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset</span>
           </button>
           <button 
             onClick={checkSolution}
             disabled={mainSlots.every((s) => s === null)}
-            className="btn-primary text-[13px] px-5 py-2 flex items-center gap-2 cursor-pointer disabled:opacity-40"
+            className="btn-primary text-[12.5px] px-4 py-1.5 flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
           >
-            <Play className="w-4 h-4 fill-current" />
+            <Play className="w-3.5 h-3.5 fill-current" />
             <span>Check Order</span>
           </button>
         </div>
       </div>
 
       {/* Grid container */}
-      <div className="grid md:grid-cols-12 gap-8 items-start">
+      <div className="grid md:grid-cols-12 gap-5 items-start">
         {/* Available blocks panel */}
         <div 
-          className="md:col-span-5 bg-surface-card border border-hairline rounded-xl p-5 animate-blur-in-soft"
+          className="md:col-span-5 bg-surface-card border border-hairline rounded-xl p-4 animate-blur-in-soft"
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDropToAvailable}
         >
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-3">
             <HelpCircle className="w-4 h-4 text-muted" />
-            <h3 className="font-serif text-[18px] text-ink font-medium">Available Steps</h3>
+            <h3 className="font-serif text-[17px] text-ink font-medium">Available Steps</h3>
           </div>
-          <p className="text-[13px] text-muted mb-4">Drag steps to the right to snap them, or tap to place them.</p>
+          <p className="text-[12.5px] text-muted mb-3">Drag steps to the right to snap them, or tap to place them.</p>
           
           {available.length === 0 ? (
-            <div className="text-center py-8 text-muted text-[13px] border-2 border-dashed border-hairline rounded-lg">
+            <div className="text-center py-6 text-muted text-[12.5px] border-2 border-dashed border-hairline rounded-lg">
               All steps are placed. Drag away from slots to unsnap them.
             </div>
           ) : (
-            <div className="space-y-4 py-2">
+            <div className="space-y-3 py-1">
               {available.map((block) => (
                 <div
                   key={block.id}
-                  className={`w-full flex items-center justify-center ${block.type === "decision" ? "min-h-[120px]" : "min-h-[58px]"}`}
+                  className={`w-full flex items-center justify-center ${block.type === "decision" ? "min-h-[100px]" : "min-h-[48px]"}`}
                 >
                   <div
                     draggable={!success}
                     onDragStart={(e) => handleDragStart(e, block, "available", null)}
                     onDragEnd={handleDragEnd}
                     onClick={() => handleAvailableClick(block)}
-                    className={`w-full max-w-[200px] text-[13px] text-ink cursor-grab active:cursor-grabbing transform transition-transform hover:scale-[1.03] select-none flex items-center justify-center gap-2 ${getShapeStyle(block.type)}`}
+                    className={`w-full max-w-[200px] text-[12.5px] text-ink cursor-grab active:cursor-grabbing transform transition-transform hover:scale-[1.03] select-none flex items-center justify-center gap-1.5 ${getShapeStyle(block.type)}`}
                   >
                     <span className="flex items-center gap-1.5">
                       <Move className="w-3.5 h-3.5 opacity-40 shrink-0 print:hidden" />
@@ -477,15 +477,15 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
         </div>
 
         {/* Target Workspace slots */}
-        <div className="md:col-span-7 bg-surface-card border border-hairline rounded-xl p-5 md:p-6">
-          <h3 className="font-serif text-[18px] text-ink font-medium mb-4">Workspace Flowchart</h3>
+        <div className="md:col-span-7 bg-surface-card border border-hairline rounded-xl p-4 md:p-5">
+          <h3 className="font-serif text-[17px] text-ink font-medium mb-3">Workspace Flowchart</h3>
           
-          <div className="flex flex-col items-center gap-4 py-2">
+          <div className="flex flex-col items-center gap-3 py-1">
             {mainSlots.map((block, idx) => (
-              <div key={idx} className="w-full flex flex-col items-center gap-4">
+              <div key={idx} className="w-full flex flex-col items-center gap-3">
                 {idx > 0 && (
-                  <div className="w-0.5 h-6 bg-muted-soft opacity-30 flex items-center justify-center">
-                    <div className="border-l-4 border-r-4 border-t-4 border-transparent border-t-muted-soft mt-6" />
+                  <div className="w-0.5 h-4 bg-muted-soft opacity-30 flex items-center justify-center">
+                    <div className="border-l-4 border-r-4 border-t-4 border-transparent border-t-muted-soft mt-4" />
                   </div>
                 )}
                 
@@ -493,7 +493,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
                 <div 
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => handleDropToMainSlot(e, idx)}
-                  className={`w-full max-w-[340px] min-h-[58px] rounded-lg transition-all flex items-center justify-center border-2 ${
+                  className={`w-full max-w-[340px] min-h-[48px] rounded-lg transition-all flex items-center justify-center border-2 ${
                     block 
                       ? "border-transparent bg-transparent" 
                       : "border-dashed border-hairline bg-canvas/30 hover:bg-canvas/50"
@@ -505,7 +505,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
                       onDragStart={(e) => handleDragStart(e, block, "mainSlot", idx)}
                       onDragEnd={handleDragEnd}
                       onClick={() => handleMainSlotClick(idx)}
-                      className={`w-full text-[13px] text-ink cursor-grab active:cursor-grabbing select-none flex items-center justify-center gap-2 ${getShapeStyle(block.type)}`}
+                      className={`w-full text-[12.5px] text-ink cursor-grab active:cursor-grabbing select-none flex items-center justify-center gap-1.5 ${getShapeStyle(block.type)}`}
                     >
                       <span className="flex items-center gap-1.5">
                         <Move className="w-3.5 h-3.5 opacity-40 shrink-0 print:hidden" />
@@ -513,7 +513,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
                       </span>
                     </div>
                   ) : (
-                    <span className="text-[12px] text-muted font-mono uppercase tracking-wider">
+                    <span className="text-[11px] text-muted font-mono uppercase tracking-wider">
                       {idx === dIdx ? "Decision Slot" : `Slot ${idx + 1}`}
                     </span>
                   )}
@@ -521,21 +521,21 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
 
                 {/* Conditional branches underneath the decision slot */}
                 {idx === dIdx && isDecisionPlaced && (
-                  <div className="w-full flex flex-col items-center gap-4">
+                  <div className="w-full flex flex-col items-center gap-3">
                     {/* Connecting arrows split */}
-                    <div className="flex justify-between w-full max-w-[340px] px-8 py-1 opacity-45">
-                      <span className="text-[13px] text-accent-teal font-mono uppercase tracking-wide">Yes</span>
-                      <span className="text-[13px] text-accent-amber font-mono uppercase tracking-wide">No</span>
+                    <div className="flex justify-between w-full max-w-[340px] px-8 py-0.5 opacity-45">
+                      <span className="text-[12px] text-accent-teal font-mono uppercase tracking-wide">Yes</span>
+                      <span className="text-[12px] text-accent-amber font-mono uppercase tracking-wide">No</span>
                     </div>
 
                     {/* Side by side branch slots */}
-                    <div className="w-full max-w-[500px] grid grid-cols-2 gap-6 pb-2">
+                    <div className="w-full max-w-[500px] grid grid-cols-2 gap-4 pb-1">
                       {/* Left Branch Slot (Yes) */}
-                      <div className="flex flex-col items-center gap-2">
+                      <div className="flex flex-col items-center gap-1.5">
                         <div 
                           onDragOver={(e) => e.preventDefault()}
                           onDrop={(e) => handleDropToBranchSlot(e, "left")}
-                          className={`w-full min-h-[58px] rounded-lg transition-all flex items-center justify-center border-2 ${
+                          className={`w-full min-h-[48px] rounded-lg transition-all flex items-center justify-center border-2 ${
                             leftBranchSlot 
                               ? "border-transparent bg-transparent" 
                               : "border-dashed border-accent-teal/40 bg-canvas/20 hover:bg-canvas/40"
@@ -547,7 +547,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
                               onDragStart={(e) => handleDragStart(e, leftBranchSlot, "leftBranchSlot", null)}
                               onDragEnd={handleDragEnd}
                               onClick={() => handleBranchClick("left")}
-                              className={`w-full text-[13px] text-ink cursor-grab active:cursor-grabbing select-none flex items-center justify-center gap-2 ${getShapeStyle(leftBranchSlot.type)}`}
+                              className={`w-full text-[12.5px] text-ink cursor-grab active:cursor-grabbing select-none flex items-center justify-center gap-1.5 ${getShapeStyle(leftBranchSlot.type)}`}
                             >
                               <span className="flex items-center gap-1.5">
                                 <Move className="w-3.5 h-3.5 opacity-40 shrink-0 print:hidden" />
@@ -555,7 +555,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
                               </span>
                             </div>
                           ) : (
-                            <span className="text-[10px] text-accent-teal/70 font-mono uppercase tracking-wider px-2 text-center">
+                            <span className="text-[9.5px] text-accent-teal/70 font-mono uppercase tracking-wider px-1 text-center">
                               Yes Action
                             </span>
                           )}
@@ -563,11 +563,11 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
                       </div>
 
                       {/* Right Branch Slot (No) */}
-                      <div className="flex flex-col items-center gap-2">
+                      <div className="flex flex-col items-center gap-1.5">
                         <div 
                           onDragOver={(e) => e.preventDefault()}
                           onDrop={(e) => handleDropToBranchSlot(e, "right")}
-                          className={`w-full min-h-[58px] rounded-lg transition-all flex items-center justify-center border-2 ${
+                          className={`w-full min-h-[48px] rounded-lg transition-all flex items-center justify-center border-2 ${
                             rightBranchSlot 
                               ? "border-transparent bg-transparent" 
                               : "border-dashed border-accent-amber/40 bg-canvas/20 hover:bg-canvas/40"
@@ -579,7 +579,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
                               onDragStart={(e) => handleDragStart(e, rightBranchSlot, "rightBranchSlot", null)}
                               onDragEnd={handleDragEnd}
                               onClick={() => handleBranchClick("right")}
-                              className={`w-full text-[13px] text-ink cursor-grab active:cursor-grabbing select-none flex items-center justify-center gap-2 ${getShapeStyle(rightBranchSlot.type)}`}
+                              className={`w-full text-[12.5px] text-ink cursor-grab active:cursor-grabbing select-none flex items-center justify-center gap-1.5 ${getShapeStyle(rightBranchSlot.type)}`}
                             >
                               <span className="flex items-center gap-1.5">
                                 <Move className="w-3.5 h-3.5 opacity-40 shrink-0 print:hidden" />
@@ -587,7 +587,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
                               </span>
                             </div>
                           ) : (
-                            <span className="text-[10px] text-accent-amber/70 font-mono uppercase tracking-wider px-2 text-center">
+                            <span className="text-[9.5px] text-accent-amber/70 font-mono uppercase tracking-wider px-1 text-center">
                               No Action
                             </span>
                           )}
