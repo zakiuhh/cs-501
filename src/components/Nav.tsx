@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ThemeToggle } from "./ThemeToggle";
 import { useEffect, useState, useRef } from "react";
+import { Menu, X } from "lucide-react";
 
 /* ─────────────────────────────────────────────
    Wordmark — ++ spins on scroll (returns to 0°),
@@ -96,6 +97,7 @@ function Logo({ compact }: { compact: boolean }) {
    ───────────────────────────────────────────── */
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const routerState = useRouterState();
   const isLanding = routerState.location.pathname === "/";
 
@@ -106,69 +108,151 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [routerState.location.pathname]);
+
   /* On non-landing pages scrolled is always "true" visually (compact) */
   const compact = isLanding ? scrolled : true;
 
   return (
-    <header
-      className="border-b border-hairline backdrop-blur-sm"
-      style={{
-        position: isLanding ? "fixed" : "sticky",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 40,
-        background: isLanding
-          ? scrolled
-            ? "var(--canvas)"           /* solid after scroll */
-            : "transparent"             /* transparent on hero */
-          : "var(--canvas)",
-        height: compact ? 52 : 64,
-        borderBottom: isLanding && !scrolled ? "1px solid transparent" : undefined,
-        transition:
-          "height 0.45s cubic-bezier(0.4,0,0.2,1), background 0.35s ease, border-color 0.35s ease",
-      }}
-    >
-      <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between h-full">
-        {/* Logo */}
-        <Link
-          to="/"
-          className="text-ink"
-          style={{ lineHeight: 0, textDecoration: "none" }}
-          aria-label="C++ Crashed — home"
-        >
-          <Logo compact={compact} />
-        </Link>
+    <>
+      <header
+        className="border-b border-hairline backdrop-blur-sm"
+        style={{
+          position: isLanding ? "fixed" : "sticky",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 40,
+          background: isLanding
+            ? scrolled || isOpen
+              ? "var(--canvas)"           /* solid after scroll or when menu open */
+              : "transparent"             /* transparent on hero */
+            : "var(--canvas)",
+          height: compact ? 52 : 64,
+          borderBottom: isLanding && !scrolled && !isOpen ? "1px solid transparent" : undefined,
+          transition:
+            "height 0.45s cubic-bezier(0.4,0,0.2,1), background 0.35s ease, border-color 0.35s ease",
+        }}
+      >
+        <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between h-full">
+          {/* Logo */}
+          <Link
+            to="/"
+            className="text-ink"
+            style={{ lineHeight: 0, textDecoration: "none" }}
+            aria-label="C++ Crashed — home"
+          >
+            <Logo compact={compact} />
+          </Link>
 
-        {/* Nav links */}
-        <nav className="hidden lg:flex items-center gap-6 text-[14px] text-body">
-          <Link to="/lectures"   className="hover:text-ink transition-colors story-link">Lectures</Link>
-          <Link to="/playground" className="hover:text-ink transition-colors story-link">Playground</Link>
-          <Link to="/flowchart"  className="hover:text-ink transition-colors story-link">Flowcharts</Link>
-          <Link to="/cheatsheet" className="hover:text-ink transition-colors story-link">Cheat Sheet</Link>
-          <Link to="/syllabus"   className="hover:text-ink transition-colors story-link">Syllabus</Link>
-          <Link to="/verify"     className="hover:text-ink transition-colors story-link">Verify</Link>
-          <Link to="/about"      className="hover:text-ink transition-colors story-link">About</Link>
-        </nav>
+          {/* Nav links */}
+          <nav className="hidden lg:flex items-center gap-6 text-[14px] text-body">
+            <Link to="/lectures"   className="hover:text-ink transition-colors story-link">Lectures</Link>
+            <Link to="/playground" className="hover:text-ink transition-colors story-link">Playground</Link>
+            <Link to="/flowchart"  className="hover:text-ink transition-colors story-link">Flowcharts</Link>
+            <Link to="/cheatsheet" className="hover:text-ink transition-colors story-link">Cheat Sheet</Link>
+            <Link to="/syllabus"   className="hover:text-ink transition-colors story-link">Syllabus</Link>
+            <Link to="/verify"     className="hover:text-ink transition-colors story-link">Verify</Link>
+            <Link to="/about"      className="hover:text-ink transition-colors story-link">About</Link>
+          </nav>
 
-        {/* Right actions */}
-        <div className="flex items-center gap-2">
-          <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-mono text-muted bg-surface-card border border-hairline px-2 py-1 rounded-md">
-            <kbd>⌘</kbd><kbd>K</kbd>
-          </span>
-          <ThemeToggle />
+          {/* Right actions */}
+          <div className="flex items-center gap-2">
+            <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-mono text-muted bg-surface-card border border-hairline px-2 py-1 rounded-md">
+              <kbd>⌘</kbd><kbd>K</kbd>
+            </span>
+            <ThemeToggle />
 
-          {/* CTA — only on landing page */}
+            {/* CTA — only on landing page */}
+            {isLanding && (
+              <Link
+                to="/lectures"
+                className="hidden sm:inline-block btn-primary transition-transform hover:-translate-y-0.5"
+              >
+                Start learning
+              </Link>
+            )}
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="lg:hidden p-1.5 rounded-md hover:bg-surface-card text-ink transition-colors border border-transparent hover:border-hairline"
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Menu Dropdown */}
+      <div 
+        className={`lg:hidden fixed inset-x-0 border-b border-hairline bg-canvas/95 backdrop-blur-md shadow-lg z-30 transition-all duration-300 ease-in-out ${
+          isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+        }`}
+        style={{
+          top: compact ? 52 : 64,
+          maxHeight: "calc(100vh - 64px)",
+          overflowY: "auto",
+        }}
+      >
+        <nav className="flex flex-col px-6 py-6 gap-4 text-[15px] font-medium text-body">
+          <Link 
+            to="/lectures" 
+            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
+          >
+            Lectures
+          </Link>
+          <Link 
+            to="/playground" 
+            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
+          >
+            Playground
+          </Link>
+          <Link 
+            to="/flowchart" 
+            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
+          >
+            Flowcharts
+          </Link>
+          <Link 
+            to="/cheatsheet" 
+            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
+          >
+            Cheat Sheet
+          </Link>
+          <Link 
+            to="/syllabus" 
+            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
+          >
+            Syllabus
+          </Link>
+          <Link 
+            to="/verify" 
+            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
+          >
+            Verify
+          </Link>
+          <Link 
+            to="/about" 
+            className="hover:text-ink transition-colors pb-2"
+          >
+            About
+          </Link>
+          
+          {/* Mobile CTA inside menu if on landing page */}
           {isLanding && (
             <Link
               to="/lectures"
-              className="btn-primary transition-transform hover:-translate-y-0.5"
+              className="btn-primary mt-2 text-center py-2.5"
             >
               Start learning
             </Link>
           )}
-        </div>
+        </nav>
       </div>
-    </header>
+    </>
   );
 }
