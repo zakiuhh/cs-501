@@ -222,66 +222,33 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
     ctx.fillText(l.toUpperCase(), cx + cardW / 2, 792);
   });
 
-  // hairline above signatures — move up slightly to fit 4 sigs
+  // hairline above signatures
   ctx.strokeStyle = hairline;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(120, 890);
-  ctx.lineTo(W - 120, 890);
+  ctx.moveTo(120, 930);
+  ctx.lineTo(W - 120, 930);
   ctx.stroke();
 
-  // === 4-member signature row ===
-  const sigMembers = [
-    { name: "Zaki Ul Hassan",  role: "TEAM LEADER",  drawFn: drawSignatureZaki   },
-    { name: "Saad Qureshi",    role: "VIBE CODER",   drawFn: drawSignatureSaad   },
-    { name: "Aliba Shakeel",   role: "VIBE CODER",   drawFn: drawSignatureAliba  },
-    { name: "Anosha Shakeel",  role: "VIBE CODER",   drawFn: drawSignatureAnosha },
-  ];
-
-  const sigZoneW = W - 240; // from x=120 to x=W-120
-  const sigSlotW = sigZoneW / sigMembers.length;
-  const sigBaseY = 890;
-
-  sigMembers.forEach((member, i) => {
-    const slotX = 120 + i * sigSlotW;
-    const slotCX = slotX + sigSlotW / 2;
-
-    // Draw signature above the line
-    member.drawFn(ctx, slotCX, sigBaseY - 10, primary);
-
-    // "TEAM MEMBER" label
-    ctx.fillStyle = muted;
-    ctx.font = "500 11px 'JetBrains Mono', monospace";
-    ctx.textAlign = "center";
-    ctx.fillText(member.role, slotCX, sigBaseY + 22);
-
-    // Name in serif
-    ctx.fillStyle = ink;
-    ctx.font = "italic 22px 'Instrument Serif', Garamond, serif";
-    ctx.textAlign = "center";
-    ctx.fillText(member.name, slotCX, sigBaseY + 46);
-
-    // vertical divider between slots (except after last)
-    if (i < sigMembers.length - 1) {
-      ctx.strokeStyle = hairline;
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.5;
-      ctx.beginPath();
-      ctx.moveTo(slotX + sigSlotW, sigBaseY + 5);
-      ctx.lineTo(slotX + sigSlotW, sigBaseY + 58);
-      ctx.stroke();
-      ctx.globalAlpha = 1.0;
-    }
-  });
-
-  // DATE ISSUED — bottom left, below sig row
+  // signature lines labels
   ctx.fillStyle = muted;
-  ctx.font = "500 11px 'JetBrains Mono', monospace";
+  ctx.font = "500 12px 'JetBrains Mono', monospace";
   ctx.textAlign = "left";
-  ctx.fillText("DATE ISSUED", 120, 970);
+  ctx.fillText("DATE ISSUED", 120, 955);
+  ctx.textAlign = "right";
+  ctx.fillText("INSTRUCTOR SIGNATURE", W - 120, 955);
+
+  // signature line values
   ctx.fillStyle = ink;
-  ctx.font = "italic 22px 'Instrument Serif', Garamond, serif";
+  ctx.font = "italic 26px 'Instrument Serif', Garamond, serif";
+  ctx.textAlign = "left";
   ctx.fillText(formatDate(new Date()), 120, 995);
+
+  // Draw handwritten signature above the line (line is at Y = 930) - shifted right to W - 180
+  drawSignature(ctx, W - 180, 915, primary);
+
+  ctx.textAlign = "right";
+  ctx.fillText("Zaki Ul Hassan", W - 120, 1005);
 
   // footer mono
   ctx.fillStyle = muted;
@@ -289,8 +256,8 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
   ctx.textAlign = "center";
   ctx.fillText("cpp-crashed · interactive · browser-based · no account required", W / 2, H - 100);
 
-  // Draw the official Gold Crest / Seal in the center of the signature row
-  drawCrest(ctx, W / 2, 960, primary);
+  // Draw the official Gold Crest / Seal in the center of the signature row (drawn last to be on the top layer, shifted up to Y = 930)
+  drawCrest(ctx, W / 2, 930, primary);
 }
 
 export function getVerificationId(name: string) {
@@ -336,221 +303,36 @@ export function getVerificationId(name: string) {
   return newId;
 }
 
-function drawSignatureZaki(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
+function drawSignature(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
   ctx.save();
   ctx.strokeStyle = color;
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.5;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
   ctx.beginPath();
   
-  // 'Z' sweep
-  ctx.moveTo(x - 38, y - 22);
-  ctx.bezierCurveTo(x - 20, y - 44, x - 5,  y - 48, x - 16, y - 18);
-  ctx.bezierCurveTo(x - 26, y + 6,  x - 62, y + 14, x - 38, y - 4);
-  // 'a'
-  ctx.bezierCurveTo(x - 22, y - 18, x - 8,  y - 9,  x - 12, y + 4);
-  ctx.bezierCurveTo(x - 16, y + 13, x - 4,  y + 12, x - 1,  y - 4);
-  // 'k'
-  ctx.bezierCurveTo(x + 4,  y - 26, x - 1,  y - 35, x + 4,  y - 35);
-  ctx.bezierCurveTo(x + 9,  y - 35, x + 2,  y + 12, x + 4,  y + 8);
-  ctx.bezierCurveTo(x + 8,  y - 8,  x + 16, y - 8,  x + 12, y + 8);
-  // 'i'
-  ctx.bezierCurveTo(x + 16, y,      x + 20, y + 8,  x + 22, y + 8);
-  // dot for 'i'
-  ctx.moveTo(x + 20, y - 14);
-  ctx.arc(x + 20, y - 14, 1.5, 0, Math.PI * 2);
-  // underline flourish
-  ctx.moveTo(x - 62, y + 14);
-  ctx.bezierCurveTo(x - 20, y + 24, x + 28, y + 18, x + 55, y + 4);
+  // Starting point for 'Z'
+  ctx.moveTo(x - 80, y - 25);
+  ctx.bezierCurveTo(x - 50, y - 50, x - 30, y - 55, x - 40, y - 20);
+  ctx.bezierCurveTo(x - 50, y + 10, x - 90, y + 20, x - 60, y - 5);
+  // Stroke to 'a'
+  ctx.bezierCurveTo(x - 40, y - 20, x - 25, y - 10, x - 30, y + 5);
+  ctx.bezierCurveTo(x - 35, y + 15, x - 20, y + 15, x - 15, y - 5);
+  // Stroke to 'k'
+  ctx.bezierCurveTo(x - 10, y - 30, x - 15, y - 40, x - 10, y - 40);
+  ctx.bezierCurveTo(x - 5, y - 40, x - 12, y + 15, x - 10, y + 10);
+  ctx.bezierCurveTo(x - 5, y - 10, x + 5, y - 10, x, y + 10);
+  // Stroke to 'i'
+  ctx.bezierCurveTo(x + 5, y, x + 10, y + 10, x + 12, y + 10);
+  
+  // Dot for 'i'
+  ctx.moveTo(x + 10, y - 15);
+  ctx.arc(x + 10, y - 15, 1.5, 0, Math.PI * 2);
+  
+  // Flourish/underline sweep
+  ctx.moveTo(x - 85, y + 15);
+  ctx.bezierCurveTo(x - 30, y + 25, x + 30, y + 20, x + 65, y + 5);
   ctx.stroke();
-  ctx.restore();
-}
-
-// Saad Qureshi — elegant italic S with sweeping connected aad and a long whip underline
-function drawSignatureSaad(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
-  ctx.save();
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2.2;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-
-  // ── Stroke 1: grand italic 'S' ──
-  // Starts top-right, loops counterclockwise over top half, then loops CW over lower half
-  ctx.beginPath();
-  ctx.moveTo(x + 22, y - 42);
-  ctx.bezierCurveTo(x +  2, y - 58, x - 30, y - 52, x - 28, y - 30);
-  ctx.bezierCurveTo(x - 26, y - 12, x +  8, y -  8, x + 14, y +  6);
-  ctx.bezierCurveTo(x + 20, y + 20, x +  6, y + 40, x - 20, y + 40);
-  ctx.bezierCurveTo(x - 38, y + 40, x - 48, y + 28, x - 38, y + 14);
-  ctx.stroke();
-
-  // ── Stroke 2: connected 'a' — oval with exit rightward ──
-  ctx.beginPath();
-  ctx.moveTo(x + 22, y +  2);
-  ctx.bezierCurveTo(x + 28, y - 22, x + 52, y - 18, x + 50, y +  4);
-  ctx.bezierCurveTo(x + 48, y + 18, x + 34, y + 22, x + 26, y + 12);
-  ctx.bezierCurveTo(x + 20, y +  4, x + 28, y - 2,  x + 52, y +  6);
-  ctx.bezierCurveTo(x + 58, y + 12, x + 58, y + 22, x + 56, y + 14);
-
-  // ── 'a' transitions into 'd' tall loop ──
-  ctx.bezierCurveTo(x + 58, y - 28, x + 64, y - 44, x + 70, y - 36);
-  ctx.bezierCurveTo(x + 76, y - 26, x + 68, y + 18, x + 72, y + 10);
-  ctx.stroke();
-
-  // ── Stroke 3: long calligraphic underline whip ──
-  ctx.beginPath();
-  ctx.lineWidth = 1.6;
-  ctx.moveTo(x - 50, y + 52);
-  ctx.bezierCurveTo(x - 10, y + 62, x + 46, y + 56, x + 80, y + 30);
-  ctx.bezierCurveTo(x + 96, y + 18, x + 88, y + 12, x + 80, y + 18);
-  ctx.stroke();
-
-  ctx.restore();
-}
-
-// Aliba Shakeel — dramatic calligraphic A with tall ascenders, oval b-loop, and sweeping tail
-function drawSignatureAliba(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
-  ctx.save();
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2.2;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-
-  // ── 'A': grand calligraphic peak — left stroke swings up, right sweeps down ──
-  ctx.beginPath();
-  ctx.moveTo(x - 52, y + 18);
-  ctx.bezierCurveTo(x - 44, y - 10, x - 32, y - 46, x - 14, y - 54);
-  ctx.bezierCurveTo(x,      y - 60, x + 10, y - 52, x +  4, y - 28);
-  ctx.bezierCurveTo(x -  2, y -  4, x - 12, y + 18, x - 18, y + 28);
-  ctx.stroke();
-
-  // ── Elegant curved crossbar of 'A' ──
-  ctx.beginPath();
-  ctx.lineWidth = 1.8;
-  ctx.moveTo(x - 36, y - 12);
-  ctx.bezierCurveTo(x - 24, y - 18, x - 10, y - 18, x -  2, y - 14);
-  ctx.stroke();
-
-  // ── 'l': tall looping ascender flowing into 'i' ──
-  ctx.beginPath();
-  ctx.lineWidth = 2.2;
-  ctx.moveTo(x + 10, y - 48);
-  ctx.bezierCurveTo(x + 14, y - 56, x + 22, y - 54, x + 22, y - 40);
-  ctx.bezierCurveTo(x + 22, y - 18, x + 20, y + 12, x + 18, y + 22);
-  // flowing into 'i'
-  ctx.bezierCurveTo(x + 24, y +  4, x + 32, y -  2, x + 32, y +  8);
-  ctx.bezierCurveTo(x + 32, y + 18, x + 26, y + 26, x + 24, y + 22);
-  ctx.stroke();
-
-  // ── dot for 'i' ──
-  ctx.beginPath();
-  ctx.fillStyle = color;
-  ctx.arc(x + 30, y - 16, 2.2, 0, Math.PI * 2);
-  ctx.fill();
-
-  // ── 'b': tall loop descending then belly ──
-  ctx.beginPath();
-  ctx.moveTo(x + 34, y - 46);
-  ctx.bezierCurveTo(x + 38, y - 54, x + 46, y - 52, x + 46, y - 38);
-  ctx.bezierCurveTo(x + 46, y - 10, x + 44, y + 14, x + 42, y + 22);
-  // belly of 'b'
-  ctx.bezierCurveTo(x + 52, y +  4, x + 66, y +  4, x + 66, y + 14);
-  ctx.bezierCurveTo(x + 66, y + 26, x + 54, y + 30, x + 44, y + 24);
-  ctx.stroke();
-
-  // ── final 'a': small oval flourish ──
-  ctx.beginPath();
-  ctx.moveTo(x + 76, y -  4);
-  ctx.bezierCurveTo(x + 80, y - 20, x + 98, y - 16, x + 96, y +  4);
-  ctx.bezierCurveTo(x + 94, y + 18, x + 80, y + 20, x + 74, y + 10);
-  ctx.bezierCurveTo(x + 68, y +  2, x + 76, y - 6,  x + 98, y +  8);
-  ctx.bezierCurveTo(x +104, y + 16, x +100, y + 30, x + 96, y + 22);
-  ctx.stroke();
-
-  // ── Long calligraphic underline — rises then swoops right ──
-  ctx.beginPath();
-  ctx.lineWidth = 1.6;
-  ctx.moveTo(x - 56, y + 40);
-  ctx.bezierCurveTo(x - 10, y + 54, x + 56, y + 48, x + 96, y + 26);
-  ctx.bezierCurveTo(x +112, y + 16, x +108, y +  8, x + 98, y + 14);
-  ctx.stroke();
-
-  ctx.restore();
-}
-
-// Anosha Shakeel — sweeping italic A, connected flowing nosha body, dramatic rightward whoosh
-function drawSignatureAnosha(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
-  ctx.save();
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2.2;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-
-  // ── 'A': opening italic sweep — left leg, peak, right descend ──
-  ctx.beginPath();
-  ctx.moveTo(x - 54, y + 16);
-  ctx.bezierCurveTo(x - 46, y - 14, x - 30, y - 52, x - 10, y - 58);
-  ctx.bezierCurveTo(x +  4, y - 62, x + 14, y - 52, x +  8, y - 22);
-  ctx.bezierCurveTo(x +  4, y -  2, x -  4, y + 14, x - 10, y + 24);
-  ctx.stroke();
-
-  // ── Graceful curved crossbar ──
-  ctx.beginPath();
-  ctx.lineWidth = 1.8;
-  ctx.moveTo(x - 38, y - 16);
-  ctx.bezierCurveTo(x - 22, y - 24, x -  6, y - 24, x +  2, y - 18);
-  ctx.stroke();
-
-  // ── 'n': two arched humps, flowing left-to-right ──
-  ctx.beginPath();
-  ctx.lineWidth = 2.2;
-  ctx.moveTo(x + 10, y + 20);
-  ctx.bezierCurveTo(x + 10, y - 14, x + 22, y - 24, x + 30, y - 12);
-  ctx.bezierCurveTo(x + 36, y -  2, x + 34, y + 16, x + 32, y + 20);
-  ctx.bezierCurveTo(x + 34, y - 12, x + 46, y - 24, x + 54, y - 12);
-  ctx.bezierCurveTo(x + 60, y -  2, x + 58, y + 16, x + 56, y + 20);
-  ctx.stroke();
-
-  // ── 'o': smooth flowing oval ──
-  ctx.beginPath();
-  ctx.moveTo(x + 68, y +  8);
-  ctx.bezierCurveTo(x + 70, y - 20, x + 84, y - 26, x + 92, y - 12);
-  ctx.bezierCurveTo(x +100, y +  2, x + 94, y + 24, x + 80, y + 24);
-  ctx.bezierCurveTo(x + 68, y + 24, x + 64, y + 12, x + 68, y +  8);
-  ctx.stroke();
-
-  // ── 'sh' — connected: s-curve into a tall h-hump ──
-  ctx.beginPath();
-  ctx.moveTo(x +100, y -  4);
-  ctx.bezierCurveTo(x +108, y - 16, x +122, y - 12, x +120, y +  4);
-  ctx.bezierCurveTo(x +118, y + 16, x +106, y + 18, x +100, y + 10);
-  ctx.bezierCurveTo(x + 96, y +  4, x +104, y - 2,  x +124, y +  6);
-  // h upstroke
-  ctx.bezierCurveTo(x +128, y - 30, x +132, y - 46, x +138, y - 38);
-  ctx.bezierCurveTo(x +144, y - 28, x +138, y + 10, x +136, y + 20);
-  // hump of h
-  ctx.bezierCurveTo(x +140, y -  4, x +150, y - 10, x +154, y +  2);
-  ctx.bezierCurveTo(x +158, y + 14, x +152, y + 24, x +144, y + 22);
-  ctx.stroke();
-
-  // ── 'a': final oval with rightward exit ──
-  ctx.beginPath();
-  ctx.moveTo(x +162, y -  4);
-  ctx.bezierCurveTo(x +166, y - 20, x +184, y - 16, x +182, y +  4);
-  ctx.bezierCurveTo(x +180, y + 18, x +166, y + 20, x +160, y + 10);
-  ctx.bezierCurveTo(x +154, y +  2, x +162, y - 4,  x +184, y +  8);
-  ctx.bezierCurveTo(x +192, y + 16, x +188, y + 34, x +184, y + 24);
-  ctx.stroke();
-
-  // ── Grand calligraphic underline: rises to a peak then swoops far right ──
-  ctx.beginPath();
-  ctx.lineWidth = 1.6;
-  ctx.moveTo(x - 58, y + 40);
-  ctx.bezierCurveTo(x + 20, y + 60, x +100, y + 54, x +164, y + 28);
-  ctx.bezierCurveTo(x +186, y + 16, x +192, y +  4, x +182, y + 10);
-  ctx.stroke();
-
   ctx.restore();
 }
 
@@ -885,61 +667,32 @@ export function drawAcknowledgementCanvas(ctx: CanvasRenderingContext2D, W: numb
   ctx.strokeStyle = hairline;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(120, 1410);
-  ctx.lineTo(W - 120, 1410);
+  ctx.moveTo(120, 1420);
+  ctx.lineTo(W - 120, 1420);
   ctx.stroke();
 
-  // === 4-member signature row ===
-  const ackSigMembers = [
-    { name: "Zaki Ul Hassan",  role: "TEAM LEADER",  drawFn: drawSignatureZaki   },
-    { name: "Saad Qureshi",    role: "VIBE CODER",   drawFn: drawSignatureSaad   },
-    { name: "Aliba Shakeel",   role: "VIBE CODER",   drawFn: drawSignatureAliba  },
-    { name: "Anosha Shakeel",  role: "VIBE CODER",   drawFn: drawSignatureAnosha },
-  ];
-
-  const ackSigZoneW = W - 240;
-  const ackSigSlotW = ackSigZoneW / ackSigMembers.length;
-  const ackSigBaseY = 1410;
-
-  ackSigMembers.forEach((member, i) => {
-    const slotX = 120 + i * ackSigSlotW;
-    const slotCX = slotX + ackSigSlotW / 2;
-
-    member.drawFn(ctx, slotCX, ackSigBaseY - 10, primary);
-
-    ctx.fillStyle = muted;
-    ctx.font = "500 11px 'JetBrains Mono', monospace";
-    ctx.textAlign = "center";
-    ctx.fillText(member.role, slotCX, ackSigBaseY + 22);
-
-    ctx.fillStyle = ink;
-    ctx.font = "italic 22px 'Instrument Serif', Garamond, serif";
-    ctx.textAlign = "center";
-    ctx.fillText(member.name, slotCX, ackSigBaseY + 46);
-
-    if (i < ackSigMembers.length - 1) {
-      ctx.strokeStyle = hairline;
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.5;
-      ctx.beginPath();
-      ctx.moveTo(slotX + ackSigSlotW, ackSigBaseY + 5);
-      ctx.lineTo(slotX + ackSigSlotW, ackSigBaseY + 58);
-      ctx.stroke();
-      ctx.globalAlpha = 1.0;
-    }
-  });
-
-  // DATE ISSUED
+  // Signature lines labels
   ctx.fillStyle = muted;
-  ctx.font = "500 11px 'JetBrains Mono', monospace";
+  ctx.font = "500 12px 'JetBrains Mono', monospace";
   ctx.textAlign = "left";
-  ctx.fillText("DATE ISSUED", 120, 1485);
+  ctx.fillText("DATE ISSUED", 120, 1445);
+  ctx.textAlign = "right";
+  ctx.fillText("AUTHORIZED SIGNATURE", W - 120, 1445);
+
+  // values
   ctx.fillStyle = ink;
-  ctx.font = "italic 22px 'Instrument Serif', Garamond, serif";
-  ctx.fillText(formatDate(new Date()), 120, 1510);
+  ctx.font = "italic 26px 'Instrument Serif', Garamond, serif";
+  ctx.textAlign = "left";
+  ctx.fillText(formatDate(new Date()), 120, 1485);
+
+  // Handwritten signature (drawn above the line)
+  drawSignature(ctx, W - 220, 1405, primary);
+
+  ctx.textAlign = "right";
+  ctx.fillText("Zaki Ul Hassan", W - 120, 1495);
 
   // Official Gold Crest / Seal
-  drawCrest(ctx, W / 2, 1470, primary);
+  drawCrest(ctx, W / 2, 1450, primary);
 
   // footer mono
   ctx.fillStyle = muted;
