@@ -29,9 +29,9 @@ export function Footer() {
           <h4 className="text-on-dark text-[13px] font-medium mb-3 font-sans">Team DevZee</h4>
           <ul className="space-y-2 text-[13px]">
             <li className="text-on-dark font-medium">Zaki Ul Hassan <span className="text-[10px] text-primary/85 font-mono ml-1">LEAD</span></li>
-            <li>Saad Qureshi <span className="text-[10px] text-on-dark-soft font-mono ml-1">VIBE</span></li>
-            <li>Aliba Shakeel <span className="text-[10px] text-on-dark-soft font-mono ml-1">VIBE</span></li>
-            <li>Anosha Shakeel <span className="text-[10px] text-on-dark-soft font-mono ml-1">VIBE</span></li>
+            <li className="text-on-dark font-medium">Saad Qureshi <span className="text-[10px] text-primary/85 font-mono ml-1">VIBE</span></li>
+            <li className="text-on-dark font-medium">Aliba Shakeel <span className="text-[10px] text-primary/85 font-mono ml-1">VIBE</span></li>
+            <li className="text-on-dark font-medium">Anosha Shakeel <span className="text-[10px] text-primary/85 font-mono ml-1">VIBE</span></li>
           </ul>
         </div>
       </div>

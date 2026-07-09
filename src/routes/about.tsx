@@ -46,19 +46,19 @@ function About() {
               <div className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300 flex flex-col justify-between">
                 <div>
                   <h3 className="font-serif text-xl text-ink font-medium">Saad Qureshi</h3>
-                  <p className="text-muted text-[12px] font-mono uppercase tracking-wider mt-1.5">Vibe Coder</p>
+                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">Vibe Coder</p>
                 </div>
               </div>
               <div className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300 flex flex-col justify-between">
                 <div>
                   <h3 className="font-serif text-xl text-ink font-medium">Aliba Shakeel</h3>
-                  <p className="text-muted text-[12px] font-mono uppercase tracking-wider mt-1.5">Vibe Coder</p>
+                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">Vibe Coder</p>
                 </div>
               </div>
               <div className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300 flex flex-col justify-between">
                 <div>
                   <h3 className="font-serif text-xl text-ink font-medium">Anosha Shakeel</h3>
-                  <p className="text-muted text-[12px] font-mono uppercase tracking-wider mt-1.5">Vibe Coder</p>
+                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">Vibe Coder</p>
                 </div>
               </div>
             </div>
