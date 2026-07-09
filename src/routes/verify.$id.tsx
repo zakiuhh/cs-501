@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { drawCertificateCanvas } from "@/lib/export";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Award, CheckCircle, ShieldAlert, Calendar, User, BookOpen } from "lucide-react";
+import { normalizeVerificationId } from "@/lib/utils";
 
 export const Route = createFileRoute("/verify/$id")({
   component: VerifyPage,
@@ -18,12 +19,24 @@ export const Route = createFileRoute("/verify/$id")({
 
 function VerifyPage() {
   const { id } = Route.useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [cert, setCert] = useState<{ id: string; name: string; course: string; issued_at: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const cleanId = normalizeVerificationId(id);
+    // If the ID in the URL is not normalized, redirect to the normalized URL
+    if (cleanId && cleanId !== id) {
+      navigate({
+        to: "/verify/$id",
+        params: { id: cleanId },
+        replace: true,
+      });
+      return;
+    }
+
     async function fetchCert() {
       try {
         setLoading(true);
@@ -31,7 +44,7 @@ function VerifyPage() {
         const { data, error } = await supabase
           .from("certificates")
           .select("*")
-          .eq("id", id)
+          .eq("id", cleanId)
           .single();
 
         if (error) {

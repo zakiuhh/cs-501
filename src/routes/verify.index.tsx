@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { ShieldCheck, ArrowRight, Search } from "lucide-react";
+import { normalizeVerificationId } from "@/lib/utils";
 
 export const Route = createFileRoute("/verify/")({
   head: () => ({
@@ -20,7 +21,7 @@ function VerifySearchPage() {
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanId = inputId.trim();
+    const cleanId = normalizeVerificationId(inputId);
     if (!cleanId) return;
 
     // Navigate to verify.$id dynamic route
