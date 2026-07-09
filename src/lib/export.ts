@@ -367,121 +367,190 @@ function drawSignatureZaki(ctx: CanvasRenderingContext2D, x: number, y: number, 
   ctx.restore();
 }
 
-// Saad Qureshi — 'S' loop + flowing 'aad' tail with underline
+// Saad Qureshi — elegant italic S with sweeping connected aad and a long whip underline
 function drawSignatureSaad(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
   ctx.save();
   ctx.strokeStyle = color;
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.2;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
+
+  // ── Stroke 1: grand italic 'S' ──
+  // Starts top-right, loops counterclockwise over top half, then loops CW over lower half
   ctx.beginPath();
-
-  // 'S' — large loop
-  ctx.moveTo(x + 18, y - 35);
-  ctx.bezierCurveTo(x - 10, y - 48, x - 40, y - 38, x - 32, y - 18);
-  ctx.bezierCurveTo(x - 22, y - 2,  x + 20, y - 2,  x + 22, y + 16);
-  ctx.bezierCurveTo(x + 24, y + 34, x - 14, y + 38, x - 38, y + 22);
-
-  // 'a' small loop
-  ctx.moveTo(x - 10, y + 2);
-  ctx.bezierCurveTo(x + 2,  y - 12, x + 22, y - 8,  x + 18, y + 8);
-  ctx.bezierCurveTo(x + 14, y + 20, x + 28, y + 18, x + 30, y + 4);
-
-  // 'd' upstroke
-  ctx.bezierCurveTo(x + 34, y - 28, x + 38, y - 38, x + 42, y - 30);
-  ctx.bezierCurveTo(x + 46, y - 22, x + 40, y + 14, x + 44, y + 10);
-
-  // underline
-  ctx.moveTo(x - 42, y + 28);
-  ctx.bezierCurveTo(x,     y + 38, x + 50, y + 30, x + 70, y + 10);
+  ctx.moveTo(x + 22, y - 42);
+  ctx.bezierCurveTo(x +  2, y - 58, x - 30, y - 52, x - 28, y - 30);
+  ctx.bezierCurveTo(x - 26, y - 12, x +  8, y -  8, x + 14, y +  6);
+  ctx.bezierCurveTo(x + 20, y + 20, x +  6, y + 40, x - 20, y + 40);
+  ctx.bezierCurveTo(x - 38, y + 40, x - 48, y + 28, x - 38, y + 14);
   ctx.stroke();
+
+  // ── Stroke 2: connected 'a' — oval with exit rightward ──
+  ctx.beginPath();
+  ctx.moveTo(x + 22, y +  2);
+  ctx.bezierCurveTo(x + 28, y - 22, x + 52, y - 18, x + 50, y +  4);
+  ctx.bezierCurveTo(x + 48, y + 18, x + 34, y + 22, x + 26, y + 12);
+  ctx.bezierCurveTo(x + 20, y +  4, x + 28, y - 2,  x + 52, y +  6);
+  ctx.bezierCurveTo(x + 58, y + 12, x + 58, y + 22, x + 56, y + 14);
+
+  // ── 'a' transitions into 'd' tall loop ──
+  ctx.bezierCurveTo(x + 58, y - 28, x + 64, y - 44, x + 70, y - 36);
+  ctx.bezierCurveTo(x + 76, y - 26, x + 68, y + 18, x + 72, y + 10);
+  ctx.stroke();
+
+  // ── Stroke 3: long calligraphic underline whip ──
+  ctx.beginPath();
+  ctx.lineWidth = 1.6;
+  ctx.moveTo(x - 50, y + 52);
+  ctx.bezierCurveTo(x - 10, y + 62, x + 46, y + 56, x + 80, y + 30);
+  ctx.bezierCurveTo(x + 96, y + 18, x + 88, y + 12, x + 80, y + 18);
+  ctx.stroke();
+
   ctx.restore();
 }
 
-// Aliba Shakeel — 'A' peak + 'li' strokes with a long rightward flourish
+// Aliba Shakeel — dramatic calligraphic A with tall ascenders, oval b-loop, and sweeping tail
 function drawSignatureAliba(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
   ctx.save();
   ctx.strokeStyle = color;
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.2;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
+
+  // ── 'A': grand calligraphic peak — left stroke swings up, right sweeps down ──
   ctx.beginPath();
-
-  // 'A' — two strokes meeting at a peak
-  ctx.moveTo(x - 42, y + 14);
-  ctx.bezierCurveTo(x - 28, y - 30, x - 14, y - 44, x - 4, y - 44);
-  ctx.bezierCurveTo(x + 8,  y - 44, x + 18, y - 26, x + 2,  y + 14);
-
-  // cross-bar of 'A'
-  ctx.moveTo(x - 26, y - 8);
-  ctx.lineTo(x + 2,  y - 8);
-
-  // 'l' tall upstroke
-  ctx.moveTo(x + 10, y - 38);
-  ctx.bezierCurveTo(x + 14, y - 42, x + 20, y - 40, x + 18, y + 14);
-
-  // 'i' short stroke
-  ctx.moveTo(x + 26, y - 10);
-  ctx.bezierCurveTo(x + 28, y - 4,  x + 30, y + 10, x + 30, y + 14);
-  // dot
-  ctx.moveTo(x + 28, y - 22);
-  ctx.arc(x + 28, y - 22, 1.5, 0, Math.PI * 2);
-
-  // 'b' loop
-  ctx.moveTo(x + 36, y - 38);
-  ctx.bezierCurveTo(x + 40, y - 42, x + 46, y - 36, x + 44, y + 4);
-  ctx.bezierCurveTo(x + 42, y + 14, x + 36, y + 18, x + 30, y + 14);
-
-  // 'a' at end
-  ctx.moveTo(x + 52, y - 4);
-  ctx.bezierCurveTo(x + 56, y - 14, x + 68, y - 10, x + 66, y + 6);
-  ctx.bezierCurveTo(x + 64, y + 16, x + 76, y + 14, x + 78, y + 2);
-
-  // underline rightward
-  ctx.moveTo(x - 44, y + 22);
-  ctx.bezierCurveTo(x + 10, y + 34, x + 64, y + 28, x + 88, y + 8);
+  ctx.moveTo(x - 52, y + 18);
+  ctx.bezierCurveTo(x - 44, y - 10, x - 32, y - 46, x - 14, y - 54);
+  ctx.bezierCurveTo(x,      y - 60, x + 10, y - 52, x +  4, y - 28);
+  ctx.bezierCurveTo(x -  2, y -  4, x - 12, y + 18, x - 18, y + 28);
   ctx.stroke();
+
+  // ── Elegant curved crossbar of 'A' ──
+  ctx.beginPath();
+  ctx.lineWidth = 1.8;
+  ctx.moveTo(x - 36, y - 12);
+  ctx.bezierCurveTo(x - 24, y - 18, x - 10, y - 18, x -  2, y - 14);
+  ctx.stroke();
+
+  // ── 'l': tall looping ascender flowing into 'i' ──
+  ctx.beginPath();
+  ctx.lineWidth = 2.2;
+  ctx.moveTo(x + 10, y - 48);
+  ctx.bezierCurveTo(x + 14, y - 56, x + 22, y - 54, x + 22, y - 40);
+  ctx.bezierCurveTo(x + 22, y - 18, x + 20, y + 12, x + 18, y + 22);
+  // flowing into 'i'
+  ctx.bezierCurveTo(x + 24, y +  4, x + 32, y -  2, x + 32, y +  8);
+  ctx.bezierCurveTo(x + 32, y + 18, x + 26, y + 26, x + 24, y + 22);
+  ctx.stroke();
+
+  // ── dot for 'i' ──
+  ctx.beginPath();
+  ctx.fillStyle = color;
+  ctx.arc(x + 30, y - 16, 2.2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // ── 'b': tall loop descending then belly ──
+  ctx.beginPath();
+  ctx.moveTo(x + 34, y - 46);
+  ctx.bezierCurveTo(x + 38, y - 54, x + 46, y - 52, x + 46, y - 38);
+  ctx.bezierCurveTo(x + 46, y - 10, x + 44, y + 14, x + 42, y + 22);
+  // belly of 'b'
+  ctx.bezierCurveTo(x + 52, y +  4, x + 66, y +  4, x + 66, y + 14);
+  ctx.bezierCurveTo(x + 66, y + 26, x + 54, y + 30, x + 44, y + 24);
+  ctx.stroke();
+
+  // ── final 'a': small oval flourish ──
+  ctx.beginPath();
+  ctx.moveTo(x + 76, y -  4);
+  ctx.bezierCurveTo(x + 80, y - 20, x + 98, y - 16, x + 96, y +  4);
+  ctx.bezierCurveTo(x + 94, y + 18, x + 80, y + 20, x + 74, y + 10);
+  ctx.bezierCurveTo(x + 68, y +  2, x + 76, y - 6,  x + 98, y +  8);
+  ctx.bezierCurveTo(x +104, y + 16, x +100, y + 30, x + 96, y + 22);
+  ctx.stroke();
+
+  // ── Long calligraphic underline — rises then swoops right ──
+  ctx.beginPath();
+  ctx.lineWidth = 1.6;
+  ctx.moveTo(x - 56, y + 40);
+  ctx.bezierCurveTo(x - 10, y + 54, x + 56, y + 48, x + 96, y + 26);
+  ctx.bezierCurveTo(x +112, y + 16, x +108, y +  8, x + 98, y + 14);
+  ctx.stroke();
+
   ctx.restore();
 }
 
-// Anosha Shakeel — 'A' + flowing 'n' 'o' arcs + long swooping underline
+// Anosha Shakeel — sweeping italic A, connected flowing nosha body, dramatic rightward whoosh
 function drawSignatureAnosha(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
   ctx.save();
   ctx.strokeStyle = color;
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.2;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
+
+  // ── 'A': opening italic sweep — left leg, peak, right descend ──
   ctx.beginPath();
-
-  // 'A' — calligraphic diagonal strokes
-  ctx.moveTo(x - 44, y + 12);
-  ctx.bezierCurveTo(x - 30, y - 36, x - 12, y - 46, x - 2, y - 44);
-  ctx.bezierCurveTo(x + 10, y - 44, x + 16, y - 24, x + 2,  y + 12);
-  // cross-bar
-  ctx.moveTo(x - 28, y - 10);
-  ctx.lineTo(x,      y - 10);
-
-  // 'n' humps
-  ctx.moveTo(x + 10, y + 12);
-  ctx.bezierCurveTo(x + 14, y - 18, x + 24, y - 22, x + 28, y - 10);
-  ctx.bezierCurveTo(x + 32, y + 2,  x + 30, y + 12, x + 28, y + 12);
-  ctx.bezierCurveTo(x + 32, y - 18, x + 42, y - 22, x + 46, y - 10);
-  ctx.bezierCurveTo(x + 50, y + 2,  x + 48, y + 12, x + 46, y + 12);
-
-  // 'o' circle-like
-  ctx.moveTo(x + 56, y);
-  ctx.bezierCurveTo(x + 58, y - 16, x + 70, y - 20, x + 76, y - 8);
-  ctx.bezierCurveTo(x + 82, y + 4,  x + 74, y + 18, x + 62, y + 14);
-  ctx.bezierCurveTo(x + 52, y + 10, x + 54, y,      x + 56, y);
-
-  // connect to 's' curve
-  ctx.bezierCurveTo(x + 86, y + 4,  x + 98, y - 4,  x + 94, y + 14);
-  ctx.bezierCurveTo(x + 90, y + 30, x + 76, y + 30, x + 72, y + 18);
-
-  // sweeping underline
-  ctx.moveTo(x - 46, y + 24);
-  ctx.bezierCurveTo(x + 10, y + 38, x + 72, y + 32, x + 104, y + 12);
+  ctx.moveTo(x - 54, y + 16);
+  ctx.bezierCurveTo(x - 46, y - 14, x - 30, y - 52, x - 10, y - 58);
+  ctx.bezierCurveTo(x +  4, y - 62, x + 14, y - 52, x +  8, y - 22);
+  ctx.bezierCurveTo(x +  4, y -  2, x -  4, y + 14, x - 10, y + 24);
   ctx.stroke();
+
+  // ── Graceful curved crossbar ──
+  ctx.beginPath();
+  ctx.lineWidth = 1.8;
+  ctx.moveTo(x - 38, y - 16);
+  ctx.bezierCurveTo(x - 22, y - 24, x -  6, y - 24, x +  2, y - 18);
+  ctx.stroke();
+
+  // ── 'n': two arched humps, flowing left-to-right ──
+  ctx.beginPath();
+  ctx.lineWidth = 2.2;
+  ctx.moveTo(x + 10, y + 20);
+  ctx.bezierCurveTo(x + 10, y - 14, x + 22, y - 24, x + 30, y - 12);
+  ctx.bezierCurveTo(x + 36, y -  2, x + 34, y + 16, x + 32, y + 20);
+  ctx.bezierCurveTo(x + 34, y - 12, x + 46, y - 24, x + 54, y - 12);
+  ctx.bezierCurveTo(x + 60, y -  2, x + 58, y + 16, x + 56, y + 20);
+  ctx.stroke();
+
+  // ── 'o': smooth flowing oval ──
+  ctx.beginPath();
+  ctx.moveTo(x + 68, y +  8);
+  ctx.bezierCurveTo(x + 70, y - 20, x + 84, y - 26, x + 92, y - 12);
+  ctx.bezierCurveTo(x +100, y +  2, x + 94, y + 24, x + 80, y + 24);
+  ctx.bezierCurveTo(x + 68, y + 24, x + 64, y + 12, x + 68, y +  8);
+  ctx.stroke();
+
+  // ── 'sh' — connected: s-curve into a tall h-hump ──
+  ctx.beginPath();
+  ctx.moveTo(x +100, y -  4);
+  ctx.bezierCurveTo(x +108, y - 16, x +122, y - 12, x +120, y +  4);
+  ctx.bezierCurveTo(x +118, y + 16, x +106, y + 18, x +100, y + 10);
+  ctx.bezierCurveTo(x + 96, y +  4, x +104, y - 2,  x +124, y +  6);
+  // h upstroke
+  ctx.bezierCurveTo(x +128, y - 30, x +132, y - 46, x +138, y - 38);
+  ctx.bezierCurveTo(x +144, y - 28, x +138, y + 10, x +136, y + 20);
+  // hump of h
+  ctx.bezierCurveTo(x +140, y -  4, x +150, y - 10, x +154, y +  2);
+  ctx.bezierCurveTo(x +158, y + 14, x +152, y + 24, x +144, y + 22);
+  ctx.stroke();
+
+  // ── 'a': final oval with rightward exit ──
+  ctx.beginPath();
+  ctx.moveTo(x +162, y -  4);
+  ctx.bezierCurveTo(x +166, y - 20, x +184, y - 16, x +182, y +  4);
+  ctx.bezierCurveTo(x +180, y + 18, x +166, y + 20, x +160, y + 10);
+  ctx.bezierCurveTo(x +154, y +  2, x +162, y - 4,  x +184, y +  8);
+  ctx.bezierCurveTo(x +192, y + 16, x +188, y + 34, x +184, y + 24);
+  ctx.stroke();
+
+  // ── Grand calligraphic underline: rises to a peak then swoops far right ──
+  ctx.beginPath();
+  ctx.lineWidth = 1.6;
+  ctx.moveTo(x - 58, y + 40);
+  ctx.bezierCurveTo(x + 20, y + 60, x +100, y + 54, x +164, y + 28);
+  ctx.bezierCurveTo(x +186, y + 16, x +192, y +  4, x +182, y + 10);
+  ctx.stroke();
+
   ctx.restore();
 }
 
