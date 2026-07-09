@@ -87,7 +87,7 @@ function FlowchartGamePage() {
           </aside>
 
           {/* Active puzzle screen */}
-          <main className="lg:col-span-8">
+          <main className="lg:col-span-8 lg:sticky lg:top-[80px] self-start">
             <FlowchartBuilder puzzle={activePuzzle} />
           </main>
         </div>
