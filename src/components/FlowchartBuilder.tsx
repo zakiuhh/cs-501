@@ -451,7 +451,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
       <div className="grid md:grid-cols-12 gap-5 items-start">
         {/* Available blocks panel */}
         <div 
-          className="md:col-span-5 bg-surface-card border border-hairline rounded-xl p-4 animate-blur-in-soft md:sticky md:top-[160px] self-start md:max-h-[calc(100vh-220px)] md:overflow-y-auto pr-1.5"
+          className="md:col-span-5 bg-surface-card border border-hairline rounded-xl p-4 animate-blur-in-soft md:sticky md:top-[160px] self-start md:max-h-[calc(100vh-220px)] md:overflow-y-auto pr-1.5 custom-scrollbar"
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDropToAvailable}
         >
@@ -498,7 +498,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
         </div>
 
         {/* Target Workspace slots */}
-        <div className="md:col-span-7 bg-surface-card border border-hairline rounded-xl p-4 md:p-5 md:max-h-[calc(100vh-220px)] md:overflow-y-auto pr-1.5">
+        <div className="md:col-span-7 bg-surface-card border border-hairline rounded-xl p-4 md:p-5 md:max-h-[calc(100vh-220px)] md:overflow-y-auto pr-1.5 custom-scrollbar">
           <h3 className="font-serif text-[17px] text-ink font-medium mb-3">Workspace Flowchart</h3>
           
           <div className="flex flex-col items-center gap-3 py-1">
