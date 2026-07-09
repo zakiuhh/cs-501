@@ -48,7 +48,7 @@ function Logo({ compact }: { compact: boolean }) {
       {/* ── First + — spins CW and returns to 0° ── */}
       <span
         key={`p1-${animKey}`}
-        className={animKey > 0 ? "plus-spin-cw" : ""}
+        className={`logo-plus-1 ${animKey > 0 ? "plus-spin-cw" : ""}`}
         style={{ ...txt }}
       >
         +
@@ -57,7 +57,7 @@ function Logo({ compact }: { compact: boolean }) {
       {/* ── Second + — spins CW same direction ── */}
       <span
         key={`p2-${animKey}`}
-        className={animKey > 0 ? "plus-spin-cw" : ""}
+        className={`logo-plus-2 ${animKey > 0 ? "plus-spin-cw" : ""}`}
         style={{ ...txt }}
       >
         +

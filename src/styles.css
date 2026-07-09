@@ -234,6 +234,14 @@
   .plus-spin-cw  { animation: plus-spin-cw  0.55s cubic-bezier(0.4,0,0.2,1) both; }
   .plus-spin-ccw { animation: plus-spin-ccw 0.55s cubic-bezier(0.4,0,0.2,1) both; }
 
+  /* Hover spin animation for C++ logo on all pages/devices */
+  a[aria-label="C++ Crashed — home"]:hover .logo-plus-1 {
+    animation: plus-spin-cw 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  a[aria-label="C++ Crashed — home"]:hover .logo-plus-2 {
+    animation: plus-spin-cw 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
   @keyframes float-orbit {
     0%, 100% { transform: translate(0, 0) rotate(0deg); }
     50%      { transform: translate(20px, -30px) rotate(8deg); }
