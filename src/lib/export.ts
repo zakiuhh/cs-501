@@ -222,33 +222,66 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
     ctx.fillText(l.toUpperCase(), cx + cardW / 2, 792);
   });
 
-  // hairline above signatures
+  // hairline above signatures — move up slightly to fit 4 sigs
   ctx.strokeStyle = hairline;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(120, 930);
-  ctx.lineTo(W - 120, 930);
+  ctx.moveTo(120, 890);
+  ctx.lineTo(W - 120, 890);
   ctx.stroke();
 
-  // signature lines labels
+  // === 4-member signature row ===
+  const sigMembers = [
+    { name: "Zaki Ul Hassan",  role: "TEAM LEADER",  drawFn: drawSignatureZaki   },
+    { name: "Saad Qureshi",    role: "VIBE CODER",   drawFn: drawSignatureSaad   },
+    { name: "Aliba Shakeel",   role: "VIBE CODER",   drawFn: drawSignatureAliba  },
+    { name: "Anosha Shakeel",  role: "VIBE CODER",   drawFn: drawSignatureAnosha },
+  ];
+
+  const sigZoneW = W - 240; // from x=120 to x=W-120
+  const sigSlotW = sigZoneW / sigMembers.length;
+  const sigBaseY = 890;
+
+  sigMembers.forEach((member, i) => {
+    const slotX = 120 + i * sigSlotW;
+    const slotCX = slotX + sigSlotW / 2;
+
+    // Draw signature above the line
+    member.drawFn(ctx, slotCX, sigBaseY - 10, primary);
+
+    // "TEAM MEMBER" label
+    ctx.fillStyle = muted;
+    ctx.font = "500 11px 'JetBrains Mono', monospace";
+    ctx.textAlign = "center";
+    ctx.fillText(member.role, slotCX, sigBaseY + 22);
+
+    // Name in serif
+    ctx.fillStyle = ink;
+    ctx.font = "italic 22px 'Instrument Serif', Garamond, serif";
+    ctx.textAlign = "center";
+    ctx.fillText(member.name, slotCX, sigBaseY + 46);
+
+    // vertical divider between slots (except after last)
+    if (i < sigMembers.length - 1) {
+      ctx.strokeStyle = hairline;
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(slotX + sigSlotW, sigBaseY + 5);
+      ctx.lineTo(slotX + sigSlotW, sigBaseY + 58);
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
+    }
+  });
+
+  // DATE ISSUED — bottom left, below sig row
   ctx.fillStyle = muted;
-  ctx.font = "500 12px 'JetBrains Mono', monospace";
+  ctx.font = "500 11px 'JetBrains Mono', monospace";
   ctx.textAlign = "left";
-  ctx.fillText("DATE ISSUED", 120, 955);
-  ctx.textAlign = "right";
-  ctx.fillText("INSTRUCTOR SIGNATURE", W - 120, 955);
-
-  // signature line values
+  ctx.fillText("DATE ISSUED", 120, 970);
   ctx.fillStyle = ink;
-  ctx.font = "italic 26px 'Instrument Serif', Garamond, serif";
-  ctx.textAlign = "left";
+  ctx.font = "italic 22px 'Instrument Serif', Garamond, serif";
   ctx.fillText(formatDate(new Date()), 120, 995);
-
-  // Draw handwritten signature above the line (line is at Y = 930) - shifted right to W - 180
-  drawSignature(ctx, W - 180, 915, primary);
-
-  ctx.textAlign = "right";
-  ctx.fillText("Zaki Ul Hassan", W - 120, 1005);
 
   // footer mono
   ctx.fillStyle = muted;
@@ -256,8 +289,8 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
   ctx.textAlign = "center";
   ctx.fillText("cpp-crashed · interactive · browser-based · no account required", W / 2, H - 100);
 
-  // Draw the official Gold Crest / Seal in the center of the signature row (drawn last to be on the top layer, shifted up to Y = 930)
-  drawCrest(ctx, W / 2, 930, primary);
+  // Draw the official Gold Crest / Seal in the center of the signature row
+  drawCrest(ctx, W / 2, 960, primary);
 }
 
 export function getVerificationId(name: string) {
@@ -303,35 +336,151 @@ export function getVerificationId(name: string) {
   return newId;
 }
 
-function drawSignature(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
+function drawSignatureZaki(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
   ctx.save();
   ctx.strokeStyle = color;
-  ctx.lineWidth = 2.5;
+  ctx.lineWidth = 2;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
   ctx.beginPath();
   
-  // Starting point for 'Z'
-  ctx.moveTo(x - 80, y - 25);
-  ctx.bezierCurveTo(x - 50, y - 50, x - 30, y - 55, x - 40, y - 20);
-  ctx.bezierCurveTo(x - 50, y + 10, x - 90, y + 20, x - 60, y - 5);
-  // Stroke to 'a'
-  ctx.bezierCurveTo(x - 40, y - 20, x - 25, y - 10, x - 30, y + 5);
-  ctx.bezierCurveTo(x - 35, y + 15, x - 20, y + 15, x - 15, y - 5);
-  // Stroke to 'k'
-  ctx.bezierCurveTo(x - 10, y - 30, x - 15, y - 40, x - 10, y - 40);
-  ctx.bezierCurveTo(x - 5, y - 40, x - 12, y + 15, x - 10, y + 10);
-  ctx.bezierCurveTo(x - 5, y - 10, x + 5, y - 10, x, y + 10);
-  // Stroke to 'i'
-  ctx.bezierCurveTo(x + 5, y, x + 10, y + 10, x + 12, y + 10);
-  
-  // Dot for 'i'
-  ctx.moveTo(x + 10, y - 15);
-  ctx.arc(x + 10, y - 15, 1.5, 0, Math.PI * 2);
-  
-  // Flourish/underline sweep
-  ctx.moveTo(x - 85, y + 15);
-  ctx.bezierCurveTo(x - 30, y + 25, x + 30, y + 20, x + 65, y + 5);
+  // 'Z' sweep
+  ctx.moveTo(x - 38, y - 22);
+  ctx.bezierCurveTo(x - 20, y - 44, x - 5,  y - 48, x - 16, y - 18);
+  ctx.bezierCurveTo(x - 26, y + 6,  x - 62, y + 14, x - 38, y - 4);
+  // 'a'
+  ctx.bezierCurveTo(x - 22, y - 18, x - 8,  y - 9,  x - 12, y + 4);
+  ctx.bezierCurveTo(x - 16, y + 13, x - 4,  y + 12, x - 1,  y - 4);
+  // 'k'
+  ctx.bezierCurveTo(x + 4,  y - 26, x - 1,  y - 35, x + 4,  y - 35);
+  ctx.bezierCurveTo(x + 9,  y - 35, x + 2,  y + 12, x + 4,  y + 8);
+  ctx.bezierCurveTo(x + 8,  y - 8,  x + 16, y - 8,  x + 12, y + 8);
+  // 'i'
+  ctx.bezierCurveTo(x + 16, y,      x + 20, y + 8,  x + 22, y + 8);
+  // dot for 'i'
+  ctx.moveTo(x + 20, y - 14);
+  ctx.arc(x + 20, y - 14, 1.5, 0, Math.PI * 2);
+  // underline flourish
+  ctx.moveTo(x - 62, y + 14);
+  ctx.bezierCurveTo(x - 20, y + 24, x + 28, y + 18, x + 55, y + 4);
+  ctx.stroke();
+  ctx.restore();
+}
+
+// Saad Qureshi — 'S' loop + flowing 'aad' tail with underline
+function drawSignatureSaad(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.beginPath();
+
+  // 'S' — large loop
+  ctx.moveTo(x + 18, y - 35);
+  ctx.bezierCurveTo(x - 10, y - 48, x - 40, y - 38, x - 32, y - 18);
+  ctx.bezierCurveTo(x - 22, y - 2,  x + 20, y - 2,  x + 22, y + 16);
+  ctx.bezierCurveTo(x + 24, y + 34, x - 14, y + 38, x - 38, y + 22);
+
+  // 'a' small loop
+  ctx.moveTo(x - 10, y + 2);
+  ctx.bezierCurveTo(x + 2,  y - 12, x + 22, y - 8,  x + 18, y + 8);
+  ctx.bezierCurveTo(x + 14, y + 20, x + 28, y + 18, x + 30, y + 4);
+
+  // 'd' upstroke
+  ctx.bezierCurveTo(x + 34, y - 28, x + 38, y - 38, x + 42, y - 30);
+  ctx.bezierCurveTo(x + 46, y - 22, x + 40, y + 14, x + 44, y + 10);
+
+  // underline
+  ctx.moveTo(x - 42, y + 28);
+  ctx.bezierCurveTo(x,     y + 38, x + 50, y + 30, x + 70, y + 10);
+  ctx.stroke();
+  ctx.restore();
+}
+
+// Aliba Shakeel — 'A' peak + 'li' strokes with a long rightward flourish
+function drawSignatureAliba(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.beginPath();
+
+  // 'A' — two strokes meeting at a peak
+  ctx.moveTo(x - 42, y + 14);
+  ctx.bezierCurveTo(x - 28, y - 30, x - 14, y - 44, x - 4, y - 44);
+  ctx.bezierCurveTo(x + 8,  y - 44, x + 18, y - 26, x + 2,  y + 14);
+
+  // cross-bar of 'A'
+  ctx.moveTo(x - 26, y - 8);
+  ctx.lineTo(x + 2,  y - 8);
+
+  // 'l' tall upstroke
+  ctx.moveTo(x + 10, y - 38);
+  ctx.bezierCurveTo(x + 14, y - 42, x + 20, y - 40, x + 18, y + 14);
+
+  // 'i' short stroke
+  ctx.moveTo(x + 26, y - 10);
+  ctx.bezierCurveTo(x + 28, y - 4,  x + 30, y + 10, x + 30, y + 14);
+  // dot
+  ctx.moveTo(x + 28, y - 22);
+  ctx.arc(x + 28, y - 22, 1.5, 0, Math.PI * 2);
+
+  // 'b' loop
+  ctx.moveTo(x + 36, y - 38);
+  ctx.bezierCurveTo(x + 40, y - 42, x + 46, y - 36, x + 44, y + 4);
+  ctx.bezierCurveTo(x + 42, y + 14, x + 36, y + 18, x + 30, y + 14);
+
+  // 'a' at end
+  ctx.moveTo(x + 52, y - 4);
+  ctx.bezierCurveTo(x + 56, y - 14, x + 68, y - 10, x + 66, y + 6);
+  ctx.bezierCurveTo(x + 64, y + 16, x + 76, y + 14, x + 78, y + 2);
+
+  // underline rightward
+  ctx.moveTo(x - 44, y + 22);
+  ctx.bezierCurveTo(x + 10, y + 34, x + 64, y + 28, x + 88, y + 8);
+  ctx.stroke();
+  ctx.restore();
+}
+
+// Anosha Shakeel — 'A' + flowing 'n' 'o' arcs + long swooping underline
+function drawSignatureAnosha(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.beginPath();
+
+  // 'A' — calligraphic diagonal strokes
+  ctx.moveTo(x - 44, y + 12);
+  ctx.bezierCurveTo(x - 30, y - 36, x - 12, y - 46, x - 2, y - 44);
+  ctx.bezierCurveTo(x + 10, y - 44, x + 16, y - 24, x + 2,  y + 12);
+  // cross-bar
+  ctx.moveTo(x - 28, y - 10);
+  ctx.lineTo(x,      y - 10);
+
+  // 'n' humps
+  ctx.moveTo(x + 10, y + 12);
+  ctx.bezierCurveTo(x + 14, y - 18, x + 24, y - 22, x + 28, y - 10);
+  ctx.bezierCurveTo(x + 32, y + 2,  x + 30, y + 12, x + 28, y + 12);
+  ctx.bezierCurveTo(x + 32, y - 18, x + 42, y - 22, x + 46, y - 10);
+  ctx.bezierCurveTo(x + 50, y + 2,  x + 48, y + 12, x + 46, y + 12);
+
+  // 'o' circle-like
+  ctx.moveTo(x + 56, y);
+  ctx.bezierCurveTo(x + 58, y - 16, x + 70, y - 20, x + 76, y - 8);
+  ctx.bezierCurveTo(x + 82, y + 4,  x + 74, y + 18, x + 62, y + 14);
+  ctx.bezierCurveTo(x + 52, y + 10, x + 54, y,      x + 56, y);
+
+  // connect to 's' curve
+  ctx.bezierCurveTo(x + 86, y + 4,  x + 98, y - 4,  x + 94, y + 14);
+  ctx.bezierCurveTo(x + 90, y + 30, x + 76, y + 30, x + 72, y + 18);
+
+  // sweeping underline
+  ctx.moveTo(x - 46, y + 24);
+  ctx.bezierCurveTo(x + 10, y + 38, x + 72, y + 32, x + 104, y + 12);
   ctx.stroke();
   ctx.restore();
 }
@@ -667,32 +816,61 @@ export function drawAcknowledgementCanvas(ctx: CanvasRenderingContext2D, W: numb
   ctx.strokeStyle = hairline;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(120, 1420);
-  ctx.lineTo(W - 120, 1420);
+  ctx.moveTo(120, 1410);
+  ctx.lineTo(W - 120, 1410);
   ctx.stroke();
 
-  // Signature lines labels
+  // === 4-member signature row ===
+  const ackSigMembers = [
+    { name: "Zaki Ul Hassan",  role: "TEAM LEADER",  drawFn: drawSignatureZaki   },
+    { name: "Saad Qureshi",    role: "VIBE CODER",   drawFn: drawSignatureSaad   },
+    { name: "Aliba Shakeel",   role: "VIBE CODER",   drawFn: drawSignatureAliba  },
+    { name: "Anosha Shakeel",  role: "VIBE CODER",   drawFn: drawSignatureAnosha },
+  ];
+
+  const ackSigZoneW = W - 240;
+  const ackSigSlotW = ackSigZoneW / ackSigMembers.length;
+  const ackSigBaseY = 1410;
+
+  ackSigMembers.forEach((member, i) => {
+    const slotX = 120 + i * ackSigSlotW;
+    const slotCX = slotX + ackSigSlotW / 2;
+
+    member.drawFn(ctx, slotCX, ackSigBaseY - 10, primary);
+
+    ctx.fillStyle = muted;
+    ctx.font = "500 11px 'JetBrains Mono', monospace";
+    ctx.textAlign = "center";
+    ctx.fillText(member.role, slotCX, ackSigBaseY + 22);
+
+    ctx.fillStyle = ink;
+    ctx.font = "italic 22px 'Instrument Serif', Garamond, serif";
+    ctx.textAlign = "center";
+    ctx.fillText(member.name, slotCX, ackSigBaseY + 46);
+
+    if (i < ackSigMembers.length - 1) {
+      ctx.strokeStyle = hairline;
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(slotX + ackSigSlotW, ackSigBaseY + 5);
+      ctx.lineTo(slotX + ackSigSlotW, ackSigBaseY + 58);
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
+    }
+  });
+
+  // DATE ISSUED
   ctx.fillStyle = muted;
-  ctx.font = "500 12px 'JetBrains Mono', monospace";
+  ctx.font = "500 11px 'JetBrains Mono', monospace";
   ctx.textAlign = "left";
-  ctx.fillText("DATE ISSUED", 120, 1445);
-  ctx.textAlign = "right";
-  ctx.fillText("AUTHORIZED SIGNATURE", W - 120, 1445);
-
-  // values
+  ctx.fillText("DATE ISSUED", 120, 1485);
   ctx.fillStyle = ink;
-  ctx.font = "italic 26px 'Instrument Serif', Garamond, serif";
-  ctx.textAlign = "left";
-  ctx.fillText(formatDate(new Date()), 120, 1485);
-
-  // Handwritten signature (drawn above the line)
-  drawSignature(ctx, W - 220, 1405, primary);
-
-  ctx.textAlign = "right";
-  ctx.fillText("Zaki Ul Hassan", W - 120, 1495);
+  ctx.font = "italic 22px 'Instrument Serif', Garamond, serif";
+  ctx.fillText(formatDate(new Date()), 120, 1510);
 
   // Official Gold Crest / Seal
-  drawCrest(ctx, W / 2, 1450, primary);
+  drawCrest(ctx, W / 2, 1470, primary);
 
   // footer mono
   ctx.fillStyle = muted;

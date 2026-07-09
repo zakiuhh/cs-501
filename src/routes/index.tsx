@@ -203,19 +203,20 @@ int main() {
             <Reveal variant="scale" className="mt-12 sm:mt-16">
               <div className="bg-surface-card rounded-xl p-5 sm:p-6 md:p-10 border border-hairline">
                 <div className="grid md:grid-cols-12 gap-6 sm:gap-8 items-center">
-                  <div className="md:col-span-5">
+                  <div className="md:col-span-5 order-2 md:order-1">
                     <span className="font-mono text-[12px] text-muted">04</span>
                     <h3 className="font-serif text-2xl sm:text-3xl text-ink mt-2">Earn recognition.</h3>
                     <p className="text-body mt-3 text-[14px] sm:text-base leading-relaxed">
-                      Complete all curriculum lectures to unlock your database-verified completion certificate. Export it as a PNG ready to share.
+                      Complete all curriculum lectures to unlock your database-verified completion certificate. Signed by the full team and exportable as PNG or PDF.
                     </p>
                     <div className="mt-4 sm:mt-5 flex flex-wrap gap-2 text-[12px]">
-                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">PNG Format</span>
+                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">PNG & PDF</span>
                       <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">Database Verified</span>
+                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">Team Signed</span>
                     </div>
                   </div>
-                  <div className="md:col-span-7">
-                    <div className="rounded-lg overflow-hidden border border-hairline shadow-xl shadow-ink/10">
+                  <div className="md:col-span-7 order-1 md:order-2">
+                    <div className="rounded-lg overflow-hidden border border-hairline shadow-xl shadow-ink/10 w-full">
                       <CertificatePreview />
                     </div>
                   </div>
