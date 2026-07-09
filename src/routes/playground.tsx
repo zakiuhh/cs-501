@@ -1,4 +1,4 @@
-﻿import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { lectures } from "@/data/lectures";
 import { Nav } from "@/components/Nav";
@@ -50,7 +50,7 @@ function PlaygroundPage() {
             </ul>
           </aside>
 
-          <div className="md:col-span-8">
+          <div className="md:col-span-8 md:sticky md:top-[80px] self-start">
             {active?.playground ? (
               <div>
                 <h2 className="font-serif text-2xl text-ink mb-2">{active.title}</h2>
