@@ -395,15 +395,15 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
   const getShapeStyle = (type: string) => {
     switch (type) {
       case "terminal":
-        return "border-2 border-accent-teal bg-accent-teal/10 rounded-full py-2 px-5 text-center font-semibold";
+        return "border-2 border-accent-teal bg-accent-teal/10 rounded-full py-1.5 px-3 sm:py-2 sm:px-5 text-center font-semibold text-[11px] sm:text-[12.5px]";
       case "process":
-        return "border-2 border-primary bg-primary/10 rounded-md py-2 px-5 text-center font-medium";
+        return "border-2 border-primary bg-primary/10 rounded-md py-1.5 px-3 sm:py-2 sm:px-5 text-center font-medium text-[11px] sm:text-[12.5px]";
       case "decision":
-        return "border-2 border-accent-amber bg-accent-amber/10 py-3.5 px-4.5 text-center font-medium aspect-square max-w-[120px] flex items-center justify-center rotate-45 [&>*]:-rotate-45";
+        return "border-2 border-accent-amber bg-accent-amber/10 py-2.5 px-3 sm:py-3.5 sm:px-4 text-center font-medium aspect-square max-w-[95px] sm:max-w-[120px] flex items-center justify-center rotate-45 [&>*]:-rotate-45 text-[11px] sm:text-[12.5px]";
       case "io":
-        return "border-2 border-indigo-400 bg-indigo-400/10 skew-x-12 py-2 px-5 text-center font-medium [&>*]:-skew-x-12";
+        return "border-2 border-indigo-400 bg-indigo-400/10 skew-x-12 py-1.5 px-3 sm:py-2 sm:px-5 text-center font-medium [&>*]:-skew-x-12 text-[11px] sm:text-[12.5px]";
       default:
-        return "border border-hairline bg-surface-card rounded-lg py-2 px-5 text-center";
+        return "border border-hairline bg-surface-card rounded-lg py-1.5 px-3 sm:py-2 sm:px-5 text-center text-[11px] sm:text-[12.5px]";
     }
   };
 
@@ -451,7 +451,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
       <div className="grid md:grid-cols-12 gap-5 items-start">
         {/* Available blocks panel */}
         <div 
-          className="md:col-span-5 bg-surface-card border border-hairline rounded-xl p-4 animate-blur-in-soft"
+          className="md:col-span-5 bg-surface-card border border-hairline rounded-xl p-4 animate-blur-in-soft md:sticky md:top-[160px] self-start md:max-h-[calc(100vh-220px)] md:overflow-y-auto pr-1.5"
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDropToAvailable}
         >
@@ -498,7 +498,7 @@ export function FlowchartBuilder({ puzzle, onComplete }: { puzzle: FlowchartPuzz
         </div>
 
         {/* Target Workspace slots */}
-        <div className="md:col-span-7 bg-surface-card border border-hairline rounded-xl p-4 md:p-5">
+        <div className="md:col-span-7 bg-surface-card border border-hairline rounded-xl p-4 md:p-5 md:max-h-[calc(100vh-220px)] md:overflow-y-auto pr-1.5">
           <h3 className="font-serif text-[17px] text-ink font-medium mb-3">Workspace Flowchart</h3>
           
           <div className="flex flex-col items-center gap-3 py-1">
