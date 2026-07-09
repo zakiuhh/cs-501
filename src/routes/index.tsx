@@ -34,39 +34,21 @@ export const Route = createFileRoute("/")({
 const features = [
   { 
     t: "Live C++ Compiler", 
-    d: "Built-in WebAssembly-powered compiler runs C++17 code directly in your browser. Write, compile, and execute instantly - no setup required.", 
+    d: "Run C++17 directly in your browser. Write, compile, and execute instantly—no setup required.", 
     k: "01", 
     icon: Cpu 
   },
   { 
-    t: "Interactive Flowchart Puzzles", 
-    d: "Drag-and-drop algorithm blocks to build complete program flows. Master logic structures, loops, and decision-making with 8+ challenging puzzles.", 
+    t: "Visual Flowcharts", 
+    d: "Drag and drop code blocks to build algorithms. Master loops and decisions visually.", 
     k: "02", 
     icon: Network 
   },
   { 
-    t: "Rich Slides & Inline Quizzes", 
-    d: "Beautifully designed slides break down complex topics into digestible chunks. Test comprehension with embedded quizzes after every key concept.", 
+    t: "Interactive Slides & Quizzes", 
+    d: "Bite-sized slides break down complex topics, paired with quizzes that save your scores locally.", 
     k: "03", 
     icon: BookOpen 
-  },
-  { 
-    t: "Comprehensive Cheat Sheet", 
-    d: "Quick-reference guide covering C++ syntax, data types, operators, control structures, and common patterns - all in one searchable page.", 
-    k: "04", 
-    icon: FileSpreadsheet 
-  },
-  { 
-    t: "Progress Tracking & Sync", 
-    d: "Bookmark lectures for review. Export and import your complete progress as JSON to continue learning across any device seamlessly.", 
-    k: "05", 
-    icon: Bookmark 
-  },
-  { 
-    t: "Earn Your Certificate", 
-    d: "Complete all modules to unlock a personalized certificate of achievement. Download as high-resolution PNG and showcase your accomplishment.", 
-    k: "06", 
-    icon: Award 
   },
 ];
 
@@ -127,12 +109,6 @@ function CertificatePreview() {
 }
 
 function Landing() {
-  const stats = [
-    { n: `${lectures.length}+`, l: "Interactive lectures" },
-    { n: "100%", l: "Browser-based" },
-    { n: "Free", l: "No account needed" },
-  ];
-
   return (
     <div className="relative min-h-screen flex flex-col bg-canvas overflow-hidden">
       <FloatingIllustrations />
@@ -153,23 +129,20 @@ function Landing() {
               </div>
               <Headline />
               <p className="text-body text-base sm:text-lg mt-5 sm:mt-7 max-w-xl leading-relaxed animate-blur-in-soft delay-500">
-                Master C++ Programming Fundamentals through an interactive learning journey. Engage with slides, write and execute code, solve flowchart puzzles, and test your knowledge - all seamlessly integrated in one platform.
+                An interactive browser course for C++ fundamentals. Learn concepts step-by-step, build visual flowcharts, and run live code blocks instantly with zero setup.
               </p>
               <div className="flex flex-wrap gap-3 mt-7 sm:mt-9 animate-blur-in-soft delay-700">
                 <Link to="/lectures" className="btn-primary hover:-translate-y-0.5 flex items-center gap-1.5 cursor-pointer">
-                  <span>Enter the lectures</span>
+                  <span>Start learning</span>
                   <ChevronRight className="w-4 h-4" />
                 </Link>
                 <Link to="/flowchart" className="btn-secondary hover:-translate-y-0.5 flex items-center gap-1.5 cursor-pointer">
-                  <span>Play flowcharts</span>
+                  <span>Try flowcharts</span>
                   <ChevronRight className="w-4 h-4 text-primary" />
-                </Link>
-                <Link to="/playground" className="btn-secondary hover:-translate-y-0.5 hidden sm:inline-flex items-center gap-1.5 cursor-pointer">
-                  <span>Open playground</span>
                 </Link>
               </div>
               <p className="mt-8 sm:mt-10 text-[12px] sm:text-[13px] text-muted animate-blur-in-soft delay-700">
-                {lectures.length} interactive lectures · 8 flowchart puzzles · real-time C++ compiler · progress tracking
+                {lectures.length} lectures · interactive code editor · visual puzzles · free
               </p>
             </div>
 
@@ -179,7 +152,7 @@ function Landing() {
                   <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
                   <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
                   <span className="w-3 h-3 rounded-full bg-[#28c840]" />
-                  <span className="ml-3 text-on-dark-soft text-[11px] font-mono">welcome.cpp</span>
+                  <span className="ml-3 text-on-dark-soft text-[11px] font-mono">main.cpp</span>
                 </div>
                 <pre className="text-on-dark font-mono text-[12px] sm:text-[13.5px] leading-relaxed whitespace-pre overflow-x-auto">
                   {`#include <iostream>
@@ -198,29 +171,14 @@ int main() {
           </div>
         </section>
 
-        {/* STATS */}
-        <section className="border-b border-hairline bg-surface-soft">
-          <div className="max-w-[1180px] mx-auto px-5 sm:px-6 py-7 sm:py-10 grid grid-cols-3 gap-3 sm:gap-6">
-            {stats.map((s, i) => (
-              <Reveal key={s.l} variant="scale" delay={i * 120} className="text-center">
-                <div className="font-serif text-3xl sm:text-4xl md:text-5xl text-primary">{s.n}</div>
-                <div className="text-muted text-[11px] sm:text-[13px] mt-1">{s.l}</div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
-        {/* FEATURES */}
+        {/* CORE FEATURES */}
         <section className="py-14 sm:py-20 md:py-24">
           <div className="max-w-[1180px] mx-auto px-5 sm:px-6">
             <Reveal variant="left">
-              <p className="text-muted text-[11px] sm:text-[12px] tracking-[0.15em] uppercase mb-3">Why C++ Crashed</p>
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl max-w-2xl text-shimmer">
-                Learning by doing, not just reading.
+              <p className="text-muted text-[11px] sm:text-[12px] tracking-[0.15em] uppercase mb-3 font-mono">Why C++ Crashed</p>
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl max-w-2xl text-ink">
+                Built to help concepts stick.
               </h2>
-              <p className="text-body mt-3 sm:mt-4 max-w-xl text-[14px] sm:text-base">
-                Every feature is crafted to transform passive reading into active learning - making C++ fundamentals stick through hands-on practice.
-              </p>
             </Reveal>
 
             <div className="mt-8 sm:mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -241,33 +199,23 @@ int main() {
               })}
             </div>
 
-            {/* Certificate progress tracker (live) */}
-            <Reveal variant="scale" className="mt-12 sm:mt-16">
-              <CertificateProgress />
-            </Reveal>
-
             {/* Certificate showcase */}
-            <Reveal variant="scale" className="mt-8 sm:mt-12">
+            <Reveal variant="scale" className="mt-12 sm:mt-16">
               <div className="bg-surface-card rounded-xl p-5 sm:p-6 md:p-10 border border-hairline">
                 <div className="grid md:grid-cols-12 gap-6 sm:gap-8 items-center">
                   <div className="md:col-span-5">
-                    <span className="font-mono text-[12px] text-muted">07</span>
-                    <h3 className="font-serif text-2xl sm:text-3xl text-ink mt-2">Complete the journey - earn recognition.</h3>
+                    <span className="font-mono text-[12px] text-muted">04</span>
+                    <h3 className="font-serif text-2xl sm:text-3xl text-ink mt-2">Earn recognition.</h3>
                     <p className="text-body mt-3 text-[14px] sm:text-base leading-relaxed">
-                      Master all modules to unlock your personalized certificate of completion. Beautifully designed to match the course aesthetic, download it as high-resolution PNG ready for LinkedIn, portfolios, or printing.
+                      Complete all curriculum lectures to unlock your database-verified completion certificate. Export it as a PNG ready to share.
                     </p>
                     <div className="mt-4 sm:mt-5 flex flex-wrap gap-2 text-[12px]">
-                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">PNG · retina</span>
-                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">Light & dark</span>
-                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">Your name on it</span>
+                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">PNG Format</span>
+                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">Database Verified</span>
                     </div>
-                    <Link to="/lectures" className="text-link mt-5 sm:mt-6 inline-flex hover:translate-x-1 transition-transform items-center gap-1">
-                      <span>See sample on the Lectures page</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </Link>
                   </div>
                   <div className="md:col-span-7">
-                    <div className="rounded-lg overflow-hidden border border-hairline shadow-xl shadow-ink/10 animate-tilt origin-center">
+                    <div className="rounded-lg overflow-hidden border border-hairline shadow-xl shadow-ink/10">
                       <CertificatePreview />
                     </div>
                   </div>
@@ -278,16 +226,16 @@ int main() {
         </section>
 
         {/* PREVIEW LECTURES */}
-        <section className="py-20 bg-surface-soft border-y border-hairline">
+        <section className="py-14 sm:py-20 bg-surface-soft border-y border-hairline">
           <div className="max-w-[1180px] mx-auto px-6">
             <Reveal>
-              <div className="flex items-end justify-between mb-10 gap-6 flex-wrap">
+              <div className="flex items-end justify-between mb-8 gap-6 flex-wrap">
                 <div>
-                  <p className="text-muted text-[12px] tracking-[0.15em] uppercase mb-2">Start anywhere</p>
-                  <h2 className="font-serif text-4xl md:text-5xl text-ink">First few lectures.</h2>
+                  <p className="text-muted text-[12px] tracking-[0.15em] uppercase mb-2 font-mono">Curriculum</p>
+                  <h2 className="font-serif text-3xl sm:text-4xl text-ink">Get a head start.</h2>
                 </div>
                 <Link to="/lectures" className="text-link hover:translate-x-1 transition-transform inline-block">
-                  See all {lectures.length} →
+                  All {lectures.length} lectures →
                 </Link>
               </div>
             </Reveal>
@@ -301,7 +249,7 @@ int main() {
                   >
                     <span className="font-mono text-[12px] text-muted">Lecture {l.number}</span>
                     <h3 className="font-serif text-xl mt-2 text-ink group-hover:text-primary transition-colors">{l.title}</h3>
-                    <p className="text-body text-[14px] mt-2 leading-relaxed line-clamp-3">{l.summary}</p>
+                    <p className="text-body text-[14px] mt-2 leading-relaxed line-clamp-2">{l.summary}</p>
                   </Link>
                 </Reveal>
               ))}
@@ -310,34 +258,32 @@ int main() {
         </section>
 
         {/* ZENITH C++ */}
-        <section className="py-16 bg-surface-soft border-y border-hairline">
+        <section className="py-10 bg-canvas border-b border-hairline">
           <div className="max-w-[1180px] mx-auto px-6">
             <Reveal variant="scale">
               <a
                 href="https://zenith-cpp.vercel.app/"
                 target="_blank"
                 rel="noreferrer"
-                className="block bg-surface-dark text-on-dark rounded-xl p-10 md:p-12 card-lift hover:bg-surface-dark-elevated transition-colors group"
+                className="block bg-surface-card border border-hairline rounded-xl p-6 md:p-8 card-lift hover:border-primary/45 transition-colors group"
               >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-                  <div className="flex-1">
-                    <p className="text-primary text-[12px] tracking-[0.15em] uppercase font-mono mb-3">
-                      Companion tool · External
-                    </p>
-                    <h2 className="font-serif text-3xl md:text-4xl text-on-dark group-hover:text-primary transition-colors">
-                      Zenith C++ - Your Complete Web IDE
-                    </h2>
-                    <p className="text-on-dark-soft mt-3 max-w-xl leading-relaxed">
-                      Ready for more advanced projects? Zenith C++ offers a full-featured browser IDE with multi-file support, advanced debugging, and a professional development environment - no installation required.
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                  <div>
+                    <span className="text-primary text-[11px] tracking-[0.15em] uppercase font-mono mb-1 block">
+                      Companion Tool
+                    </span>
+                    <h3 className="font-serif text-2xl text-ink group-hover:text-primary transition-colors">
+                      Zenith C++: Full Browser IDE ↗
+                    </h3>
+                    <p className="text-muted text-[13.5px] mt-1.5 max-w-xl leading-relaxed">
+                      Need a full multi-file development workspace? Zenith C++ offers a full browser IDE with advanced compilation, terminal diagnostics, and debugging.
                     </p>
                   </div>
-                  <div className="flex items-center gap-3 shrink-0">
-                    <Magnetic strength={0.5}>
-                      <span className="bg-primary text-on-primary px-5 py-3 rounded-md font-medium text-[14px] whitespace-nowrap inline-block flex items-center gap-1">
-                        <span>Open Zenith C++</span>
-                        <ArrowUpRight className="w-4 h-4" />
-                      </span>
-                    </Magnetic>
+                  <div className="shrink-0">
+                    <span className="btn-secondary group-hover:bg-primary group-hover:text-on-primary group-hover:border-transparent transition-all duration-300 py-2.5 px-4 rounded-md font-medium text-[13px] inline-flex items-center gap-1">
+                      <span>Open Zenith IDE</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
                   </div>
                 </div>
               </a>
@@ -346,22 +292,22 @@ int main() {
         </section>
 
         {/* CTA */}
-        <section className="py-20">
+        <section className="py-14 sm:py-20">
           <div className="max-w-[1180px] mx-auto px-6">
             <Reveal variant="scale">
-              <div className="bg-primary text-on-primary rounded-xl p-12 md:p-16 flex flex-col md:flex-row md:items-center md:justify-between gap-8 card-lift">
+              <div className="bg-primary text-on-primary rounded-xl p-10 md:p-14 flex flex-col md:flex-row md:items-center md:justify-between gap-8 card-lift">
                 <div>
-                  <h2 className="font-serif text-3xl md:text-[44px] leading-tight max-w-lg">Start your C++ journey today</h2>
-                  <p className="mt-3 text-[15px] opacity-90 max-w-lg">
-                    No account, no installation, no barriers. Jump straight into interactive learning and write your first C++ program within minutes. Or, <Link to="/verify" className="underline hover:text-white/80 transition-colors">verify a completion certificate</Link>.
+                  <h2 className="font-serif text-3xl md:text-4xl leading-tight max-w-lg">Start coding today</h2>
+                  <p className="mt-2 text-[14px] opacity-90 max-w-md">
+                    No account required, no software setup. Jump straight into C++ interactive slides and visual flowcharts instantly.
                   </p>
                 </div>
                 <div className="flex gap-3 flex-wrap">
-                  <Link to="/lectures" className="bg-canvas text-ink px-6 py-3 rounded-md font-medium text-[14px] hover:bg-surface-card whitespace-nowrap transition-transform hover:-translate-y-0.5 cursor-pointer">
+                  <Link to="/lectures" className="bg-canvas text-ink px-5 py-2.5 rounded-md font-medium text-[13.5px] hover:bg-surface-soft whitespace-nowrap transition-transform hover:-translate-y-0.5 cursor-pointer">
                     Browse lectures
                   </Link>
-                  <Link to="/playground" className="bg-surface-dark text-on-dark px-6 py-3 rounded-md font-medium text-[14px] hover:bg-surface-dark-elevated whitespace-nowrap transition-transform hover:-translate-y-0.5 cursor-pointer">
-                    Try the playground
+                  <Link to="/playground" className="bg-surface-dark text-on-dark px-5 py-2.5 rounded-md font-medium text-[13.5px] hover:bg-surface-dark-elevated whitespace-nowrap transition-transform hover:-translate-y-0.5 cursor-pointer">
+                    Try playground
                   </Link>
                 </div>
               </div>
