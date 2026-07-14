@@ -297,24 +297,29 @@
   .dark .float-glyph.tone-teal  { color: var(--accent-teal); opacity: 0.06; }
   .dark .float-glyph.tone-amber { color: var(--accent-amber); opacity: 0.05; }
 
-  /* Custom scrollbar utility */
-  .custom-scrollbar {
+  /* Global themed scrollbars */
+  * {
     scrollbar-width: thin;
     scrollbar-color: var(--hairline) transparent;
   }
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
-  .custom-scrollbar::-webkit-scrollbar-track {
+  ::-webkit-scrollbar-track {
     background: transparent;
   }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--hairline);
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--hairline);
     border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: var(--muted-soft);
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--muted-soft);
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
 }
 
