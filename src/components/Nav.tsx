@@ -162,11 +162,13 @@ export function Nav() {
           {/* Nav links */}
           <nav className="hidden lg:flex items-center gap-6 text-[14px] text-body">
             <Link to="/lectures"   className="hover:text-ink transition-colors story-link">Lectures</Link>
+            <Link to="/practice"   className="hover:text-ink transition-colors story-link">Practice</Link>
             <Link to="/playground" className="hover:text-ink transition-colors story-link">Playground</Link>
             <Link to="/flowchart"  className="hover:text-ink transition-colors story-link">Flowcharts</Link>
             <Link to="/cheatsheet" className="hover:text-ink transition-colors story-link">Cheat Sheet</Link>
             <Link to="/syllabus"   className="hover:text-ink transition-colors story-link">Syllabus</Link>
             <Link to="/verify"     className="hover:text-ink transition-colors story-link">Verify</Link>
+            <Link to="/faq"        className="hover:text-ink transition-colors story-link">FAQ</Link>
             <Link to="/about"      className="hover:text-ink transition-colors story-link">About</Link>
           </nav>
 
@@ -229,6 +231,12 @@ export function Nav() {
             Lectures
           </Link>
           <Link 
+            to="/practice" 
+            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
+          >
+            Practice
+          </Link>
+          <Link 
             to="/playground" 
             className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
           >
@@ -257,6 +265,12 @@ export function Nav() {
             className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
           >
             Verify
+          </Link>
+          <Link 
+            to="/faq" 
+            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
+          >
+            FAQ
           </Link>
           <Link 
             to="/about" 

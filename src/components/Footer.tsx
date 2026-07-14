@@ -12,8 +12,10 @@ export function Footer() {
           <h4 className="text-on-dark text-[13px] font-medium mb-3 font-sans">Course</h4>
           <ul className="space-y-2 text-[13px]">
             <li><Link to="/lectures" className="hover:text-primary transition-colors">Lectures</Link></li>
+            <li><Link to="/practice" className="hover:text-primary transition-colors">Practice</Link></li>
             <li><Link to="/syllabus" className="hover:text-primary transition-colors">Syllabus</Link></li>
             <li><Link to="/playground" className="hover:text-primary transition-colors">Playground</Link></li>
+            <li><Link to="/faq" className="hover:text-primary transition-colors">FAQ</Link></li>
             <li><Link to="/about" className="hover:text-primary transition-colors">About</Link></li>
           </ul>
         </div>

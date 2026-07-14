@@ -6,6 +6,7 @@ import { Reveal } from "@/components/Reveal";
 import { Magnetic } from "@/components/Magnetic";
 import { ResumePill } from "@/components/ResumePill";
 import { CertificateProgress } from "@/components/CertificateProgress";
+import { Testimonials } from "@/components/Testimonials";
 import { useRef, useEffect } from "react";
 import { lectures } from "@/data/lectures";
 import { drawCertificateCanvas } from "@/lib/export";
@@ -315,6 +316,8 @@ int main() {
             </Reveal>
           </div>
         </section>
+
+        <Testimonials />
 
         <Footer />
       </div>

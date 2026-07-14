@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { getProgress, toggleBookmark } from "@/lib/progress";
 import { ModuleProgress } from "@/components/ModuleProgress";
 import { ProgressActions } from "@/components/ProgressActions";
+import { StreakBadge } from "@/components/StreakBadge";
 import { Star } from "lucide-react";
 
 export const Route = createFileRoute("/lectures")({
@@ -50,7 +51,10 @@ function LecturesPage() {
 
       <section className="border-b border-hairline">
         <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-16">
-          <p className="text-muted text-[12px] tracking-[0.15em] uppercase mb-3 animate-blur-in-soft">CS501 · Lectures</p>
+          <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
+            <p className="text-muted text-[12px] tracking-[0.15em] uppercase animate-blur-in-soft">CS501 · Lectures</p>
+            <StreakBadge />
+          </div>
           <h1 className="font-serif text-4xl md:text-6xl text-ink animate-blur-in">
             All <em className="italic text-primary">lectures</em>, end to end.
           </h1>

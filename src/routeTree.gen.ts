@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SyllabusRouteImport } from './routes/syllabus'
+import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PlaygroundRouteImport } from './routes/playground'
 import { Route as LecturesRouteImport } from './routes/lectures'
 import { Route as FlowchartRouteImport } from './routes/flowchart'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as CheatsheetRouteImport } from './routes/cheatsheet'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +25,11 @@ import { Route as LectureIdRouteImport } from './routes/lecture.$id'
 const SyllabusRoute = SyllabusRouteImport.update({
   id: '/syllabus',
   path: '/syllabus',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PracticeRoute = PracticeRouteImport.update({
+  id: '/practice',
+  path: '/practice',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlaygroundRoute = PlaygroundRouteImport.update({
@@ -38,6 +45,11 @@ const LecturesRoute = LecturesRouteImport.update({
 const FlowchartRoute = FlowchartRouteImport.update({
   id: '/flowchart',
   path: '/flowchart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheatsheetRoute = CheatsheetRouteImport.update({
@@ -75,9 +87,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cheatsheet': typeof CheatsheetRoute
+  '/faq': typeof FaqRoute
   '/flowchart': typeof FlowchartRoute
   '/lectures': typeof LecturesRoute
   '/playground': typeof PlaygroundRoute
+  '/practice': typeof PracticeRoute
   '/syllabus': typeof SyllabusRoute
   '/lecture/$id': typeof LectureIdRoute
   '/verify/$id': typeof VerifyIdRoute
@@ -87,9 +101,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cheatsheet': typeof CheatsheetRoute
+  '/faq': typeof FaqRoute
   '/flowchart': typeof FlowchartRoute
   '/lectures': typeof LecturesRoute
   '/playground': typeof PlaygroundRoute
+  '/practice': typeof PracticeRoute
   '/syllabus': typeof SyllabusRoute
   '/lecture/$id': typeof LectureIdRoute
   '/verify/$id': typeof VerifyIdRoute
@@ -100,9 +116,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cheatsheet': typeof CheatsheetRoute
+  '/faq': typeof FaqRoute
   '/flowchart': typeof FlowchartRoute
   '/lectures': typeof LecturesRoute
   '/playground': typeof PlaygroundRoute
+  '/practice': typeof PracticeRoute
   '/syllabus': typeof SyllabusRoute
   '/lecture/$id': typeof LectureIdRoute
   '/verify/$id': typeof VerifyIdRoute
@@ -114,9 +132,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cheatsheet'
+    | '/faq'
     | '/flowchart'
     | '/lectures'
     | '/playground'
+    | '/practice'
     | '/syllabus'
     | '/lecture/$id'
     | '/verify/$id'
@@ -126,9 +146,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cheatsheet'
+    | '/faq'
     | '/flowchart'
     | '/lectures'
     | '/playground'
+    | '/practice'
     | '/syllabus'
     | '/lecture/$id'
     | '/verify/$id'
@@ -138,9 +160,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cheatsheet'
+    | '/faq'
     | '/flowchart'
     | '/lectures'
     | '/playground'
+    | '/practice'
     | '/syllabus'
     | '/lecture/$id'
     | '/verify/$id'
@@ -151,9 +175,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CheatsheetRoute: typeof CheatsheetRoute
+  FaqRoute: typeof FaqRoute
   FlowchartRoute: typeof FlowchartRoute
   LecturesRoute: typeof LecturesRoute
   PlaygroundRoute: typeof PlaygroundRoute
+  PracticeRoute: typeof PracticeRoute
   SyllabusRoute: typeof SyllabusRoute
   LectureIdRoute: typeof LectureIdRoute
   VerifyIdRoute: typeof VerifyIdRoute
@@ -167,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/syllabus'
       fullPath: '/syllabus'
       preLoaderRoute: typeof SyllabusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/practice': {
+      id: '/practice'
+      path: '/practice'
+      fullPath: '/practice'
+      preLoaderRoute: typeof PracticeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/playground': {
@@ -188,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/flowchart'
       fullPath: '/flowchart'
       preLoaderRoute: typeof FlowchartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cheatsheet': {
@@ -239,9 +279,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CheatsheetRoute: CheatsheetRoute,
+  FaqRoute: FaqRoute,
   FlowchartRoute: FlowchartRoute,
   LecturesRoute: LecturesRoute,
   PlaygroundRoute: PlaygroundRoute,
+  PracticeRoute: PracticeRoute,
   SyllabusRoute: SyllabusRoute,
   LectureIdRoute: LectureIdRoute,
   VerifyIdRoute: VerifyIdRoute,
