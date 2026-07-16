@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
-    <footer className="bg-surface-dark text-on-dark-soft mt-24">
+    <footer className="bg-surface-dark text-on-dark-soft">
       <div className="max-w-[1200px] mx-auto px-6 py-16 grid grid-cols-2 md:grid-cols-4 gap-8">
         <div className="col-span-2 md:col-span-1">
           <div className="flex items-center text-on-dark"><span className="spike" /><span className="font-serif text-lg">C++ Crashed</span></div>
