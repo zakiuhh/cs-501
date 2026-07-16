@@ -259,64 +259,6 @@ int main() {
           </div>
         </section>
 
-        {/* ZENITH C++ */}
-        <section className="py-10 bg-canvas border-b border-hairline">
-          <div className="max-w-[1180px] mx-auto px-6">
-            <Reveal variant="scale">
-              <a
-                href="https://zenith-cpp.vercel.app/"
-                target="_blank"
-                rel="noreferrer"
-                className="block bg-surface-card border border-hairline rounded-xl p-6 md:p-8 card-lift hover:border-primary/45 transition-colors group"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-                  <div>
-                    <span className="text-primary text-[11px] tracking-[0.15em] uppercase font-mono mb-1 block">
-                      Companion Tool
-                    </span>
-                    <h3 className="font-serif text-2xl text-ink group-hover:text-primary transition-colors">
-                      Zenith C++: Full Browser IDE ↗
-                    </h3>
-                    <p className="text-muted text-[13.5px] mt-1.5 max-w-xl leading-relaxed">
-                      Need a full multi-file development workspace? Zenith C++ offers a full browser IDE with advanced compilation, terminal diagnostics, and debugging.
-                    </p>
-                  </div>
-                  <div className="shrink-0">
-                    <span className="btn-secondary group-hover:bg-primary group-hover:text-on-primary group-hover:border-transparent transition-all duration-300 py-2.5 px-4 rounded-md font-medium text-[13px] inline-flex items-center gap-1">
-                      <span>Open Zenith IDE</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
-                </div>
-              </a>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="py-14 sm:py-20">
-          <div className="max-w-[1180px] mx-auto px-6">
-            <Reveal variant="scale">
-              <div className="bg-primary text-on-primary rounded-xl p-10 md:p-14 flex flex-col md:flex-row md:items-center md:justify-between gap-8 card-lift">
-                <div>
-                  <h2 className="font-serif text-3xl md:text-4xl leading-tight max-w-lg">Start coding today</h2>
-                  <p className="mt-2 text-[14px] opacity-90 max-w-md">
-                    No account required, no software setup. Jump straight into C++ interactive slides and visual flowcharts instantly.
-                  </p>
-                </div>
-                <div className="flex gap-3 flex-wrap">
-                  <Link to="/lectures" className="bg-canvas text-ink px-5 py-2.5 rounded-md font-medium text-[13.5px] hover:bg-surface-soft whitespace-nowrap transition-transform hover:-translate-y-0.5 cursor-pointer">
-                    Browse lectures
-                  </Link>
-                  <Link to="/playground" className="bg-surface-dark text-on-dark px-5 py-2.5 rounded-md font-medium text-[13.5px] hover:bg-surface-dark-elevated whitespace-nowrap transition-transform hover:-translate-y-0.5 cursor-pointer">
-                    Try playground
-                  </Link>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
         {/* AI Chatbot Section */}
         <section className="py-16 bg-surface-soft border-t border-b border-hairline">
           <div className="max-w-[1180px] mx-auto px-6">

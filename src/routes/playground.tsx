@@ -4,6 +4,7 @@ import { lectures } from "@/data/lectures";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { CodePlayground } from "@/components/CodePlayground";
+import { ArrowUpRight } from "lucide-react";
 
 export const Route = createFileRoute("/playground")({
   head: () => ({
@@ -29,7 +30,7 @@ function PlaygroundPage() {
         <p className="text-body mt-3 max-w-2xl">Pick a lecture - its code example loads into the simulated runtime. Click <em>Run</em> to see the output.</p>
 
         <div className="grid md:grid-cols-12 gap-6 mt-10">
-          <aside className="md:col-span-4">
+          <aside className="md:col-span-4 space-y-4">
             <ul className="space-y-1.5">
               {withPg.map((l) => {
                 const isActive = l.id === activeId;
@@ -48,6 +49,23 @@ function PlaygroundPage() {
                 );
               })}
             </ul>
+
+            <div className="bg-surface-card border border-hairline rounded-lg p-5">
+              <span className="text-primary text-[10px] tracking-[0.15em] uppercase font-mono block mb-1">Companion Tool</span>
+              <h3 className="font-serif text-[18px] text-ink font-medium">Zenith C++ IDE</h3>
+              <p className="text-muted text-[13px] mt-1.5 leading-relaxed">
+                Need a full multi-file development workspace? Zenith C++ offers a full browser IDE with advanced compilation, terminal diagnostics, and debugging.
+              </p>
+              <a 
+                href="https://zenith-cpp.vercel.app/" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="btn-primary mt-4 w-full justify-center py-2 text-[12.5px] inline-flex items-center gap-1 hover:-translate-y-0.5 transition-transform"
+              >
+                <span>Open Zenith IDE</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
           </aside>
 
           <div className="md:col-span-8 md:sticky md:top-[80px] self-start">
