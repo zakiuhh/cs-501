@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { RevealFooter } from "@/components/RevealFooter";
 import { FloatingIllustrations } from "@/components/FloatingIllustrations";
 import { Reveal } from "@/components/Reveal";
 import { Magnetic } from "@/components/Magnetic";
@@ -113,8 +114,9 @@ function Landing() {
   return (
     <div className="relative min-h-screen flex flex-col bg-canvas overflow-hidden">
       <FloatingIllustrations />
-      <div className="relative z-10 flex flex-col flex-1">
-        <Nav />
+      <RevealFooter footer={<Footer />}>
+        <div className="relative z-10 flex flex-col flex-1">
+          <Nav />
 
         {/* HERO */}
         <section className="relative overflow-hidden border-b border-hairline">
@@ -298,9 +300,8 @@ int main() {
         </section>
 
         <Testimonials />
-
-        <Footer />
       </div>
+    </RevealFooter>
     </div>
   );
 }

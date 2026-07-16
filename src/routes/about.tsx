@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
+import { RevealFooter } from "@/components/RevealFooter";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -15,9 +16,10 @@ export const Route = createFileRoute("/about")({
 
 function About() {
   return (
-    <div className="min-h-screen flex flex-col bg-canvas">
-      <Nav />
-      <section className="py-20">
+    <RevealFooter footer={<Footer />}>
+      <div className="min-h-screen flex flex-col bg-canvas">
+        <Nav />
+        <section className="py-20">
         <div className="max-w-[820px] mx-auto px-6">
           <Reveal variant="up" delay={0}>
             <p className="text-muted text-[12px] tracking-[0.15em] uppercase">About</p>
@@ -90,7 +92,7 @@ function About() {
           </Reveal>
         </div>
       </section>
-      <Footer />
-    </div>
+      </div>
+    </RevealFooter>
   );
 }
