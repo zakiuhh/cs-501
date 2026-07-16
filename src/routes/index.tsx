@@ -19,9 +19,7 @@ import {
   FileSpreadsheet, 
   Bookmark, 
   Award,
-  Play,
-  MessageCircle,
-  X
+  Play
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -261,69 +259,46 @@ int main() {
           </div>
         </section>
 
+        {/* AI Chatbot Section */}
+        <section className="py-16 bg-surface-soft border-t border-b border-hairline">
+          <div className="max-w-[1180px] mx-auto px-6">
+            <div className="grid md:grid-cols-12 gap-8 items-center">
+              <div className="md:col-span-5">
+                <span className="text-primary text-[11px] tracking-[0.15em] uppercase font-mono mb-2 block">
+                  AI Study Partner
+                </span>
+                <h2 className="font-serif text-3xl md:text-5xl text-ink leading-tight">
+                  Stuck? Chat with <em className="italic text-primary">our AI Assistant</em>.
+                </h2>
+                <p className="text-body text-[14px] sm:text-base leading-relaxed mt-4">
+                  Need help understanding a recursive call stack, debugging your loops, or designing a flowchart? Our AI chatbot is trained on the CS501 curriculum to guide you step-by-step.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-2 text-[12px] text-muted">
+                  <span className="bg-canvas border border-hairline px-3 py-1 rounded-pill">CS501 Syllabus Expert</span>
+                  <span className="bg-canvas border border-hairline px-3 py-1 rounded-pill">24/7 Coding Help</span>
+                </div>
+              </div>
+              <div className="md:col-span-7 flex justify-center">
+                <div className="w-full max-w-[480px] bg-canvas border border-hairline rounded-xl p-2 shadow-lg">
+                  <iframe 
+                    src='https://interfaces.zapier.com/embed/chatbot/cmrm9rfd3007fzqj9wlkplw6e' 
+                    height='550' 
+                    width='100%' 
+                    allow='clipboard-write *' 
+                    style={{ border: "none" }}
+                    className="w-full rounded-lg"
+                    title="Zapier AI Chatbot"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <Testimonials />
 
         <Footer />
-
-        {/* Floating Chatbot */}
-        <FloatingChatbot />
       </div>
-    </div>
-  );
-}
-
-function FloatingChatbot() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="fixed bottom-6 right-6 z-50 print:hidden flex flex-col items-end">
-      {/* Chatbot Window */}
-      {isOpen && (
-        <div className="bg-canvas border border-hairline rounded-xl shadow-2xl w-[320px] sm:w-[380px] md:w-[400px] h-[480px] sm:h-[550px] mb-4 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300 origin-bottom-right">
-          {/* Header */}
-          <div className="bg-surface-soft border-b border-hairline px-4 py-3 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-              <span className="font-serif text-[17px] text-ink font-medium">AI Study Assistant</span>
-            </div>
-            <button 
-              onClick={() => setIsOpen(false)}
-              className="text-muted hover:text-ink transition-colors cursor-pointer p-1 rounded-md hover:bg-surface-cream-strong border-none bg-transparent flex items-center justify-center"
-              aria-label="Close chat"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-          {/* Chatbot IFrame */}
-          <div className="flex-1 bg-surface-soft">
-            <iframe 
-              src='https://interfaces.zapier.com/embed/chatbot/cmrm9rfd3007fzqj9wlkplw6e' 
-              height='100%' 
-              width='100%' 
-              allow='clipboard-write *' 
-              style={{ border: "none" }}
-              title="Zapier AI Chatbot"
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Floating Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer border-none group relative"
-        title="Chat with AI Assistant"
-      >
-        {isOpen ? (
-          <X className="w-6 h-6 animate-in spin-in-90 duration-300" />
-        ) : (
-          <MessageCircle className="w-6 h-6 animate-in zoom-in-90 duration-300 group-hover:rotate-6 transition-transform" />
-        )}
-        {/* Subtle dot notifying chatbot is active */}
-        {!isOpen && (
-          <span className="absolute top-0 right-0 w-3 h-3 bg-accent-amber border-2 border-primary rounded-full animate-bounce" />
-        )}
-      </button>
     </div>
   );
 }

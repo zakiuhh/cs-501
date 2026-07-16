@@ -4,10 +4,12 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { MessageSquare, X } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -135,8 +137,65 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function FloatingChatbot() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end print:hidden">
+      {/* Chatbot Window */}
+      {isOpen && (
+        <div className="mb-4 w-[calc(100vw-32px)] sm:w-[400px] h-[500px] sm:h-[600px] bg-canvas border border-hairline rounded-xl shadow-2xl overflow-hidden flex flex-col animate-blur-in mr-2 sm:mr-0">
+          {/* Header */}
+          <div className="bg-surface-soft border-b border-hairline px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-serif text-[16px] text-ink font-medium">CS501 AI Assistant</span>
+            </div>
+            <button 
+              onClick={() => setIsOpen(false)}
+              className="text-muted hover:text-ink cursor-pointer transition-colors p-1 rounded-md hover:bg-surface-cream-strong border-none bg-transparent"
+              aria-label="Close chat"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          {/* Iframe */}
+          <div className="flex-1 bg-surface-soft/30">
+            <iframe 
+              src="https://interfaces.zapier.com/embed/chatbot/cmrm9rfd3007fzqj9wlkplw6e" 
+              height="100%" 
+              width="100%" 
+              allow="clipboard-write *" 
+              style={{ border: "none" }}
+              className="w-full h-full"
+              title="CS501 AI Chatbot"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Floating Action Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer outline-none border-none ${
+          isOpen 
+            ? "bg-surface-dark text-on-dark hover:bg-surface-dark-elevated" 
+            : "bg-primary text-on-primary hover:bg-primary-active"
+        }`}
+        title="Chat with AI Assistant"
+      >
+        {isOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />}
+      </button>
+    </div>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const routerState = useRouterState();
+  const pathname = routerState.location.pathname;
+
+  const isExcluded = pathname === "/" || pathname.startsWith("/faq") || pathname.startsWith("/practice");
 
   useEffect(() => {
     // Function to update the favicon based on whether dark theme is active
@@ -181,6 +240,7 @@ function RootComponent() {
         <Outlet />
       </PageTransition>
       <CommandPalette />
+      {!isExcluded && <FloatingChatbot />}
     </QueryClientProvider>
   );
 }
