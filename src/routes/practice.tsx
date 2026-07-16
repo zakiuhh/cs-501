@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { Reveal } from "@/components/Reveal";
 import { modules } from "@/data/modules";
 import { practiceProblems, type Difficulty } from "@/data/practice";
 import { getSolvedProblems, toggleSolved } from "@/lib/practiceProgress";
@@ -160,13 +161,14 @@ function PracticePage() {
                 <h2 className="font-serif text-2xl text-ink mb-1">{m.title}</h2>
                 <p className="text-muted text-[13px] mb-4">{m.description}</p>
                 <div className="space-y-4">
-                  {problems.map((p) => (
-                    <ProblemCard
-                      key={p.id}
-                      {...p}
-                      solved={solved.includes(p.id)}
-                      onToggleSolved={() => toggleSolved(p.id)}
-                    />
+                  {problems.map((p, i) => (
+                    <Reveal key={p.id} variant="up" delay={i * 50}>
+                      <ProblemCard
+                        {...p}
+                        solved={solved.includes(p.id)}
+                        onToggleSolved={() => toggleSolved(p.id)}
+                      />
+                    </Reveal>
                   ))}
                 </div>
               </div>

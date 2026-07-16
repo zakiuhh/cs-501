@@ -260,25 +260,27 @@ int main() {
         </section>
 
         {/* AI Chatbot Section */}
-        <section className="py-16 bg-surface-soft border-t border-b border-hairline">
+        <section className="py-16 bg-surface-soft border-t border-b border-hairline overflow-hidden">
           <div className="max-w-[1180px] mx-auto px-6">
             <div className="grid md:grid-cols-12 gap-8 items-center">
-              <div className="md:col-span-5">
-                <span className="text-primary text-[11px] tracking-[0.15em] uppercase font-mono mb-2 block">
-                  AI Study Partner
-                </span>
-                <h2 className="font-serif text-3xl md:text-5xl text-ink leading-tight">
-                  Stuck? Chat with <em className="italic text-primary">our AI Assistant</em>.
-                </h2>
-                <p className="text-body text-[14px] sm:text-base leading-relaxed mt-4">
-                  Need help understanding a recursive call stack, debugging your loops, or designing a flowchart? Our AI chatbot is trained on the CS501 curriculum to guide you step-by-step.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2 text-[12px] text-muted">
-                  <span className="bg-canvas border border-hairline px-3 py-1 rounded-pill">CS501 Syllabus Expert</span>
-                  <span className="bg-canvas border border-hairline px-3 py-1 rounded-pill">24/7 Coding Help</span>
+              <Reveal variant="left" className="md:col-span-5">
+                <div>
+                  <span className="text-primary text-[11px] tracking-[0.15em] uppercase font-mono mb-2 block">
+                    AI Study Partner
+                  </span>
+                  <h2 className="font-serif text-3xl md:text-5xl text-ink leading-tight">
+                    Stuck? Chat with <em className="italic text-primary">our AI Assistant</em>.
+                  </h2>
+                  <p className="text-body text-[14px] sm:text-base leading-relaxed mt-4">
+                    Need help understanding a recursive call stack, debugging your loops, or designing a flowchart? Our AI chatbot is trained on the CS501 curriculum to guide you step-by-step.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-2 text-[12px] text-muted">
+                    <span className="bg-canvas border border-hairline px-3 py-1 rounded-pill">CS501 Syllabus Expert</span>
+                    <span className="bg-canvas border border-hairline px-3 py-1 rounded-pill">24/7 Coding Help</span>
+                  </div>
                 </div>
-              </div>
-              <div className="md:col-span-7 flex justify-center">
+              </Reveal>
+              <Reveal variant="right" delay={150} className="md:col-span-7 flex justify-center w-full">
                 <div className="w-full max-w-[480px] bg-canvas border border-hairline rounded-xl p-2 shadow-lg">
                   <iframe 
                     src='https://interfaces.zapier.com/embed/chatbot/cmrm9rfd3007fzqj9wlkplw6e' 
@@ -290,7 +292,7 @@ int main() {
                     title="Zapier AI Chatbot"
                   />
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </section>
