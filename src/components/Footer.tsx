@@ -1,11 +1,41 @@
 import { Link } from "@tanstack/react-router";
-import { Reveal } from "@/components/Reveal";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 70,
+      damping: 14,
+    },
+  },
+};
 
 export function Footer() {
   return (
-    <footer className="bg-surface-dark text-on-dark-soft">
-      <div className="max-w-[1200px] mx-auto px-6 py-16 grid grid-cols-2 md:grid-cols-4 gap-8">
-        <Reveal variant="up" delay={0} className="col-span-2 md:col-span-1">
+    <footer className="bg-surface-dark text-on-dark-soft overflow-hidden">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+        className="max-w-[1200px] mx-auto px-6 py-16 grid grid-cols-2 md:grid-cols-4 gap-8"
+      >
+        <motion.div variants={itemVariants} className="col-span-2 md:col-span-1">
           <div>
             <div className="flex items-center text-on-dark">
               <span className="spike" />
@@ -15,9 +45,9 @@ export function Footer() {
               An interactive learning platform for CS501 - Programming Fundamentals in C++.
             </p>
           </div>
-        </Reveal>
+        </motion.div>
 
-        <Reveal variant="up" delay={100}>
+        <motion.div variants={itemVariants}>
           <div>
             <h4 className="text-on-dark text-[13px] font-medium mb-3 font-sans">Course</h4>
             <ul className="space-y-2 text-[13px]">
@@ -29,9 +59,9 @@ export function Footer() {
               <li><Link to="/about" className="hover:text-primary transition-colors">About</Link></li>
             </ul>
           </div>
-        </Reveal>
+        </motion.div>
 
-        <Reveal variant="up" delay={200}>
+        <motion.div variants={itemVariants}>
           <div>
             <h4 className="text-on-dark text-[13px] font-medium mb-3 font-sans">Resources</h4>
             <ul className="space-y-2 text-[13px]">
@@ -52,9 +82,9 @@ export function Footer() {
               </li>
             </ul>
           </div>
-        </Reveal>
+        </motion.div>
 
-        <Reveal variant="up" delay={300}>
+        <motion.div variants={itemVariants}>
           <div>
             <h4 className="text-on-dark text-[13px] font-medium mb-3 font-sans">Team DevZee</h4>
             <ul className="space-y-2 text-[13px]">
@@ -64,14 +94,20 @@ export function Footer() {
               <li className="text-on-dark font-medium">Anosha Shakeel <span className="text-[10px] text-primary/85 font-mono ml-1">VIBE</span></li>
             </ul>
           </div>
-        </Reveal>
-      </div>
+        </motion.div>
+      </motion.div>
       
       <div className="border-t border-[#2a2825]">
-        <Reveal variant="up" delay={400} className="max-w-[1200px] mx-auto px-6 py-5 text-[12px] flex justify-between">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="max-w-[1200px] mx-auto px-6 py-5 text-[12px] flex justify-between"
+        >
           <span>© 2026 CS501 · C++ Crashed</span>
           <span>Styling Inspired by Claude</span>
-        </Reveal>
+        </motion.div>
       </div>
     </footer>
   );
