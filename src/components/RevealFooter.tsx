@@ -10,7 +10,6 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
-  const [footerHeight, setFooterHeight] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
@@ -23,23 +22,6 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
-  // Dynamically measure the height of the footer using ResizeObserver
-  useEffect(() => {
-    if (isMobile) return;
-    const footerElement = footerRef.current;
-    if (!footerElement) return;
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        // Update spacer height to match the footer height exactly
-        setFooterHeight(entry.target.clientHeight);
-      }
-    });
-
-    resizeObserver.observe(footerElement);
-    return () => resizeObserver.disconnect();
-  }, [isMobile]);
 
   // Set up scroll progress detection scoped to the bottom spacer element area.
   // "start end": starts when top of spacerRef enters viewport bottom
@@ -118,8 +100,10 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
         {children}
       </motion.div>
 
-      {/* Spacer to push document flow so that fixed footer below is fully revealed */}
-      <div ref={spacerRef} style={{ height: footerHeight }} className="w-full pointer-events-none" />
+      {/* Spacer containing a transparent layout-copy of the footer to establish height immediately on mount */}
+      <div ref={spacerRef} className="w-full opacity-0 pointer-events-none select-none relative z-0">
+        {footer}
+      </div>
 
       {/* Fixed background footer revealed under the main content */}
       <motion.div
