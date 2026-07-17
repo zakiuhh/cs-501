@@ -3,16 +3,16 @@ import { Markdown } from "./Markdown";
 
 export function SlideView({ slide, index, total }: { slide: Slide; index: number; total: number }) {
   return (
-    <article key={index} className="bg-canvas border border-hairline rounded-xl p-8 md:p-12 animate-slide-in-right">
+    <article key={index} className="bg-canvas border border-hairline rounded-xl p-5 sm:p-8 md:p-12 animate-slide-in-right">
 
       <div className="flex items-center gap-3 text-muted text-[12px] font-mono mb-4">
         <span>Slide {index + 1} / {total}</span>
         <span className="h-px flex-1 bg-hairline" />
       </div>
-      <h2 className="font-serif text-3xl md:text-[40px] leading-tight text-ink mb-6">{slide.title}</h2>
+      <h2 className="font-serif text-2xl sm:text-3xl md:text-[40px] leading-tight text-ink mb-5 sm:mb-6">{slide.title}</h2>
       {slide.content && <Markdown>{slide.content}</Markdown>}
       {slide.code && (
-        <pre className="bg-surface-dark text-on-dark p-5 rounded-lg overflow-x-auto my-5 text-[13.5px] leading-relaxed font-mono">
+        <pre className="bg-surface-dark text-on-dark p-4 sm:p-5 rounded-lg overflow-x-auto my-4 sm:my-5 text-[12px] sm:text-[13.5px] leading-relaxed font-mono custom-scrollbar">
           <code>{slide.code}</code>
         </pre>
       )}
