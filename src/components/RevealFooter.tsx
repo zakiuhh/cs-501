@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, type ReactNode } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion, useSpring } from "framer-motion";
 
 interface RevealFooterProps {
   children: ReactNode;
@@ -31,23 +31,31 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
     offset: ["start end", "end end"],
   });
 
+  // Smooth the scroll progress so it doesn't instantly snap with the scroll position,
+  // creating a gentler, more premium inertia-reveal transition.
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 70, // lower stiffness for smoother, slower response
+    damping: 20,   // damping factor to settle smoothly without bouncing
+    restDelta: 0.001
+  });
+
   // Main page content scale: 1 -> 0.92
   const scale = useTransform(
-    scrollYProgress,
+    smoothProgress,
     [0, 1], // Animates over the entire entry of the spacer
     [1, shouldReduceMotion ? 1 : 0.92]
   );
 
   // Main page content y-translate to lift it off the footer
   const contentY = useTransform(
-    scrollYProgress,
+    smoothProgress,
     [0, 1],
     [0, shouldReduceMotion ? 0 : -35]
   );
 
   // Dynamic border radius for a "curling up" visual lift effect
   const borderRadius = useTransform(
-    scrollYProgress,
+    smoothProgress,
     [0, 1],
     ["0px 0px 12px 12px", shouldReduceMotion ? "0px 0px 12px 12px" : "0px 0px 48px 48px"]
   );
