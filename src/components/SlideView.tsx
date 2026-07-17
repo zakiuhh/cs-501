@@ -3,7 +3,7 @@ import { Markdown } from "./Markdown";
 
 export function SlideView({ slide, index, total }: { slide: Slide; index: number; total: number }) {
   return (
-    <article key={index} className="bg-canvas border border-hairline rounded-xl p-5 sm:p-8 md:p-12 animate-slide-in-right">
+    <article key={index} className="bg-canvas border border-hairline rounded-xl p-8 md:p-12 animate-slide-in-right">
 
       <div className="flex items-center gap-3 text-muted text-[12px] font-mono mb-4">
         <span>Slide {index + 1} / {total}</span>
