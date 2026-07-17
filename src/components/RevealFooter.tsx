@@ -8,6 +8,7 @@ interface RevealFooterProps {
 
 export function RevealFooter({ children, footer }: RevealFooterProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
   const [footerHeight, setFooterHeight] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -40,46 +41,46 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
     return () => resizeObserver.disconnect();
   }, [isMobile]);
 
-  // Set up scroll progress detection scoped to the bottom container area
-  // "start end": starts when top of containerRef enters viewport bottom
-  // "end end": finishes when bottom of containerRef reaches viewport bottom
+  // Set up scroll progress detection scoped to the bottom spacer element area.
+  // "start end": starts when top of spacerRef enters viewport bottom
+  // "end end": finishes when bottom of spacerRef reaches viewport bottom (scrolled to end)
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: spacerRef,
     offset: ["start end", "end end"],
   });
 
   // Main page content scale: 1 -> 0.92
   const scale = useTransform(
     scrollYProgress,
-    [0.75, 1], // Animates in the final 25% of the scroll target area
+    [0, 1], // Animates over the entire entry of the spacer
     [1, shouldReduceMotion ? 1 : 0.92]
   );
 
   // Main page content y-translate to lift it off the footer
   const contentY = useTransform(
     scrollYProgress,
-    [0.75, 1],
+    [0, 1],
     [0, shouldReduceMotion ? 0 : -35]
   );
 
   // Dynamic border radius for a "curling up" visual lift effect
   const borderRadius = useTransform(
     scrollYProgress,
-    [0.75, 1],
+    [0, 1],
     ["0px 0px 12px 12px", shouldReduceMotion ? "0px 0px 12px 12px" : "0px 0px 48px 48px"]
   );
 
   // Footer opacity animation: 0 -> 1
   const footerOpacity = useTransform(
     scrollYProgress,
-    [0.7, 0.98],
+    [0.1, 0.95],
     [0, 1]
   );
 
   // Footer slide animation: 40px -> 0px
   const footerY = useTransform(
     scrollYProgress,
-    [0.7, 0.98],
+    [0.1, 0.95],
     [shouldReduceMotion ? 0 : 40, 0]
   );
 
@@ -104,7 +105,7 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
   }
 
   return (
-    <div ref={containerRef} className="relative w-full bg-surface-dark overflow-hidden">
+    <div ref={containerRef} className="relative w-full bg-surface-dark overflow-hidden isolate z-0">
       {/* Main page content container - lifts and curls up as footer reveals */}
       <motion.div
         style={{
@@ -112,13 +113,13 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
           y: contentY,
           borderRadius,
         }}
-        className="relative z-10 bg-canvas overflow-hidden shadow-2xl origin-bottom"
+        className="relative z-20 bg-canvas overflow-hidden shadow-2xl origin-bottom"
       >
         {children}
       </motion.div>
 
       {/* Spacer to push document flow so that fixed footer below is fully revealed */}
-      <div style={{ height: footerHeight }} className="w-full pointer-events-none" />
+      <div ref={spacerRef} style={{ height: footerHeight }} className="w-full pointer-events-none" />
 
       {/* Fixed background footer revealed under the main content */}
       <motion.div
@@ -127,7 +128,7 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
           opacity: footerOpacity,
           y: footerY,
         }}
-        className="fixed bottom-0 left-0 w-full z-0 pointer-events-auto"
+        className="fixed bottom-0 left-0 w-full z-10 pointer-events-auto"
       >
         {footer}
       </motion.div>
