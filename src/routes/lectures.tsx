@@ -94,7 +94,7 @@ function LecturesPage() {
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-hairline pb-4">
             <h2 className="font-serif text-3xl text-ink">Course Curriculum</h2>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => setFilter("all")}
                 className={`px-4 py-2 text-[13px] font-medium rounded-lg transition-all cursor-pointer ${

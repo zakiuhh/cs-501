@@ -94,13 +94,13 @@ function LecturePage() {
 
       {/* Lecture header */}
       <section className="border-b border-hairline">
-        <div className="max-w-[1100px] mx-auto px-4 py-8 sm:px-6 sm:py-12">
+        <div className="max-w-[1100px] mx-auto px-6 py-12">
           <Link to="/" className="text-muted text-[13px] hover:text-ink">← All lectures</Link>
           <div className="mt-4 flex items-start justify-between gap-6 flex-wrap">
             <div className="flex-1 min-w-0">
               <p className="text-primary text-[12px] tracking-[0.15em] uppercase font-mono">Lecture {lecture.number} · {lecture.duration}</p>
-              <h1 className="font-serif text-3xl sm:text-4xl md:text-[52px] leading-tight text-ink mt-3">{lecture.title}</h1>
-              <p className="text-body text-[15px] sm:text-lg mt-4 max-w-3xl leading-relaxed">{lecture.summary}</p>
+              <h1 className="font-serif text-4xl md:text-[52px] leading-tight text-ink mt-3">{lecture.title}</h1>
+              <p className="text-body text-lg mt-4 max-w-3xl leading-relaxed">{lecture.summary}</p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {lecture.topics.map((t: string) => (
                   <span key={t} className="text-[12px] px-3 py-1 rounded-pill bg-surface-card text-ink">{t}</span>
@@ -117,9 +117,9 @@ function LecturePage() {
       </section>
 
       {/* Tabs */}
-      <div className="sticky top-[52px] z-30 bg-canvas/95 backdrop-blur border-b border-hairline">
-        <div className="max-w-[1100px] mx-auto px-4 sm:px-6">
-          <div className="flex gap-1 py-2 overflow-x-auto scrollbar-none">
+      <div className="sticky top-16 z-30 bg-canvas/95 backdrop-blur border-b border-hairline">
+        <div className="max-w-[1100px] mx-auto px-6">
+          <div className="flex gap-1 py-2">
             {([
               ["slides", `Slides · ${lecture.slides.length}`],
               ["playground", lecture.playground ? "Playground" : ""],
@@ -128,7 +128,7 @@ function LecturePage() {
               <button
                 key={k}
                 onClick={() => setTab(k)}
-                className={`px-4 py-2 rounded-md text-[14px] font-medium transition-colors whitespace-nowrap ${tab === k ? "bg-surface-card text-ink" : "text-muted hover:text-ink"
+                className={`px-4 py-2 rounded-md text-[14px] font-medium transition-colors ${tab === k ? "bg-surface-card text-ink" : "text-muted hover:text-ink"
                   }`}
               >{label}</button>
             ))}
@@ -137,42 +137,62 @@ function LecturePage() {
       </div>
 
       {/* Content */}
-      <main className="flex-1 py-6 sm:py-10">
-        <div className="max-w-[1100px] mx-auto px-4 sm:px-6">
+      <main className="flex-1 py-10">
+        <div className="max-w-[1100px] mx-auto px-6">
           {tab === "slides" && (
             <>
               <div ref={slideRef} className={isFullscreen ? "bg-canvas p-12 h-full flex flex-col justify-center" : ""}>
                 <SlideView slide={lecture.slides[slideIdx]} index={slideIdx} total={lecture.slides.length} />
               </div>
-              <div className="mt-6 flex items-center justify-between gap-2 sm:gap-4">
-                <button onClick={goPrev} disabled={slideIdx === 0} className="btn-secondary disabled:opacity-40 disabled:cursor-not-allowed px-3 sm:px-5 min-w-[80px] sm:min-w-[100px] text-xs sm:text-sm">← Prev</button>
-                
-                {/* Dots on tablet/desktop */}
-                <div className="hidden sm:flex flex-1 mx-4 items-center gap-1.5 justify-center">
-                  {lecture.slides.map((_s: unknown, i: number) => (
-                    <button
-                      key={i}
-                      onClick={() => setSlideIdx(i)}
-                      aria-label={`Go to slide ${i + 1}`}
-                      className={`h-1.5 rounded-full transition-all ${i === slideIdx ? "w-8 bg-primary" : "w-1.5 bg-hairline hover:bg-muted-soft"}`}
-                    />
-                  ))}
+              <div className="mt-6 flex items-center justify-between gap-4">
+                <button 
+                  onClick={goPrev} 
+                  disabled={slideIdx === 0} 
+                  className="btn-secondary disabled:opacity-40 disabled:cursor-not-allowed px-3 sm:px-4 py-2"
+                >
+                  <span className="hidden sm:inline">← Previous</span>
+                  <span className="inline sm:hidden">←</span>
+                </button>
+                <div className="flex-1 mx-2 sm:mx-4 flex items-center gap-1.5 justify-center overflow-hidden">
+                  <div className="hidden md:flex items-center gap-1.5">
+                    {lecture.slides.map((_s: unknown, i: number) => (
+                      <button
+                        key={i}
+                        onClick={() => setSlideIdx(i)}
+                        aria-label={`Go to slide ${i + 1}`}
+                        className={`h-1.5 rounded-full transition-all ${i === slideIdx ? "w-8 bg-primary" : "w-1.5 bg-hairline hover:bg-muted-soft"}`}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex md:hidden text-[13px] font-mono text-muted">
+                    Slide {slideIdx + 1} of {lecture.slides.length}
+                  </div>
                 </div>
-
-                {/* Text indicator on mobile */}
-                <div className="flex-1 sm:hidden text-center font-mono text-[12px] text-muted">
-                  {slideIdx + 1} / {lecture.slides.length}
-                </div>
-
                 {slideIdx < lecture.slides.length - 1 ? (
-                  <button onClick={goNext} className="btn-primary px-3 sm:px-5 min-w-[80px] sm:min-w-[100px] text-xs sm:text-sm">Next →</button>
+                  <button onClick={goNext} className="btn-primary px-3 sm:px-4 py-2">
+                    <span className="hidden sm:inline">Next →</span>
+                    <span className="inline sm:hidden">→</span>
+                  </button>
                 ) : (
-                  <button onClick={() => setTab(lecture.playground ? "playground" : "quiz")} className="btn-primary px-3 sm:px-5 min-w-[80px] sm:min-w-[100px] text-xs sm:text-sm">
-                    {lecture.playground ? "Code →" : "Quiz →"}
+                  <button 
+                    onClick={() => setTab(lecture.playground ? "playground" : "quiz")} 
+                    className="btn-primary px-3 sm:px-4 py-2 text-[13px] sm:text-[14px]"
+                  >
+                    {lecture.playground ? (
+                      <>
+                        <span className="hidden sm:inline">To playground →</span>
+                        <span className="inline sm:hidden">Playground →</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="hidden sm:inline">Take the quiz →</span>
+                        <span className="inline sm:hidden">Quiz →</span>
+                      </>
+                    )}
                   </button>
                 )}
               </div>
-              <p className="mt-4 text-center text-muted text-[12px] font-mono hidden sm:block">
+              <p className="mt-4 text-center text-muted text-[12px] font-mono">
                 ← / → navigate · F fullscreen · Esc exit · ⌘K search
               </p>
             </>
@@ -213,19 +233,19 @@ function LecturePage() {
 
       {/* Prev / next nav band */}
       <section className="border-t border-hairline mt-12">
-        <div className="max-w-[1100px] mx-auto px-6 py-10 grid md:grid-cols-2 gap-4">
-          {prev ? (
-            <Link to="/lecture/$id" params={{ id: prev.id }} className="bg-surface-card rounded-lg p-6 hover:bg-surface-cream-strong">
+        <div className="max-w-[1100px] mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {prev && (
+            <Link to="/lecture/$id" params={{ id: prev.id }} className="bg-surface-card rounded-lg p-5 sm:p-6 hover:bg-surface-cream-strong">
               <p className="text-muted text-[12px] font-mono">← Previous · Lecture {prev.number}</p>
               <p className="font-serif text-xl text-ink mt-2">{prev.title}</p>
             </Link>
-          ) : <div />}
-          {next ? (
-            <Link to="/lecture/$id" params={{ id: next.id }} className="bg-surface-card rounded-lg p-6 hover:bg-surface-cream-strong md:text-right">
+          )}
+          {next && (
+            <Link to="/lecture/$id" params={{ id: next.id }} className="bg-surface-card rounded-lg p-5 sm:p-6 hover:bg-surface-cream-strong md:text-right">
               <p className="text-muted text-[12px] font-mono">Next · Lecture {next.number} →</p>
               <p className="font-serif text-xl text-ink mt-2">{next.title}</p>
             </Link>
-          ) : <div />}
+          )}
         </div>
       </section>
 

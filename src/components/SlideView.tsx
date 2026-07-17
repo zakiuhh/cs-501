@@ -9,10 +9,10 @@ export function SlideView({ slide, index, total }: { slide: Slide; index: number
         <span>Slide {index + 1} / {total}</span>
         <span className="h-px flex-1 bg-hairline" />
       </div>
-      <h2 className="font-serif text-2xl sm:text-3xl md:text-[40px] leading-tight text-ink mb-5 sm:mb-6">{slide.title}</h2>
+      <h2 className="font-serif text-3xl md:text-[40px] leading-tight text-ink mb-6">{slide.title}</h2>
       {slide.content && <Markdown>{slide.content}</Markdown>}
       {slide.code && (
-        <pre className="bg-surface-dark text-on-dark p-4 sm:p-5 rounded-lg overflow-x-auto my-4 sm:my-5 text-[12px] sm:text-[13.5px] leading-relaxed font-mono custom-scrollbar">
+        <pre className="bg-surface-dark text-on-dark p-5 rounded-lg overflow-x-auto my-5 text-[13.5px] leading-relaxed font-mono">
           <code>{slide.code}</code>
         </pre>
       )}
