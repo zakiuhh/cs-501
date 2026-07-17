@@ -45,10 +45,13 @@ function VerifyPage() {
           .from("certificates")
           .select("*")
           .eq("id", cleanId)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error("Supabase query error:", error);
+          setError("Failed to query the certificate database.");
+        } else if (!data) {
+          console.warn("No certificate found with ID:", cleanId);
           setError("This verification ID does not exist or is invalid.");
         } else {
           console.log("Successfully verified certificate:", data);
