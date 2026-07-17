@@ -106,16 +106,12 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
       </div>
 
       {/* Fixed background footer revealed under the main content */}
-      <motion.div
+      <div
         ref={footerRef}
-        style={{
-          opacity: footerOpacity,
-          y: footerY,
-        }}
         className="fixed bottom-0 left-0 w-full z-10 pointer-events-auto"
       >
         {footer}
-      </motion.div>
+      </div>
     </div>
   );
 }
