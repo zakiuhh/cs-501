@@ -80,6 +80,9 @@ function About() {
                 <div>
                   <h3 className="font-serif text-xl text-ink font-medium">Anosha Shakeel</h3>
                   <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">VIBE CODER</p>
+                  <div className="mt-4 flex gap-3 text-[13px]">
+                    <a href="https://www.linkedin.com/in/anosha-shakeel-044300416/" target="_blank" rel="noreferrer" className="text-link hover:text-primary transition-colors">LinkedIn ↗</a>
+                  </div>
                 </div>
               </Reveal>
             </div>
