@@ -64,7 +64,7 @@ export function downloadCertificate(name: string) {
   }, "image/png");
 }
 
-export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, H: number, name: string) {
+export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, H: number, name: string, verificationId?: string) {
   // read live theme tokens so light/dark certificates look native
   const css = getComputedStyle(document.documentElement);
   const t = (v: string, fb: string) => (css.getPropertyValue(v).trim() || fb);
@@ -142,7 +142,7 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
   ctx.fillText("C++ CRASHED · CS501 · CERTIFICATE OF COMPLETION", 104, 130);
 
   ctx.textAlign = "right";
-  ctx.fillText(`VERIFY: ${getVerificationId(name)}`, W - 104, 130);
+  ctx.fillText(`VERIFY: ${verificationId || getVerificationId(name)}`, W - 104, 130);
 
   // 4-point spike mark, top-center
   drawSpike(ctx, W / 2, 230, 22, primary);

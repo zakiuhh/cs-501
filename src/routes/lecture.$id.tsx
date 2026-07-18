@@ -144,29 +144,39 @@ function LecturePage() {
               <div ref={slideRef} className={isFullscreen ? "bg-canvas p-12 h-full flex flex-col justify-center" : ""}>
                 <SlideView slide={lecture.slides[slideIdx]} index={slideIdx} total={lecture.slides.length} />
               </div>
-              <div className="mt-6 flex items-center justify-between gap-4">
-                <button onClick={goPrev} disabled={slideIdx === 0} className="btn-secondary disabled:opacity-40 disabled:cursor-not-allowed">← Previous</button>
-                <div className="flex-1 mx-4 flex items-center gap-1.5 justify-center">
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+                <button onClick={goPrev} disabled={slideIdx === 0} className="btn-secondary disabled:opacity-40 disabled:cursor-not-allowed px-3 py-2 text-sm sm:text-base">
+                  ← Previous
+                </button>
+                <div className="flex-1 min-w-[120px] mx-2 sm:mx-4 flex flex-wrap items-center gap-1.5 justify-center">
                   {lecture.slides.map((_s: unknown, i: number) => (
                     <button
                       key={i}
                       onClick={() => setSlideIdx(i)}
                       aria-label={`Go to slide ${i + 1}`}
-                      className={`h-1.5 rounded-full transition-all ${i === slideIdx ? "w-8 bg-primary" : "w-1.5 bg-hairline hover:bg-muted-soft"}`}
+                      className={`h-1.5 rounded-full transition-all cursor-pointer ${i === slideIdx ? "w-6 sm:w-8 bg-primary" : "w-1.5 bg-hairline hover:bg-muted-soft"}`}
                     />
                   ))}
                 </div>
                 {slideIdx < lecture.slides.length - 1 ? (
-                  <button onClick={goNext} className="btn-primary">Next →</button>
+                  <button onClick={goNext} className="btn-primary px-3 py-2 text-sm sm:text-base">
+                    Next →
+                  </button>
                 ) : (
-                  <button onClick={() => setTab(lecture.playground ? "playground" : "quiz")} className="btn-primary">
+                  <button onClick={() => setTab(lecture.playground ? "playground" : "quiz")} className="btn-primary px-3 py-2 text-sm sm:text-base">
                     {lecture.playground ? "To playground →" : "Take the quiz →"}
                   </button>
                 )}
               </div>
-              <p className="mt-4 text-center text-muted text-[12px] font-mono">
-                ← / → navigate · F fullscreen · Esc exit · ⌘K search
-              </p>
+              <div className="mt-6 text-center text-muted text-[11px] sm:text-[12px] font-mono flex flex-wrap justify-center gap-x-2.5 gap-y-1.5 px-4">
+                <span>← / → navigate</span>
+                <span className="text-hairline hidden sm:inline">•</span>
+                <span>F fullscreen</span>
+                <span className="text-hairline hidden sm:inline">•</span>
+                <span>Esc exit</span>
+                <span className="text-hairline hidden sm:inline">•</span>
+                <span>⌘K search</span>
+              </div>
             </>
           )}
 

@@ -76,7 +76,7 @@ function VerifyPage() {
 
     const render = () => {
       ctx.clearRect(0, 0, W, H);
-      drawCertificateCanvas(ctx, W, H, cert.name);
+      drawCertificateCanvas(ctx, W, H, cert.name, cert.id);
     };
 
     render();
