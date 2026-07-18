@@ -29,48 +29,124 @@ export const Route = createFileRoute("/lectures")({
   component: LecturesPage,
 });
 
-function CompilerIllustration() {
+function CodingDoodle() {
   return (
-    <div className="mt-8 bg-surface-soft/45 border border-hairline rounded-xl p-5 relative overflow-hidden select-none animate-blur-in-soft">
-      {/* Decorative Dots */}
-      <div className="absolute top-3.5 right-4 flex gap-1.5 opacity-60">
-        <span className="w-2 h-2 rounded-full bg-error" />
-        <span className="w-2 h-2 rounded-full bg-accent-amber" />
-        <span className="w-2 h-2 rounded-full bg-success" />
-      </div>
-
-      <div className="flex items-center gap-2 mb-2.5">
-        <span className="text-[11px] font-mono text-primary font-semibold uppercase tracking-wider">compiler_pipeline.sh</span>
-      </div>
-
-      <p className="text-[12px] text-muted leading-relaxed mb-4">
-        Your C++ code undergoes a multi-stage compilation to run natively in your browser sandbox:
-      </p>
-
-      {/* Pipeline Stages Diagram */}
-      <div className="grid grid-cols-5 gap-1 items-center text-center font-mono text-[10px] text-ink">
-        <div className="bg-canvas border border-hairline rounded p-2 flex flex-col items-center justify-center min-h-[52px] shadow-sm hover:border-primary/20 transition-colors">
-          <span className="font-semibold text-primary">.cpp</span>
-          <span className="text-[8px] text-muted mt-0.5">Source</span>
-        </div>
-        <div className="text-muted text-[12px] animate-pulse">➔</div>
-        <div className="bg-canvas border border-hairline rounded p-2 flex flex-col items-center justify-center min-h-[52px] shadow-sm hover:border-primary/20 transition-colors">
-          <span className="font-semibold text-primary">AST</span>
-          <span className="text-[8px] text-muted mt-0.5">Compiler</span>
-        </div>
-        <div className="text-muted text-[12px] animate-pulse">➔</div>
-        <div className="bg-canvas border border-hairline rounded p-2 flex flex-col items-center justify-center min-h-[52px] shadow-sm hover:border-primary/20 transition-colors">
-          <span className="font-semibold text-success">WASM</span>
-          <span className="text-[8px] text-muted mt-0.5">Binary</span>
-        </div>
-      </div>
-
-      {/* Fun Tip */}
-      <div className="mt-4 pt-3.5 border-t border-hairline/40 flex items-start gap-2.5">
-        <span className="text-[14px]">💡</span>
-        <p className="text-[11px] text-muted leading-relaxed">
-          <strong className="text-ink">Pro Tip:</strong> CS501 runs C++17 client-side by compiling code directly to WebAssembly inside your browser. No server round-trips, instant execution!
+    <div className="relative mt-8 bg-surface-soft/40 border border-hairline rounded-xl p-6 overflow-visible min-h-[160px] flex items-center justify-between gap-6 group/doodle select-none animate-blur-in-soft">
+      {/* Text Content */}
+      <div className="flex-1 max-w-[60%] z-10">
+        <span className="text-[11px] font-mono text-primary font-semibold uppercase tracking-wider block mb-1">
+          Coding Session
+        </span>
+        <h4 className="font-serif text-lg text-ink leading-snug">
+          "Talk is cheap. Show me the code."
+        </h4>
+        <p className="text-[12px] text-muted mt-2 leading-relaxed font-sans">
+          Practice is the only way to master C++. Expand a module card below to browse the curriculum timeline.
         </p>
+      </div>
+
+      {/* Doodle SVGs container popping out of the card */}
+      <div className="absolute right-4 -bottom-6 -top-6 w-36 sm:w-44 flex items-center justify-center overflow-visible pointer-events-none">
+        <svg 
+          viewBox="0 0 200 200" 
+          fill="none" 
+          className="w-full h-full text-ink/20 dark:text-ink/10 transition-transform duration-500 group-hover/doodle:scale-105 group-hover/doodle:rotate-2 overflow-visible"
+        >
+          {/* Sparkles / Stars (colored in primary) */}
+          <path 
+            d="M20,40 Q30,40 30,30 Q30,40 40,40 Q30,40 30,50 Q30,40 20,40 Z" 
+            fill="var(--primary)" 
+            className="opacity-70 animate-pulse"
+          />
+          <path 
+            d="M165,30 Q170,30 170,25 Q170,30 175,30 Q170,30 170,35 Q170,30 165,30 Z" 
+            fill="var(--primary)" 
+            className="opacity-60"
+          />
+          
+          {/* Laptop Doodle */}
+          <g className="text-ink" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {/* Screen */}
+            <rect x="50" y="80" width="90" height="60" rx="4" fill="var(--canvas)" />
+            {/* Screen Inner Line */}
+            <rect x="55" y="85" width="80" height="45" rx="1" fill="none" />
+            {/* Keyboard base */}
+            <path d="M40,140 L150,140 L160,152 L30,152 Z" fill="var(--surface-cream)" />
+            {/* Trackpad */}
+            <rect x="85" y="145" width="20" height="5" rx="1" fill="none" />
+            {/* Binary elements in the screen */}
+            <path d="M65,95 L75,95 M65,103 L85,103 M65,111 L70,111" strokeWidth="1.5" />
+            <path d="M110,95 L125,95 M105,103 L125,103" strokeWidth="1.5" stroke="var(--primary)" />
+          </g>
+
+          {/* Coffee Mug Doodle */}
+          <g className="text-ink" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {/* Cup Body */}
+            <path d="M150,130 L170,130 L168,148 Q167,154 159,154 L157,154 Q149,154 148,148 Z" fill="var(--canvas)" />
+            {/* Handle */}
+            <path d="M170,135 Q178,135 178,142 Q178,147 169,148" fill="none" />
+            {/* Steam lines */}
+            <path d="M154,124 Q156,120 154,116" fill="none" strokeWidth="1.5" className="animate-pulse" />
+            <path d="M160,124 Q162,120 160,116" fill="none" strokeWidth="1.5" className="animate-pulse" />
+            <path d="M166,124 Q168,120 166,116" fill="none" strokeWidth="1.5" className="animate-pulse" />
+          </g>
+
+          {/* Code tags & brackets floating around */}
+          {/* Braces { } */}
+          <text 
+            x="20" 
+            y="110" 
+            fill="currentColor" 
+            className="font-serif text-3xl font-light opacity-30 select-none"
+            transform="rotate(-15, 20, 110)"
+          >
+            &#123;
+          </text>
+          <text 
+            x="165" 
+            y="95" 
+            fill="currentColor" 
+            className="font-serif text-3xl font-light opacity-30 select-none"
+            transform="rotate(15, 165, 95)"
+          >
+            &#125;
+          </text>
+
+          {/* Tag </ > */}
+          <g stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-25">
+            <path d="M15,145 L5,150 L15,155" />
+            <path d="M22,142 L12,158" />
+            <path d="M25,145 L35,150 L25,155" />
+          </g>
+
+          {/* Gears */}
+          <g stroke="currentColor" strokeWidth="1.5" fill="none" className="opacity-20 animate-spin" style={{ transformOrigin: '110px 45px', animationDuration: '20s' }}>
+            <circle cx="110" cy="45" r="10" />
+            <path d="M110,31 L110,35 M110,55 L110,59 M96,45 L100,45 M120,45 L124,45" />
+            <path d="M100,35 L103,38 M120,55 L117,52 M100,55 L103,52 M120,35 L117,38" />
+          </g>
+          
+          {/* Hash tag */}
+          <text 
+            x="135" 
+            y="65" 
+            fill="var(--primary)" 
+            className="font-sans text-xl font-bold opacity-30 select-none"
+            transform="rotate(10, 135, 65)"
+          >
+            #
+          </text>
+
+          {/* Division symbol or operators */}
+          <text 
+            x="70" 
+            y="45" 
+            fill="currentColor" 
+            className="font-mono text-lg font-bold opacity-20 select-none"
+          >
+            + +
+          </text>
+        </svg>
       </div>
     </div>
   );
@@ -160,7 +236,7 @@ function LecturesPage() {
                     );
                   })}
                 </div>
-                <CompilerIllustration />
+                <CodingDoodle />
               </div>
 
               {/* Divider for larger screens */}
