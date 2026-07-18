@@ -29,6 +29,53 @@ export const Route = createFileRoute("/lectures")({
   component: LecturesPage,
 });
 
+function CompilerIllustration() {
+  return (
+    <div className="mt-8 bg-surface-soft/45 border border-hairline rounded-xl p-5 relative overflow-hidden select-none animate-blur-in-soft">
+      {/* Decorative Dots */}
+      <div className="absolute top-3.5 right-4 flex gap-1.5 opacity-60">
+        <span className="w-2 h-2 rounded-full bg-error" />
+        <span className="w-2 h-2 rounded-full bg-accent-amber" />
+        <span className="w-2 h-2 rounded-full bg-success" />
+      </div>
+
+      <div className="flex items-center gap-2 mb-2.5">
+        <span className="text-[11px] font-mono text-primary font-semibold uppercase tracking-wider">compiler_pipeline.sh</span>
+      </div>
+
+      <p className="text-[12px] text-muted leading-relaxed mb-4">
+        Your C++ code undergoes a multi-stage compilation to run natively in your browser sandbox:
+      </p>
+
+      {/* Pipeline Stages Diagram */}
+      <div className="grid grid-cols-5 gap-1 items-center text-center font-mono text-[10px] text-ink">
+        <div className="bg-canvas border border-hairline rounded p-2 flex flex-col items-center justify-center min-h-[52px] shadow-sm hover:border-primary/20 transition-colors">
+          <span className="font-semibold text-primary">.cpp</span>
+          <span className="text-[8px] text-muted mt-0.5">Source</span>
+        </div>
+        <div className="text-muted text-[12px] animate-pulse">➔</div>
+        <div className="bg-canvas border border-hairline rounded p-2 flex flex-col items-center justify-center min-h-[52px] shadow-sm hover:border-primary/20 transition-colors">
+          <span className="font-semibold text-primary">AST</span>
+          <span className="text-[8px] text-muted mt-0.5">Compiler</span>
+        </div>
+        <div className="text-muted text-[12px] animate-pulse">➔</div>
+        <div className="bg-canvas border border-hairline rounded p-2 flex flex-col items-center justify-center min-h-[52px] shadow-sm hover:border-primary/20 transition-colors">
+          <span className="font-semibold text-success">WASM</span>
+          <span className="text-[8px] text-muted mt-0.5">Binary</span>
+        </div>
+      </div>
+
+      {/* Fun Tip */}
+      <div className="mt-4 pt-3.5 border-t border-hairline/40 flex items-start gap-2.5">
+        <span className="text-[14px]">💡</span>
+        <p className="text-[11px] text-muted leading-relaxed">
+          <strong className="text-ink">Pro Tip:</strong> CS501 runs C++17 client-side by compiling code directly to WebAssembly inside your browser. No server round-trips, instant execution!
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function LecturesPage() {
   const [progress, setProgress] = useState({ 
     completed: [] as string[], 
@@ -113,6 +160,7 @@ function LecturesPage() {
                     );
                   })}
                 </div>
+                <CompilerIllustration />
               </div>
 
               {/* Divider for larger screens */}
@@ -256,7 +304,7 @@ function LecturesPage() {
                                 <div key={l.id} className="relative group/lecture animate-blur-in-soft" style={{ animationDelay: `${lIdx * 30}ms` }}>
                                   
                                   {/* Timeline Node Icon */}
-                                  <div className="absolute -left-[41px] sm:-left-[49px] top-1.5 flex items-center justify-center select-none">
+                                  <div className="absolute -left-[15px] sm:-left-[17px] top-[11px] flex items-center justify-center select-none">
                                     <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border bg-canvas flex items-center justify-center shadow-sm transition-all duration-300 group-hover/lecture:scale-110 z-10 ${
                                       done 
                                         ? "border-success bg-success/10 text-success" 
