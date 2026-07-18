@@ -156,14 +156,24 @@ You can verify my verified completion credential using the link below:
         </div>
       )}
 
-      {allDone && (
-        <div className="rounded-lg overflow-hidden border border-hairline shadow-md w-full max-w-2xl bg-canvas">
-          <p className="bg-surface-soft border-b border-hairline px-4 py-2 text-[11px] font-mono uppercase text-muted">
-            Live certificate preview
-          </p>
+      <div className="relative rounded-lg overflow-hidden border border-hairline shadow-md w-full max-w-2xl bg-canvas">
+        <p className="bg-surface-soft border-b border-hairline px-4 py-2 text-[11px] font-mono uppercase text-muted flex justify-between items-center font-sans">
+          <span>Live certificate preview</span>
+          {!allDone && <span className="text-[10px] text-primary font-mono font-medium">Locked ({pct}% completed)</span>}
+        </p>
+        <div className={!allDone ? "filter blur-[2.5px] opacity-65 pointer-events-none" : ""}>
           <CertificateLivePreview name={name} />
         </div>
-      )}
+        {!allDone && (
+          <div className="absolute inset-0 bg-surface-card/45 backdrop-blur-[1px] flex flex-col items-center justify-center p-6 text-center select-none">
+            <span className="w-10 h-10 rounded-full bg-surface-cream border border-hairline flex items-center justify-center text-lg shadow-sm mb-2">
+              🔒
+            </span>
+            <p className="text-ink font-serif text-[15px] font-medium">Progress Locked</p>
+            <p className="text-[12px] text-muted max-w-[220px] mt-0.5">Complete all 27 lectures to unlock and export your certificate.</p>
+          </div>
+        )}
+      </div>
 
       <div className="flex flex-col gap-4">
         <div className="w-full max-w-sm">
