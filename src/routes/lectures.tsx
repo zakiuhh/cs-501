@@ -36,7 +36,16 @@ function LecturesPage() {
     bookmarks: [] as string[]
   });
   const [filter, setFilter] = useState<"all" | "starred">("all");
-  const [selectedModuleId, setSelectedModuleId] = useState<string>("all");
+  const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({
+    "foundations": true
+  });
+
+  const toggleModule = (id: string) => {
+    setExpandedModules((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   useEffect(() => {
     const refresh = () => setProgress(getProgress());
@@ -162,83 +171,25 @@ function LecturesPage() {
                 <Star className={`w-4 h-4 ${filter === "starred" ? "fill-current" : ""}`} />
                 <span>Bookmarked ({progress.bookmarks?.length || 0})</span>
               </button>
-
-              <div className="h-6 w-[1px] bg-hairline mx-1 hidden sm:block" />
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="px-4 py-2 text-[13px] font-medium rounded-lg bg-surface-card text-body hover:bg-surface-cream-strong transition-all flex items-center gap-1.5 cursor-pointer border border-hairline min-h-[38px]">
-                    <span>{selectedModuleId === "all" ? "All Modules" : (modules.find(m => m.id === selectedModuleId)?.title || "Select Module")}</span>
-                    <ChevronDown className="w-3.5 h-3.5 opacity-80" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="bg-canvas border border-hairline rounded-lg p-1 shadow-lg min-w-[240px] z-50">
-                  <DropdownMenuItem
-                    onClick={() => setSelectedModuleId("all")}
-                    className="flex items-center justify-between px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none font-medium"
-                  >
-                    <span>All Modules (Full Timeline)</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-hairline" />
-                  {modules.map((m) => {
-                    const moduleLectures = m.lectureIds
-                      .map((id) => lectures.find((l) => l.id === id))
-                      .filter((l): l is NonNullable<typeof l> => !!l);
-                    return (
-                      <DropdownMenuSub key={m.id}>
-                        <DropdownMenuSubTrigger className="flex items-center justify-between px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none">
-                          <span className="truncate max-w-[180px]">{m.title}</span>
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuSubContent className="bg-canvas border border-hairline rounded-lg p-1 shadow-md min-w-[220px] z-50">
-                          <DropdownMenuItem
-                            onClick={() => setSelectedModuleId(m.id)}
-                            className="flex items-center justify-between px-3 py-2 text-[13px] text-primary hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none font-medium"
-                          >
-                            <span>Filter Timeline to Module</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator className="bg-hairline animate-none" />
-                          {moduleLectures.map((l) => (
-                            <DropdownMenuItem
-                              key={l.id}
-                              asChild
-                            >
-                              <Link
-                                to="/lecture/$id"
-                                params={{ id: l.id }}
-                                className="flex items-center justify-between px-3 py-2 text-[12px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none"
-                              >
-                                <span className="truncate max-w-[160px]">{l.title}</span>
-                                <span className="text-[10px] text-muted font-mono">{l.number}</span>
-                              </Link>
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuSubContent>
-                      </DropdownMenuSub>
-                    );
-                  })}
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
           </div>
 
           {(() => {
-            // Filter lectures initially by star status
-            let timelineLectures = lectures.filter((l) => {
-              if (filter === "starred") {
-                return progress.bookmarks?.includes(l.id);
-              }
-              return true;
-            });
+            // Group structure
+            const groups = modules.map((m) => {
+              const items = m.lectureIds
+                .map((id) => lectures.find((l) => l.id === id))
+                .filter((l): l is NonNullable<typeof l> => !!l)
+                .filter((l) => {
+                  if (filter === "starred") {
+                    return progress.bookmarks?.includes(l.id);
+                  }
+                  return true;
+                });
+              return { ...m, items };
+            }).filter(g => g.items.length > 0);
 
-            // Filter lectures by selected module
-            if (selectedModuleId !== "all") {
-              const activeMod = modules.find((m) => m.id === selectedModuleId);
-              if (activeMod) {
-                timelineLectures = timelineLectures.filter((l) => activeMod.lectureIds.includes(l.id));
-              }
-            }
-
-            if (timelineLectures.length === 0) {
+            if (groups.length === 0) {
               return (
                 <div className="text-center py-16 bg-surface-card border border-hairline rounded-xl max-w-md mx-auto p-6">
                   <Star className="w-10 h-10 text-muted mx-auto mb-3 opacity-40" />
@@ -253,87 +204,128 @@ function LecturesPage() {
             }
 
             return (
-              <div className="relative pl-8 sm:pl-12 border-l-2 border-hairline/60 ml-3 sm:ml-6 py-2 space-y-10">
-                {timelineLectures.map((l, index) => {
-                  const done = progress.completed.includes(l.id);
-                  const isStarred = progress.bookmarks?.includes(l.id);
-                  const parentModule = modules.find(m => m.lectureIds.includes(l.id));
+              <div className="space-y-6">
+                {groups.map((group, index) => {
+                  const isExpanded = !!expandedModules[group.id];
+                  const completedLecturesCount = group.items.filter(l => progress.completed.includes(l.id)).length;
+                  const totalLecturesCount = group.items.length;
+                  const isModuleDone = completedLecturesCount === totalLecturesCount;
 
                   return (
-                    <div key={l.id} className="relative group animate-blur-in-soft" style={{ animationDelay: `${index * 40}ms` }}>
-                      
-                      {/* Timeline Node Icon */}
-                      <div className="absolute -left-[45px] sm:-left-[61px] top-2 flex items-center justify-center select-none">
-                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 bg-canvas flex items-center justify-center shadow-sm transition-all duration-300 group-hover:scale-110 z-10 ${
-                          done 
-                            ? "border-success bg-success/10 text-success" 
-                            : "border-hairline text-muted hover:border-primary/50"
-                        }`}>
-                          {done ? (
-                            <CheckCircle2 className="w-4 h-4 sm:w-5 h-5 fill-current" />
-                          ) : (
-                            <span className="font-mono text-[11px] sm:text-[12px]">{l.number}</span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Timeline Card */}
-                      <Link
-                        to="/lecture/$id"
-                        params={{ id: l.id }}
-                        className="block bg-surface-card border border-hairline rounded-xl p-5 sm:p-6 shadow-sm hover:border-primary/30 hover:bg-surface-cream-strong transition-all duration-300 card-lift"
+                    <div 
+                      key={group.id} 
+                      className="bg-surface-card border border-hairline rounded-xl overflow-hidden shadow-sm transition-all duration-300 animate-blur-in-soft"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      {/* Header (Accordion Trigger) */}
+                      <button
+                        onClick={() => toggleModule(group.id)}
+                        className="w-full text-left p-6 flex items-center justify-between gap-6 hover:bg-surface-cream-strong transition-colors cursor-pointer select-none border-none outline-none bg-transparent"
                       >
-                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
-                          <div>
-                            {parentModule && (
-                              <span className="text-[10px] font-mono uppercase tracking-wider text-primary mb-1 block">
-                                {parentModule.title}
-                              </span>
-                            )}
-                            <h3 className="font-serif text-xl sm:text-2xl text-ink group-hover:text-primary transition-colors">
-                              {l.title}
-                            </h3>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <h3 className="font-serif text-2xl text-ink">{group.title}</h3>
+                            <span className={`text-[11px] font-mono px-2.5 py-0.5 rounded-full ${
+                              isModuleDone 
+                                ? "bg-success/10 text-success font-medium" 
+                                : "bg-surface-cream text-muted"
+                            }`}>
+                              {isModuleDone ? "✓ Module complete" : `${completedLecturesCount}/${totalLecturesCount} Completed`}
+                            </span>
                           </div>
+                          <p className="text-body text-[13px] sm:text-sm text-muted mt-2 max-w-2xl leading-relaxed">
+                            {group.description}
+                          </p>
+                        </div>
+                        <div className={`w-10 h-10 rounded-full bg-canvas border border-hairline flex items-center justify-center text-muted transition-transform duration-300 ${
+                          isExpanded ? "rotate-180 text-primary border-primary/30" : ""
+                        }`}>
+                          <ChevronDown className="w-5 h-5" />
+                        </div>
+                      </button>
 
-                          <div className="flex items-center gap-2 self-start shrink-0">
-                            {done && (
-                              <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-success/10 text-success font-medium">
-                                Completed
-                              </span>
-                            )}
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                toggleBookmark(l.id);
-                              }}
-                              className="p-1.5 rounded-md hover:bg-surface-soft text-muted hover:text-ink transition-colors cursor-pointer"
-                              title={isStarred ? "Remove Bookmark" : "Bookmark Lecture"}
-                            >
-                              <Star className={`w-4 h-4 ${isStarred ? "fill-current text-accent-amber" : ""}`} />
-                            </button>
-                            <span className="text-[12px] text-muted font-mono">{l.duration}</span>
+                      {/* Expandable Body */}
+                      {isExpanded && (
+                        <div className="border-t border-hairline bg-surface-soft/20 px-6 sm:px-10 py-8">
+                          <div className="relative pl-8 sm:pl-10 border-l-2 border-hairline/60 ml-2 py-2 space-y-8">
+                            {group.items.map((l, lIdx) => {
+                              const done = progress.completed.includes(l.id);
+                              const isStarred = progress.bookmarks?.includes(l.id);
+
+                              return (
+                                <div key={l.id} className="relative group/lecture animate-blur-in-soft" style={{ animationDelay: `${lIdx * 30}ms` }}>
+                                  
+                                  {/* Timeline Node Icon */}
+                                  <div className="absolute -left-[41px] sm:-left-[49px] top-1.5 flex items-center justify-center select-none">
+                                    <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border bg-canvas flex items-center justify-center shadow-sm transition-all duration-300 group-hover/lecture:scale-110 z-10 ${
+                                      done 
+                                        ? "border-success bg-success/10 text-success" 
+                                        : "border-hairline text-muted hover:border-primary/50"
+                                    }`}>
+                                      {done ? (
+                                        <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
+                                      ) : (
+                                        <span className="font-mono text-[10px] sm:text-[11px]">{l.number}</span>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Timeline Card */}
+                                  <Link
+                                    to="/lecture/$id"
+                                    params={{ id: l.id }}
+                                    className="block bg-surface-card border border-hairline rounded-xl p-4 sm:p-5 shadow-sm hover:border-primary/30 hover:bg-surface-cream-strong transition-all duration-300 card-lift"
+                                  >
+                                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-2">
+                                      <h4 className="font-serif text-lg sm:text-xl text-ink group-hover/lecture:text-primary transition-colors font-medium">
+                                        {l.title}
+                                      </h4>
+
+                                      <div className="flex items-center gap-2 self-start shrink-0">
+                                        {done && (
+                                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-success/10 text-success font-medium">
+                                            Completed
+                                          </span>
+                                        )}
+                                        <button
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            toggleBookmark(l.id);
+                                          }}
+                                          className="p-1 rounded-md hover:bg-surface-soft text-muted hover:text-ink transition-colors cursor-pointer"
+                                          title={isStarred ? "Remove Bookmark" : "Bookmark Lecture"}
+                                        >
+                                          <Star className={`w-3.5 h-3.5 ${isStarred ? "fill-current text-accent-amber" : ""}`} />
+                                        </button>
+                                        <span className="text-[11px] text-muted font-mono">{l.duration}</span>
+                                      </div>
+                                    </div>
+
+                                    <p className="text-body text-[13px] leading-relaxed max-w-3xl">
+                                      {l.summary}
+                                    </p>
+
+                                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-hairline/40">
+                                      <div className="flex flex-wrap gap-1">
+                                        {l.topics.map((topic) => (
+                                          <span key={topic} className="text-[10px] px-2 py-0.5 rounded-pill bg-canvas text-muted border border-hairline">
+                                            {topic}
+                                          </span>
+                                        ))}
+                                      </div>
+                                      <span className="text-[12px] font-medium text-primary group-hover/lecture:translate-x-1 transition-transform inline-flex items-center gap-1">
+                                        Start Lecture →
+                                      </span>
+                                    </div>
+                                  </Link>
+
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
-
-                        <p className="text-body text-[13px] sm:text-[14px] leading-relaxed max-w-3xl">
-                          {l.summary}
-                        </p>
-
-                        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-hairline/40">
-                          <div className="flex flex-wrap gap-1.5">
-                            {l.topics.map((topic) => (
-                              <span key={topic} className="text-[10px] sm:text-[11px] px-2 py-0.5 rounded-pill bg-canvas text-muted border border-hairline">
-                                {topic}
-                              </span>
-                            ))}
-                          </div>
-                          <span className="text-[13px] font-medium text-primary group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                            Start Lecture →
-                          </span>
-                        </div>
-                      </Link>
-
+                      )}
                     </div>
                   );
                 })}
