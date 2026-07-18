@@ -8,6 +8,7 @@ import { getProgress, toggleBookmark } from "@/lib/progress";
 import { ProgressActions } from "@/components/ProgressActions";
 import { StreakBadge } from "@/components/StreakBadge";
 import { Star, ChevronDown, CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
@@ -159,15 +160,10 @@ function LecturesPage() {
     bookmarks: [] as string[]
   });
   const [filter, setFilter] = useState<"all" | "starred">("all");
-  const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({
-    "foundations": true
-  });
+  const [expandedModuleId, setExpandedModuleId] = useState<string | null>("foundations");
 
   const toggleModule = (id: string) => {
-    setExpandedModules((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+    setExpandedModuleId((prev) => (prev === id ? null : id));
   };
 
   useEffect(() => {
@@ -265,7 +261,7 @@ function LecturesPage() {
                 return (
                   <div className="space-y-6">
                     {groups.map((group, index) => {
-                      const isExpanded = !!expandedModules[group.id];
+                      const isExpanded = expandedModuleId === group.id;
                       const completedLecturesCount = group.items.filter(l => progress.completed.includes(l.id)).length;
                       const totalLecturesCount = group.items.length;
                       const isModuleDone = completedLecturesCount === totalLecturesCount;
@@ -304,87 +300,97 @@ function LecturesPage() {
                           </button>
 
                           {/* Expandable Body */}
-                          {isExpanded && (
-                            <div className="border-t border-hairline bg-surface-soft/20 px-6 sm:px-10 py-8">
-                              <div className="relative pl-8 sm:pl-10 border-l-2 border-hairline/60 ml-2 py-2 space-y-8">
-                                {group.items.map((l, lIdx) => {
-                                  const done = progress.completed.includes(l.id);
-                                  const isStarred = progress.bookmarks?.includes(l.id);
+                          <AnimatePresence initial={false}>
+                            {isExpanded && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                                className="overflow-hidden"
+                              >
+                                <div className="border-t border-hairline bg-surface-soft/20 px-6 sm:px-10 py-8">
+                                  <div className="relative pl-8 sm:pl-10 border-l-2 border-hairline/60 ml-2 py-2 space-y-8">
+                                    {group.items.map((l, lIdx) => {
+                                      const done = progress.completed.includes(l.id);
+                                      const isStarred = progress.bookmarks?.includes(l.id);
 
-                                  return (
-                                    <div key={l.id} className="relative group/lecture animate-blur-in-soft" style={{ animationDelay: `${lIdx * 30}ms` }}>
-                                      
-                                      {/* Timeline Node Icon */}
-                                      <div className="absolute -left-[15px] sm:-left-[17px] top-[11px] flex items-center justify-center select-none">
-                                        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border bg-canvas flex items-center justify-center shadow-sm transition-all duration-300 group-hover/lecture:scale-110 z-10 ${
-                                          done 
-                                            ? "border-success bg-success/10 text-success" 
-                                            : "border-hairline text-muted hover:border-primary/50"
-                                        }`}>
-                                          {done ? (
-                                            <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
-                                          ) : (
-                                            <span className="font-mono text-[10px] sm:text-[11px]">{l.number}</span>
-                                          )}
-                                        </div>
-                                      </div>
-
-                                      {/* Timeline Card */}
-                                      <Link
-                                        to="/lecture/$id"
-                                        params={{ id: l.id }}
-                                        className="block bg-surface-card border border-hairline rounded-xl p-4 sm:p-5 shadow-sm hover:border-primary/30 hover:bg-surface-cream-strong transition-all duration-300 card-lift"
-                                      >
-                                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-2">
-                                          <h4 className="font-serif text-lg sm:text-xl text-ink group-hover/lecture:text-primary transition-colors font-medium">
-                                            {l.title}
-                                          </h4>
-
-                                          <div className="flex items-center gap-2 self-start shrink-0">
-                                            {done && (
-                                              <span className="text-[10px] px-2 py-0.5 rounded-full bg-success/10 text-success font-medium">
-                                                Completed
-                                              </span>
-                                            )}
-                                            <button
-                                              onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                toggleBookmark(l.id);
-                                              }}
-                                              className="p-1 rounded-md hover:bg-surface-soft text-muted hover:text-ink transition-colors cursor-pointer"
-                                              title={isStarred ? "Remove Bookmark" : "Bookmark Lecture"}
-                                            >
-                                              <Star className={`w-3.5 h-3.5 ${isStarred ? "fill-current text-accent-amber" : ""}`} />
-                                            </button>
-                                            <span className="text-[11px] text-muted font-mono">{l.duration}</span>
+                                      return (
+                                        <div key={l.id} className="relative group/lecture animate-blur-in-soft" style={{ animationDelay: `${lIdx * 30}ms` }}>
+                                          
+                                          {/* Timeline Node Icon */}
+                                          <div className="absolute -left-[15px] sm:-left-[17px] top-[11px] flex items-center justify-center select-none">
+                                            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border bg-canvas flex items-center justify-center shadow-sm transition-all duration-300 group-hover/lecture:scale-110 z-10 ${
+                                              done 
+                                                ? "border-success bg-success/10 text-success" 
+                                                : "border-hairline text-muted hover:border-primary/50"
+                                            }`}>
+                                              {done ? (
+                                                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
+                                              ) : (
+                                                <span className="font-mono text-[10px] sm:text-[11px]">{l.number}</span>
+                                              )}
+                                            </div>
                                           </div>
-                                        </div>
 
-                                        <p className="text-body text-[13px] leading-relaxed max-w-3xl">
-                                          {l.summary}
-                                        </p>
+                                          {/* Timeline Card */}
+                                          <Link
+                                            to="/lecture/$id"
+                                            params={{ id: l.id }}
+                                            className="block bg-surface-card border border-hairline rounded-xl p-4 sm:p-5 shadow-sm hover:border-primary/30 hover:bg-surface-cream-strong transition-all duration-300 card-lift"
+                                          >
+                                            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-2">
+                                              <h4 className="font-serif text-lg sm:text-xl text-ink group-hover/lecture:text-primary transition-colors font-medium">
+                                                {l.title}
+                                              </h4>
 
-                                        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-hairline/40">
-                                          <div className="flex flex-wrap gap-1">
-                                            {l.topics.map((topic) => (
-                                              <span key={topic} className="text-[10px] px-2 py-0.5 rounded-pill bg-canvas text-muted border border-hairline">
-                                                {topic}
+                                              <div className="flex items-center gap-2 self-start shrink-0">
+                                                {done && (
+                                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-success/10 text-success font-medium">
+                                                    Completed
+                                                  </span>
+                                                )}
+                                                <button
+                                                  onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    toggleBookmark(l.id);
+                                                  }}
+                                                  className="p-1 rounded-md hover:bg-surface-soft text-muted hover:text-ink transition-colors cursor-pointer"
+                                                  title={isStarred ? "Remove Bookmark" : "Bookmark Lecture"}
+                                                >
+                                                  <Star className={`w-3.5 h-3.5 ${isStarred ? "fill-current text-accent-amber" : ""}`} />
+                                                </button>
+                                                <span className="text-[11px] text-muted font-mono">{l.duration}</span>
+                                              </div>
+                                            </div>
+
+                                            <p className="text-body text-[13px] leading-relaxed max-w-3xl">
+                                              {l.summary}
+                                            </p>
+
+                                            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-hairline/40">
+                                              <div className="flex flex-wrap gap-1">
+                                                {l.topics.map((topic) => (
+                                                  <span key={topic} className="text-[10px] px-2 py-0.5 rounded-pill bg-canvas text-muted border border-hairline">
+                                                    {topic}
+                                                  </span>
+                                                ))}
+                                              </div>
+                                              <span className="text-[12px] font-medium text-primary group-hover/lecture:translate-x-1 transition-transform inline-flex items-center gap-1">
+                                                Start Lecture →
                                               </span>
-                                            ))}
-                                          </div>
-                                          <span className="text-[12px] font-medium text-primary group-hover/lecture:translate-x-1 transition-transform inline-flex items-center gap-1">
-                                            Start Lecture →
-                                          </span>
-                                        </div>
-                                      </Link>
+                                            </div>
+                                          </Link>
 
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          )}
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </div>
                       );
                     })}
