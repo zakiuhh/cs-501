@@ -165,8 +165,8 @@ You can verify my verified completion credential using the link below:
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-        <div className="flex-1 max-w-sm w-full">
+      <div className="flex flex-col gap-4">
+        <div className="w-full max-w-sm">
           <label className="text-[12px] text-muted font-mono uppercase tracking-[0.12em] block mb-2">
             Name on certificate
           </label>
@@ -178,7 +178,7 @@ You can verify my verified completion credential using the link below:
             className="w-full bg-canvas border border-hairline rounded-md px-4 py-2.5 text-[14px] text-ink outline-none focus:border-primary transition-colors min-h-[44px]"
           />
         </div>
-        <div className="flex gap-2.5 items-center flex-wrap shrink-0">
+        <div className="flex gap-2.5 items-center flex-wrap">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
