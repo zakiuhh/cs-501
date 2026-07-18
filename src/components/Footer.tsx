@@ -27,7 +27,7 @@ const itemVariants = {
 
 export function Footer() {
   return (
-    <footer className="bg-surface-dark text-on-dark-soft overflow-hidden">
+    <footer className="bg-surface-soft text-muted border-t border-hairline overflow-hidden">
       <motion.div 
         variants={containerVariants}
         initial="hidden"
@@ -37,9 +37,9 @@ export function Footer() {
       >
         <motion.div variants={itemVariants} className="col-span-2 md:col-span-1">
           <div>
-            <div className="flex items-center text-on-dark">
-              <span className="spike" />
-              <span className="font-serif text-lg">C++ Crashed</span>
+            <div className="flex items-center text-ink font-serif">
+              <span className="spike text-primary" />
+              <span className="text-lg font-medium">C++ Crashed</span>
             </div>
             <p className="mt-3 text-[13px] leading-relaxed">
               An interactive learning platform for CS501 - Programming Fundamentals in C++.
@@ -49,7 +49,7 @@ export function Footer() {
 
         <motion.div variants={itemVariants}>
           <div>
-            <h4 className="text-on-dark text-[13px] font-medium mb-3 font-sans">Course</h4>
+            <h4 className="text-ink text-[13px] font-medium mb-3 font-sans uppercase tracking-wider">Course</h4>
             <ul className="space-y-2 text-[13px]">
               <li><Link to="/lectures" className="hover:text-primary transition-colors">Lectures</Link></li>
               <li><Link to="/practice" className="hover:text-primary transition-colors">Practice</Link></li>
@@ -63,7 +63,7 @@ export function Footer() {
 
         <motion.div variants={itemVariants}>
           <div>
-            <h4 className="text-on-dark text-[13px] font-medium mb-3 font-sans">Resources</h4>
+            <h4 className="text-ink text-[13px] font-medium mb-3 font-sans uppercase tracking-wider">Resources</h4>
             <ul className="space-y-2 text-[13px]">
               <li>
                 <a className="hover:text-primary transition-colors" href="https://cppreference.com" target="_blank" rel="noreferrer">
@@ -86,18 +86,18 @@ export function Footer() {
 
         <motion.div variants={itemVariants}>
           <div>
-            <h4 className="text-on-dark text-[13px] font-medium mb-3 font-sans">Team DevZee</h4>
+            <h4 className="text-ink text-[13px] font-medium mb-3 font-sans uppercase tracking-wider">Team DevZee</h4>
             <ul className="space-y-2 text-[13px]">
-              <li className="text-on-dark font-medium">Zaki Ul Hassan <span className="text-[10px] text-primary/85 font-mono ml-1">LEAD</span></li>
-              <li className="text-on-dark font-medium">Saad Qureshi <span className="text-[10px] text-primary/85 font-mono ml-1">VIBE</span></li>
-              <li className="text-on-dark font-medium">Aliba Shakeel <span className="text-[10px] text-primary/85 font-mono ml-1">VIBE</span></li>
-              <li className="text-on-dark font-medium">Anosha Shakeel <span className="text-[10px] text-primary/85 font-mono ml-1">VIBE</span></li>
+              <li className="text-ink font-medium">Zaki Ul Hassan <span className="text-[10px] text-primary font-mono ml-1">TEAM LEADER</span></li>
+              <li className="text-ink font-medium">Saad Qureshi <span className="text-[10px] text-primary font-mono ml-1">VIBE CODER</span></li>
+              <li className="text-ink font-medium">Aliba Shakeel <span className="text-[10px] text-primary font-mono ml-1">VIBE CODER</span></li>
+              <li className="text-ink font-medium">Anosha Shakeel <span className="text-[10px] text-primary font-mono ml-1">VIBE CODER</span></li>
             </ul>
           </div>
         </motion.div>
       </motion.div>
       
-      <div className="border-t border-on-dark-soft/10">
+      <div className="border-t border-hairline">
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

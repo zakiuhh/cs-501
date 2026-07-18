@@ -64,7 +64,7 @@ export function downloadCertificate(name: string) {
   }, "image/png");
 }
 
-export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, H: number, name: string, verificationId?: string) {
+export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, H: number, name: string, verificationId?: string, issuedAt?: string | Date) {
   // read live theme tokens so light/dark certificates look native
   const css = getComputedStyle(document.documentElement);
   const t = (v: string, fb: string) => (css.getPropertyValue(v).trim() || fb);
@@ -197,16 +197,18 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
   stats.forEach(([n, l], i) => {
     const cx = startX + i * (cardW + cardSpacing);
     
-    // Draw hairline vertical divider between stats
-    if (i > 0) {
-      ctx.strokeStyle = hairline;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      const dividerX = cx - (cardSpacing / 2);
-      ctx.moveTo(dividerX, 725);
-      ctx.lineTo(dividerX, 785);
-      ctx.stroke();
+    // Card border & background
+    ctx.strokeStyle = hairline;
+    ctx.lineWidth = 1;
+    ctx.fillStyle = surface;
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(cx, 715, cardW, cardH, 8);
+    } else {
+      ctx.rect(cx, 715, cardW, cardH);
     }
+    ctx.fill();
+    ctx.stroke();
     
     // Stat number
     ctx.fillStyle = primary;
@@ -240,7 +242,7 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
   ctx.fillStyle = ink;
   ctx.font = "italic 26px 'Instrument Serif', Garamond, serif";
   ctx.textAlign = "left";
-  ctx.fillText(formatDate(new Date()), 120, 995);
+  ctx.fillText(formatDate(issuedAt ? new Date(issuedAt) : new Date()), 120, 995);
 
   // Draw handwritten signature above the line (line is at Y = 930) - shifted right to W - 180
   drawSignature(ctx, W - 180, 915, primary);

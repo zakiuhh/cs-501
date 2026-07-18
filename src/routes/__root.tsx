@@ -150,7 +150,7 @@ function FloatingChatbot() {
           <div className="bg-surface-soft border-b border-hairline px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-serif text-[16px] text-ink font-medium">CS501 AI Assistant</span>
+              <span className="font-serif text-[16px] text-ink font-medium">csHelper AI Assistant</span>
             </div>
             <button 
               onClick={() => setIsOpen(false)}
@@ -183,7 +183,7 @@ function FloatingChatbot() {
             ? "bg-surface-dark text-on-dark hover:bg-surface-dark-elevated" 
             : "bg-primary text-on-primary hover:bg-primary-active"
         }`}
-        title="Chat with AI Assistant"
+        title="Chat with csHelper"
       >
         {isOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />}
       </button>

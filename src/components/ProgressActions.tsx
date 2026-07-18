@@ -52,7 +52,7 @@ function CertificateLivePreview({ name }: { name: string }) {
   );
 }
 
-export function ProgressActions() {
+export function ProgressActions({ minimal = false }: { minimal?: boolean } = {}) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [name, setName] = useState("");
 
@@ -131,27 +131,33 @@ You can verify my verified completion credential using the link below:
     e.target.value = "";
   };
 
+  const containerClass = minimal 
+    ? "flex flex-col gap-6" 
+    : "bg-surface-card border border-hairline rounded-xl p-6 md:p-8 flex flex-col gap-6";
+
   return (
-    <div className="bg-surface-card border border-hairline rounded-xl p-6 md:p-8">
-      <div className="flex items-start justify-between gap-6 flex-wrap">
-        <div>
-          <p className="text-muted text-[12px] tracking-[0.15em] uppercase font-mono mb-2">
-            Export & certificate
-          </p>
-          <h3 className="font-serif text-2xl text-ink">
-            {allDone ? "You finished the course." : "Take your progress with you."}
-          </h3>
-          <p className="text-body text-[14px] mt-2 max-w-lg leading-relaxed">
-            {allDone
-              ? "Generate a certificate of completion or download a JSON snapshot of every lecture and quiz score."
-              : `You've completed ${done}/${total} lectures (${pct}%). The certificate unlocks at 100% - JSON export and import are always available.`}
-          </p>
+    <div className={containerClass}>
+      {!minimal && (
+        <div className="flex items-start justify-between gap-6 flex-wrap">
+          <div>
+            <p className="text-muted text-[12px] tracking-[0.15em] uppercase font-mono mb-2">
+              Export & certificate
+            </p>
+            <h3 className="font-serif text-2xl text-ink">
+              {allDone ? "You finished the course." : "Take your progress with you."}
+            </h3>
+            <p className="text-body text-[14px] mt-2 max-w-lg leading-relaxed">
+              {allDone
+                ? "Generate a certificate of completion or download a JSON snapshot of every lecture and quiz score."
+                : `You've completed ${done}/${total} lectures (${pct}%). The certificate unlocks at 100% - JSON export and import are always available.`}
+            </p>
+          </div>
+          <span className="font-serif text-5xl text-primary">{pct}%</span>
         </div>
-        <span className="font-serif text-5xl text-primary">{pct}%</span>
-      </div>
+      )}
 
       {allDone && (
-        <div className="mt-6 rounded-lg overflow-hidden border border-hairline shadow-md max-w-2xl bg-canvas">
+        <div className="rounded-lg overflow-hidden border border-hairline shadow-md w-full max-w-2xl bg-canvas">
           <p className="bg-surface-soft border-b border-hairline px-4 py-2 text-[11px] font-mono uppercase text-muted">
             Live certificate preview
           </p>
@@ -159,7 +165,7 @@ You can verify my verified completion credential using the link below:
         </div>
       )}
 
-      <div className="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div className="flex-1 max-w-sm w-full">
           <label className="text-[12px] text-muted font-mono uppercase tracking-[0.12em] block mb-2">
             Name on certificate
@@ -185,7 +191,7 @@ You can verify my verified completion credential using the link below:
                 <ChevronDown className="w-3.5 h-3.5 opacity-80" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-canvas border border-hairline rounded-lg p-1 shadow-lg min-w-[180px]">
+            <DropdownMenuContent align="start" className="bg-canvas border border-hairline rounded-lg p-1 shadow-lg min-w-[180px] z-50">
               <DropdownMenuItem
                 onClick={() => {
                   const activeName = name.trim() || "A determined learner";
@@ -225,32 +231,48 @@ You can verify my verified completion credential using the link below:
             </DropdownMenuContent>
           </DropdownMenu>
           
-          <button
-            onClick={downloadSyllabusPDF}
-            className="btn-secondary hover:-translate-y-0.5 min-h-[44px] px-5 py-2.5 flex items-center gap-2 cursor-pointer"
-          >
-            <FileText className="w-4 h-4 text-primary" />
-            <span>Syllabus PDF</span>
-          </button>
-          
-          <button
-            onClick={exportProgressJSON}
-            className="btn-secondary hover:-translate-y-0.5 min-h-[44px] px-5 py-2.5 flex items-center gap-2 cursor-pointer"
-          >
-            <FileJson className="w-4 h-4 text-primary" />
-            <span>Export JSON</span>
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="btn-secondary hover:-translate-y-0.5 min-h-[44px] px-5 py-2.5 flex items-center gap-2 cursor-pointer">
+                <span>More Actions</span>
+                <ChevronDown className="w-3.5 h-3.5 opacity-80" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-canvas border border-hairline rounded-lg p-1 shadow-lg min-w-[180px] z-50">
+              <DropdownMenuItem
+                onClick={downloadSyllabusPDF}
+                className="flex items-center gap-2 px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none"
+              >
+                <FileText className="w-4 h-4 text-primary" />
+                <span>Syllabus PDF</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={exportProgressJSON}
+                className="flex items-center gap-2 px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none"
+              >
+                <FileJson className="w-4 h-4 text-primary" />
+                <span>Export Progress JSON</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  const input = document.getElementById("import-json-file-dropdown") as HTMLInputElement;
+                  if (input) input.click();
+                }}
+                className="flex items-center gap-2 px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none"
+              >
+                <Upload className="w-4 h-4 text-primary" />
+                <span>Import Progress JSON</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-          <label className="btn-secondary hover:-translate-y-0.5 min-h-[44px] px-5 py-2.5 flex items-center gap-2 cursor-pointer">
-            <Upload className="w-4 h-4 text-primary" />
-            <span>Import JSON</span>
-            <input
-              type="file"
-              accept=".json"
-              onChange={handleImport}
-              className="hidden"
-            />
-          </label>
+          <input
+            type="file"
+            id="import-json-file-dropdown"
+            accept=".json"
+            onChange={handleImport}
+            className="hidden"
+          />
         </div>
       </div>
     </div>

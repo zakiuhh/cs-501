@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { lectures } from "@/data/lectures";
-import { modules } from "@/data/modules";
+import { modules, getModuleProgress } from "@/data/modules";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { getProgress, toggleBookmark } from "@/lib/progress";
@@ -60,28 +60,72 @@ function LecturesPage() {
         </div>
       </section>
 
-      {completed > 0 && (
-        <section className="bg-surface-soft border-b border-hairline animate-blur-in-soft">
-          <div className="max-w-[1200px] mx-auto px-6 py-8 flex items-center justify-between gap-6">
-            <div className="flex-1">
-              <p className="text-muted text-[13px] mb-1">Your progress</p>
-              <p className="text-ink font-serif text-2xl">{completed} of {total} lectures completed</p>
-              <div className="mt-3 h-1.5 bg-hairline rounded-full overflow-hidden max-w-md">
-                <div className="h-full bg-primary transition-all duration-700" style={{ width: `${pct}%` }} />
-              </div>
-            </div>
-            <span className="font-serif text-5xl text-primary">{pct}%</span>
-          </div>
-        </section>
-      )}
-
-      <section className="py-12 border-b border-hairline">
+      <section className="py-12 border-b border-hairline bg-surface-soft/30">
         <div className="max-w-[1200px] mx-auto px-6">
-          <p className="text-muted text-[12px] tracking-[0.15em] uppercase mb-2">Modules</p>
-          <h2 className="font-serif text-3xl md:text-4xl text-ink mb-6">Progress by module</h2>
-          <ModuleProgress />
-          <div className="mt-10">
-            <ProgressActions />
+          <p className="text-muted text-[12px] tracking-[0.15em] uppercase mb-2">Dashboard</p>
+          <h2 className="font-serif text-3xl md:text-4xl text-ink mb-6">Progress & Certification</h2>
+
+          <div className="bg-surface-card border border-hairline rounded-xl p-6 md:p-8 shadow-sm">
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              
+              {/* Left Column: Stacked Progress-bar List (Modules) */}
+              <div className="lg:col-span-6 flex flex-col gap-6 w-full">
+                <div>
+                  <h3 className="font-serif text-xl text-ink font-medium">Progress by Module</h3>
+                  <p className="text-body text-[13px] text-muted mt-1">Completion tracking for each of the 8 curriculum modules.</p>
+                </div>
+                
+                <div className="space-y-4">
+                  {modules.map((m) => {
+                    const { done, total, pct } = getModuleProgress(m.id, progress.completed);
+                    return (
+                      <div key={m.id} className="group">
+                        <div className="flex items-center justify-between text-[13px] mb-1.5">
+                          <span className="font-serif text-[15px] text-ink group-hover:text-primary transition-colors">{m.title}</span>
+                          <span className="font-mono text-[12px] text-muted">{done}/{total} ({pct}%)</span>
+                        </div>
+                        <div className="h-1.5 bg-hairline rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-primary transition-all duration-700" 
+                            style={{ width: `${pct}%` }} 
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Divider for larger screens */}
+              <div className="hidden lg:block w-[1px] bg-hairline self-stretch" />
+
+              {/* Right Column: Certification Progress */}
+              <div className="lg:col-span-5 flex flex-col gap-6 w-full">
+                <div>
+                  <div className="flex items-baseline justify-between gap-4 flex-wrap">
+                    <h3 className="font-serif text-xl text-ink font-medium">Course Certificate</h3>
+                    <span className="font-serif text-4xl text-primary">{pct}%</span>
+                  </div>
+                  <p className="text-body text-[13px] text-muted mt-1 leading-relaxed">
+                    {pct === 100 
+                      ? "Congratulations! You have completed the CS501 course. Generate your verified certificate below." 
+                      : `Complete all 27 lectures to unlock your credential. Current progress: ${completed}/${total} lectures.`
+                    }
+                  </p>
+                </div>
+
+                <div className="h-2 bg-hairline rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary transition-all duration-700" 
+                    style={{ width: `${pct}%` }} 
+                  />
+                </div>
+
+                {/* Import/Export & Certificate Actions */}
+                <ProgressActions minimal />
+              </div>
+
+            </div>
           </div>
         </div>
       </section>

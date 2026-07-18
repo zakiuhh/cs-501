@@ -128,8 +128,8 @@ export function Nav() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  /* On non-landing pages or mobile: always compact so logo is small */
-  const compact = isLanding ? (isMobile ? true : scrolled) : true;
+  /* Only compact on mobile viewports to align branding across pages */
+  const compact = isMobile;
 
   return (
     <>

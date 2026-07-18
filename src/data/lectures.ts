@@ -385,7 +385,7 @@ else            cout << "PASS";`,
   {
     id: "algorithm-flowchart-deep",
     number: "04",
-    title: "Algorithms & Flowcharts — Deep Dive",
+    title: "Program Lifecycle & Data Types",
     summary: "Program development process, IDE compilation steps, C++ reserved words, and the full primitive data type hierarchy.",
     duration: "35 min",
     topics: ["Program development", "IDE & compilation", "Reserved words", "Data types", "Variables & identifiers", "Escape sequences"],
@@ -528,7 +528,7 @@ int main() {
   // ─────────────────────────────────────────────────────────────
   {
     id: "datatypes-operators",
-    number: "4.1",
+    number: "05",
     title: "Data Types & Operators",
     summary: "Identifiers, primitive types, assignment, I/O via cin/cout, type compatibility, and boolean expressions.",
     duration: "40 min",
@@ -694,7 +694,7 @@ int main() {
   // ─────────────────────────────────────────────────────────────
   {
     id: "expressions-operators",
-    number: "05",
+    number: "06",
     title: "Expressions & Operators",
     summary: "Operator precedence, named constants, increment / decrement, augmented assignment, and the compilation lifecycle.",
     duration: "35 min",

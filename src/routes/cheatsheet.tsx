@@ -173,11 +173,11 @@ p1.x = 15; // dot access
 Point* ptr = &p1;
 ptr->y = 25; // pointer access`,
     pointers: `int num = 10;
-int* ptr = &num;   // Pointer (stores address of num)
-int& ref = num;    // Reference (alias/nickname for num)
+int* ptr = &num; // Pointer (stores address of num)
+int& ref = num;  // Reference (alias for num)
 
-*ptr = 20;         // Dereferencing (changes num to 20)
-ref = 30;          // Directly changes num to 30`,
+*ptr = 20;       // Changes num to 20
+ref = 30;        // Changes num to 30`,
     recursion: `// Recursive function
 int factorial(int n) {
     if (n <= 1) {
@@ -213,12 +213,12 @@ int len = vec.size(); // len is 4
 for (int x : vec) {
     cout << x << " ";
 }`,
-    libraries: `#include <cmath>     // pow(x,y), sqrt(x), abs(x), round(x)
-#include <iomanip>   // setw(w), setprecision(p), fixed, left
-#include <algorithm> // sort(start, end), max(a,b), min(a,b), swap(a,b)
+    libraries: `#include <cmath>     // pow(x,y), sqrt(x), abs(x)
+#include <iomanip>   // setw(w), setprecision(p)
+#include <algorithm> // sort(), max(), min(), swap()
 
 cout << fixed << setprecision(2) << 3.14159; // prints 3.14
-sort(arr, arr + 5); // Sorts array of size 5 ascending`
+sort(arr, arr + 5); // Sorts array ascending`
   };
 
   const allSections = [

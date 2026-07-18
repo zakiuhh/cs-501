@@ -20,8 +20,8 @@ export const Route = createFileRoute("/practice")({
 
 const diffStyles: Record<Difficulty, string> = {
   easy: "bg-success/15 text-success",
-  medium: "bg-accent-gold/15 text-accent-gold",
-  hard: "bg-accent-rust/15 text-accent-rust",
+  medium: "bg-accent-amber/20 text-accent-amber",
+  hard: "bg-error/15 text-error",
 };
 
 function ProblemCard({ id, title, difficulty, prompt, hint, starter, solution, solved, onToggleSolved }: {

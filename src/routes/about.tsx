@@ -53,7 +53,7 @@ function About() {
               <Reveal variant="up" delay={250} className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300">
                 <div>
                   <h3 className="font-serif text-xl text-ink font-medium">Zaki Ul Hassan</h3>
-                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">Team Leader</p>
+                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">TEAM LEADER</p>
                   <div className="mt-4 flex gap-3 text-[13px]">
                     <a href="https://www.linkedin.com/in/zakiuh/" target="_blank" rel="noreferrer" className="text-link hover:text-primary transition-colors">LinkedIn ↗</a>
                     <span className="text-muted/40">|</span>
@@ -62,24 +62,24 @@ function About() {
                 </div>
               </Reveal>
 
-              <Reveal variant="up" delay={300} className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300 flex flex-col justify-between">
+              <Reveal variant="up" delay={300} className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300">
                 <div>
                   <h3 className="font-serif text-xl text-ink font-medium">Saad Qureshi</h3>
-                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">Vibe Coder</p>
+                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">VIBE CODER</p>
                 </div>
               </Reveal>
 
-              <Reveal variant="up" delay={350} className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300 flex flex-col justify-between">
+              <Reveal variant="up" delay={350} className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300">
                 <div>
                   <h3 className="font-serif text-xl text-ink font-medium">Aliba Shakeel</h3>
-                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">Vibe Coder</p>
+                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">VIBE CODER</p>
                 </div>
               </Reveal>
 
-              <Reveal variant="up" delay={400} className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300 flex flex-col justify-between">
+              <Reveal variant="up" delay={400} className="bg-surface-card border border-hairline rounded-xl p-5 shadow-sm hover:border-primary/30 transition-all duration-300">
                 <div>
                   <h3 className="font-serif text-xl text-ink font-medium">Anosha Shakeel</h3>
-                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">Vibe Coder</p>
+                  <p className="text-primary text-[12px] font-mono uppercase tracking-wider mt-1.5">VIBE CODER</p>
                 </div>
               </Reveal>
             </div>
