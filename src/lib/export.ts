@@ -197,18 +197,16 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
   stats.forEach(([n, l], i) => {
     const cx = startX + i * (cardW + cardSpacing);
     
-    // Card border & background
-    ctx.strokeStyle = hairline;
-    ctx.lineWidth = 1;
-    ctx.fillStyle = surface;
-    ctx.beginPath();
-    if (ctx.roundRect) {
-      ctx.roundRect(cx, 715, cardW, cardH, 8);
-    } else {
-      ctx.rect(cx, 715, cardW, cardH);
+    // Draw hairline vertical divider between stats
+    if (i > 0) {
+      ctx.strokeStyle = hairline;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      const dividerX = cx - (cardSpacing / 2);
+      ctx.moveTo(dividerX, 725);
+      ctx.lineTo(dividerX, 785);
+      ctx.stroke();
     }
-    ctx.fill();
-    ctx.stroke();
     
     // Stat number
     ctx.fillStyle = primary;

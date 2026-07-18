@@ -150,7 +150,7 @@ function Landing() {
             </div>
 
             <div className="md:col-span-5 animate-blur-in delay-300">
-              <div className="bg-surface-dark rounded-xl p-4 sm:p-6 border border-[#2a2825] card-lift">
+              <div className="bg-surface-dark rounded-xl p-4 sm:p-6 border border-hairline card-lift">
                 <div className="flex items-center gap-1.5 mb-4">
                   <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
                   <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
@@ -166,7 +166,7 @@ int main() {
     return 0;
 }`}
                 </pre>
-                <div className="mt-4 pt-4 border-t border-[#2a2825] text-[11px] sm:text-[12px] text-on-dark-soft font-mono">
+                <div className="mt-4 pt-4 border-t border-hairline text-[11px] sm:text-[12px] text-on-dark-soft font-mono">
                   <span className="text-success">●</span> Compiled · Welcome to CS501
                 </div>
               </div>

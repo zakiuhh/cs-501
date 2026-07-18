@@ -97,7 +97,7 @@ export function Footer() {
         </motion.div>
       </motion.div>
       
-      <div className="border-t border-[#2a2825]">
+      <div className="border-t border-on-dark-soft/10">
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
