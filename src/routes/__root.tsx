@@ -145,7 +145,7 @@ function FloatingChatbot() {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end print:hidden">
       {/* Chatbot Window */}
       {isOpen && (
-        <div className="mb-4 w-[calc(100vw-32px)] sm:w-[400px] h-[500px] sm:h-[600px] bg-canvas border border-hairline rounded-xl shadow-2xl overflow-hidden flex flex-col animate-blur-in mr-2 sm:mr-0">
+        <div className="mb-4 w-[calc(100vw-32px)] sm:w-[400px] h-[500px] sm:h-[600px] max-h-[calc(100vh-140px)] bg-canvas border border-hairline rounded-xl shadow-2xl overflow-hidden flex flex-col animate-blur-in mr-2 sm:mr-0">
           {/* Header */}
           <div className="bg-surface-soft border-b border-hairline px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
