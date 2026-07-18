@@ -105,6 +105,16 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreHoverRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleMoreMouseEnter = () => {
+    if (moreHoverRef.current) clearTimeout(moreHoverRef.current);
+    setMoreOpen(true);
+  };
+  const handleMoreMouseLeave = () => {
+    moreHoverRef.current = setTimeout(() => setMoreOpen(false), 120);
+  };
   const routerState = useRouterState();
   const isLanding = routerState.location.pathname === "/";
 
@@ -172,36 +182,46 @@ export function Nav() {
             <Link to="/playground" className="hover:text-ink transition-colors story-link">Playground</Link>
             <Link to="/flowchart"  className="hover:text-ink transition-colors story-link">Flowcharts</Link>
             <Link to="/cheatsheet" className="hover:text-ink transition-colors story-link">Cheat Sheet</Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-1 hover:text-ink transition-colors story-link cursor-pointer outline-none border-none bg-transparent p-0 text-[14px] font-inherit text-body">
-                  <span>More</span>
-                  <ChevronDown className="w-3.5 h-3.5 opacity-80" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-canvas border border-hairline rounded-lg p-1.5 shadow-lg min-w-[150px]">
-                <DropdownMenuItem asChild>
-                  <Link to="/syllabus" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
-                    Syllabus
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/verify" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
-                    Verify
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/faq" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
-                    FAQ
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/about" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
-                    About
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div
+              onMouseEnter={handleMoreMouseEnter}
+              onMouseLeave={handleMoreMouseLeave}
+            >
+              <DropdownMenu open={moreOpen} onOpenChange={setMoreOpen}>
+                <DropdownMenuTrigger asChild>
+                  <button className={`flex items-center gap-1 hover:text-ink transition-colors story-link cursor-pointer outline-none border-none bg-transparent p-0 text-[14px] font-inherit text-body`}>
+                    <span>More</span>
+                    <ChevronDown className={`w-3.5 h-3.5 opacity-80 transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="bg-canvas border border-hairline rounded-lg p-1.5 shadow-lg min-w-[150px]"
+                  onMouseEnter={handleMoreMouseEnter}
+                  onMouseLeave={handleMoreMouseLeave}
+                >
+                  <DropdownMenuItem asChild>
+                    <Link to="/syllabus" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
+                      Syllabus
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/verify" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
+                      Verify
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/faq" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
+                      FAQ
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/about" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
+                      About
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </nav>
 
           {/* Right actions */}
@@ -249,68 +269,38 @@ export function Nav() {
           overflowY: "auto",
         }}
       >
-        <nav className="flex flex-col px-6 py-6 gap-4 text-[15px] font-medium text-body">
+        <nav className="flex flex-col px-5 py-4 gap-1 text-[14px] font-medium text-body">
           {/* Mobile Theme Toggle */}
-          <div className="flex items-center justify-between pb-3 border-b border-hairline/40">
-            <span className="text-muted text-[13px] font-mono uppercase tracking-wider">Switch Theme</span>
+          <div className="flex items-center justify-between px-1 pb-3 mb-1 border-b border-hairline/40">
+            <span className="text-muted text-[11px] font-mono uppercase tracking-wider">Theme</span>
             <ThemeToggle />
           </div>
 
-          <Link 
-            to="/lectures" 
-            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
-          >
+          <Link to="/lectures" className="flex items-center px-3 py-2.5 rounded-lg hover:bg-surface-soft hover:text-ink transition-colors">
             Lectures
           </Link>
-          <Link 
-            to="/practice" 
-            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
-          >
+          <Link to="/practice" className="flex items-center px-3 py-2.5 rounded-lg hover:bg-surface-soft hover:text-ink transition-colors">
             Practice
           </Link>
-          <Link 
-            to="/playground" 
-            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
-          >
+          <Link to="/playground" className="flex items-center px-3 py-2.5 rounded-lg hover:bg-surface-soft hover:text-ink transition-colors">
             Playground
           </Link>
-          <Link 
-            to="/flowchart" 
-            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
-          >
-            Flowcharts
-          </Link>
-          <Link 
-            to="/cheatsheet" 
-            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
-          >
+          <Link to="/cheatsheet" className="flex items-center px-3 py-2.5 rounded-lg hover:bg-surface-soft hover:text-ink transition-colors">
             Cheat Sheet
           </Link>
-          <Link 
-            to="/syllabus" 
-            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
-          >
-            Syllabus
-          </Link>
-          <Link 
-            to="/verify" 
-            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
-          >
-            Verify
-          </Link>
-          <Link 
-            to="/faq" 
-            className="hover:text-ink transition-colors pb-2 border-b border-hairline/30"
-          >
-            FAQ
-          </Link>
-          <Link 
-            to="/about" 
-            className="hover:text-ink transition-colors pb-2"
-          >
-            About
-          </Link>
-          
+
+          <div className="border-t border-hairline/40 my-1 pt-1">
+            <Link to="/syllabus" className="flex items-center px-3 py-2 rounded-lg hover:bg-surface-soft hover:text-ink transition-colors text-[13px] text-muted">
+              Syllabus
+            </Link>
+            <Link to="/verify" className="flex items-center px-3 py-2 rounded-lg hover:bg-surface-soft hover:text-ink transition-colors text-[13px] text-muted">
+              Verify Certificate
+            </Link>
+            <Link to="/about" className="flex items-center px-3 py-2 rounded-lg hover:bg-surface-soft hover:text-ink transition-colors text-[13px] text-muted">
+              About
+            </Link>
+          </div>
+
           {/* Mobile CTA inside menu if on landing page */}
           {isLanding && (
             <Link
