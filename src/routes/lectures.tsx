@@ -160,7 +160,7 @@ function LecturesPage() {
     bookmarks: [] as string[]
   });
   const [filter, setFilter] = useState<"all" | "starred">("all");
-  const [expandedModuleId, setExpandedModuleId] = useState<string | null>("foundations");
+  const [expandedModuleId, setExpandedModuleId] = useState<string | null>(null);
 
   const toggleModule = (id: string) => {
     setExpandedModuleId((prev) => (prev === id ? null : id));
