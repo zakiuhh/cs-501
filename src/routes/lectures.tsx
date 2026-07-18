@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { lectures } from "@/data/lectures";
+import { modules } from "@/data/modules";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { getProgress, toggleBookmark } from "@/lib/progress";
@@ -38,12 +39,7 @@ function LecturesPage() {
   const total = lectures.length;
   const pct = total ? Math.round((completed / total) * 100) : 0;
 
-  const filteredLectures = lectures.filter((l) => {
-    if (filter === "starred") {
-      return progress.bookmarks?.includes(l.id);
-    }
-    return true;
-  });
+
 
   return (
     <div className="min-h-screen flex flex-col bg-canvas">
@@ -115,77 +111,144 @@ function LecturesPage() {
             </div>
           </div>
 
-          {filteredLectures.length === 0 ? (
-            <div className="text-center py-16 bg-surface-card border border-hairline rounded-xl max-w-md mx-auto p-6">
-              <Star className="w-10 h-10 text-muted mx-auto mb-3 opacity-40" />
-              <p className="font-serif text-xl text-ink">No bookmarked lectures</p>
-              <p className="text-body text-[13px] mt-2 leading-relaxed">
-                {filter === "starred" 
-                  ? "Star lectures from the catalog to keep them pinned here for quick revision."
-                  : "No lectures matched."}
-              </p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 gap-5">
-              {filteredLectures.map((l, i) => {
-                const done = progress.completed.includes(l.id);
-                const isStarred = progress.bookmarks?.includes(l.id);
-                const dark = i % 3 === 1;
-                return (
-                  <Link
-                    key={l.id}
-                    to="/lecture/$id"
-                    params={{ id: l.id }}
-                    style={{ animationDelay: `${Math.min(i, 10) * 60}ms` }}
-                    className={`group block rounded-lg p-7 card-lift animate-blur-in-soft ${dark
-                      ? "bg-surface-dark text-on-dark hover:bg-surface-dark-elevated"
-                      : "bg-surface-card text-ink hover:bg-surface-cream-strong"}`}
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <span className={`font-mono text-[12px] ${dark ? "text-on-dark-soft" : "text-muted"}`}>
-                        Lecture {l.number}
-                      </span>
-                      <div className="flex items-center gap-2.5">
-                        {done && (
-                          <span className="inline-flex items-center gap-1.5 text-[11px] text-success">
-                            <span className="w-1.5 h-1.5 rounded-full bg-success" /> Completed
+          {(() => {
+            const categorizedIds = new Set(modules.flatMap((m) => m.lectureIds));
+            const uncategorizedLectures = lectures.filter((l) => !categorizedIds.has(l.id)).filter((l) => {
+              if (filter === "starred") {
+                return progress.bookmarks?.includes(l.id);
+              }
+              return true;
+            });
+
+            // Group structure
+            const groups = modules.map((m) => {
+              const items = m.lectureIds
+                .map((id) => lectures.find((l) => l.id === id))
+                .filter((l): l is NonNullable<typeof l> => !!l)
+                .filter((l) => {
+                  if (filter === "starred") {
+                    return progress.bookmarks?.includes(l.id);
+                  }
+                  return true;
+                });
+              return { ...m, items };
+            }).filter(g => g.items.length > 0);
+
+            if (uncategorizedLectures.length > 0) {
+              groups.push({
+                id: "other",
+                title: "Other Topics",
+                description: "Additional concepts and supplemental guides.",
+                lectureIds: uncategorizedLectures.map((l) => l.id),
+                items: uncategorizedLectures
+              });
+            }
+
+            const totalFilteredCount = groups.reduce((acc, g) => acc + g.items.length, 0);
+
+            if (totalFilteredCount === 0) {
+              return (
+                <div className="text-center py-16 bg-surface-card border border-hairline rounded-xl max-w-md mx-auto p-6">
+                  <Star className="w-10 h-10 text-muted mx-auto mb-3 opacity-40" />
+                  <p className="font-serif text-xl text-ink">No bookmarked lectures</p>
+                  <p className="text-body text-[13px] mt-2 leading-relaxed">
+                    {filter === "starred" 
+                      ? "Star lectures from the catalog to keep them pinned here for quick revision."
+                      : "No lectures matched."}
+                  </p>
+                </div>
+              );
+            }
+
+            return (
+              <div className="flex flex-col gap-12 sm:gap-16">
+                {groups.map((group, groupIdx) => {
+                  const completedCount = group.items.filter(l => progress.completed.includes(l.id)).length;
+                  const totalCount = group.items.length;
+                  const isDone = completedCount === totalCount;
+
+                  return (
+                    <div key={group.id} className="animate-blur-in-soft" style={{ animationDelay: `${groupIdx * 100}ms` }}>
+                      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 mb-6 pb-3 border-b border-hairline/60">
+                        <div className="flex flex-wrap items-center gap-3">
+                          <h3 className="font-serif text-2xl sm:text-3xl text-ink">{group.title}</h3>
+                          <span className={`text-[11px] font-mono px-2.5 py-0.5 rounded-full ${
+                            isDone 
+                              ? "bg-success/10 text-success font-medium" 
+                              : "bg-surface-cream-strong text-muted"
+                          }`}>
+                            {isDone ? "Completed" : `${completedCount}/${totalCount} Completed`}
                           </span>
-                        )}
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            toggleBookmark(l.id);
-                          }}
-                          className={`p-1.5 rounded-md transition-colors cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center ${
-                            dark 
-                              ? "hover:bg-surface-dark-soft text-on-dark-soft hover:text-on-dark" 
-                              : "hover:bg-surface-soft text-muted hover:text-ink"
-                          }`}
-                          title={isStarred ? "Remove Bookmark" : "Bookmark Lecture"}
-                        >
-                          <Star className={`w-4 h-4 ${isStarred ? "fill-current text-accent-amber" : ""}`} />
-                        </button>
-                        <span className={`text-[12px] ${dark ? "text-on-dark-soft" : "text-muted"}`}>{l.duration}</span>
+                        </div>
+                        <p className="text-body text-[13px] sm:text-sm text-muted max-w-xl">{group.description}</p>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-5">
+                        {group.items.map((l, i) => {
+                          const done = progress.completed.includes(l.id);
+                          const isStarred = progress.bookmarks?.includes(l.id);
+                          const dark = i % 3 === 1;
+                          return (
+                            <Link
+                              key={l.id}
+                              to="/lecture/$id"
+                              params={{ id: l.id }}
+                              className={`group block rounded-lg p-7 card-lift ${
+                                dark
+                                  ? "bg-surface-dark text-on-dark hover:bg-surface-dark-elevated"
+                                  : "bg-surface-card text-ink hover:bg-surface-cream-strong"
+                              }`}
+                            >
+                              <div className="flex items-start justify-between mb-4">
+                                <span className={`font-mono text-[12px] ${dark ? "text-on-dark-soft" : "text-muted"}`}>
+                                  Lecture {l.number}
+                                </span>
+                                <div className="flex items-center gap-2.5">
+                                  {done && (
+                                    <span className="inline-flex items-center gap-1.5 text-[11px] text-success">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-success" /> Completed
+                                    </span>
+                                  )}
+                                  <button
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      toggleBookmark(l.id);
+                                    }}
+                                    className={`p-1.5 rounded-md transition-colors cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center ${
+                                      dark 
+                                        ? "hover:bg-surface-dark-soft text-on-dark-soft hover:text-on-dark" 
+                                        : "hover:bg-surface-soft text-muted hover:text-ink"
+                                    }`}
+                                    title={isStarred ? "Remove Bookmark" : "Bookmark Lecture"}
+                                  >
+                                    <Star className={`w-4 h-4 ${isStarred ? "fill-current text-accent-amber" : ""}`} />
+                                  </button>
+                                  <span className={`text-[12px] ${dark ? "text-on-dark-soft" : "text-muted"}`}>{l.duration}</span>
+                                </div>
+                              </div>
+                              <h3 className={`font-serif text-2xl mb-2 transition-colors ${dark ? "text-on-dark group-hover:text-primary" : "text-ink group-hover:text-primary"}`}>{l.title}</h3>
+                              <p className={`text-[14px] leading-relaxed ${dark ? "text-on-dark-soft" : "text-body"}`}>{l.summary}</p>
+                              <div className="mt-5 flex flex-wrap gap-2">
+                                {l.topics.slice(0, 3).map((t) => (
+                                  <span key={t} className={`text-[11px] px-2.5 py-1 rounded-pill ${dark ? "bg-surface-dark-elevated text-on-dark-soft" : "bg-canvas text-muted border border-hairline"}`}>
+                                    {t}
+                                  </span>
+                                ))}
+                              </div>
+                              <div className="mt-6 text-[13px] font-medium text-primary group-hover:translate-x-1 transition-transform inline-block">
+                                Open lecture →
+                              </div>
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
-                    <h3 className={`font-serif text-2xl mb-2 transition-colors ${dark ? "text-on-dark group-hover:text-primary" : "text-ink group-hover:text-primary"}`}>{l.title}</h3>
-                    <p className={`text-[14px] leading-relaxed ${dark ? "text-on-dark-soft" : "text-body"}`}>{l.summary}</p>
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {l.topics.slice(0, 3).map((t) => (
-                        <span key={t} className={`text-[11px] px-2.5 py-1 rounded-pill ${dark ? "bg-surface-dark-elevated text-on-dark-soft" : "bg-canvas text-muted border border-hairline"}`}>
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-6 text-[13px] font-medium text-primary group-hover:translate-x-1 transition-transform inline-block">
-                      Open lecture →
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
       </section>
 
