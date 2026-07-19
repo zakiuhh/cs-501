@@ -203,19 +203,19 @@ int main() {
             </div>
 
             {/* Certificate showcase */}
-            <Reveal variant="scale" className="mt-12 sm:mt-16">
-              <div className="bg-surface-card rounded-xl p-5 sm:p-6 md:p-10 border border-hairline">
+            <Reveal variant="scale" className="mt-12 sm:mt-16 max-w-[880px] mx-auto w-full">
+              <div className="bg-surface-card rounded-xl p-5 sm:p-6 md:p-8 border border-hairline shadow-sm">
                 <div className="grid md:grid-cols-12 gap-6 sm:gap-8 items-center">
                   <div className="md:col-span-5 order-2 md:order-1">
                     <span className="font-mono text-[12px] text-muted">04</span>
-                    <h3 className="font-serif text-2xl sm:text-3xl text-ink mt-2">Earn recognition.</h3>
-                    <p className="text-body mt-3 text-[14px] sm:text-base leading-relaxed">
+                    <h3 className="font-serif text-xl sm:text-2xl text-ink mt-2">Earn recognition.</h3>
+                    <p className="text-body mt-2.5 text-[13px] sm:text-[14px] leading-relaxed">
                       Complete all curriculum lectures to unlock your database-verified completion certificate. Signed by the full team and exportable as PNG or PDF.
                     </p>
-                    <div className="mt-4 sm:mt-5 flex flex-wrap gap-2 text-[12px]">
-                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">PNG & PDF</span>
-                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">Database Verified</span>
-                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">Team Signed</span>
+                    <div className="mt-4 sm:mt-5 flex flex-wrap gap-2 text-[11px]">
+                      <span className="bg-canvas border border-hairline text-muted px-2 py-0.5 rounded-pill">PNG & PDF</span>
+                      <span className="bg-canvas border border-hairline text-muted px-2 py-0.5 rounded-pill">Database Verified</span>
+                      <span className="bg-canvas border border-hairline text-muted px-2 py-0.5 rounded-pill">Team Signed</span>
                     </div>
                   </div>
                   <div className="md:col-span-7 order-1 md:order-2">
@@ -226,38 +226,6 @@ int main() {
                 </div>
               </div>
             </Reveal>
-          </div>
-        </section>
-
-        {/* PREVIEW LECTURES */}
-        <section className="py-14 sm:py-20 bg-surface-soft border-y border-hairline">
-          <div className="max-w-[1180px] mx-auto px-6">
-            <Reveal>
-              <div className="flex items-end justify-between mb-8 gap-6 flex-wrap">
-                <div>
-                  <p className="text-muted text-[12px] tracking-[0.15em] uppercase mb-2 font-mono">Curriculum</p>
-                  <h2 className="font-serif text-3xl sm:text-4xl text-ink">Get a head start.</h2>
-                </div>
-                <Link to="/lectures" className="text-link hover:translate-x-1 transition-transform inline-block">
-                  All {lectures.length} lectures →
-                </Link>
-              </div>
-            </Reveal>
-            <div className="grid md:grid-cols-3 gap-5">
-              {lectures.slice(0, 3).map((l, i) => (
-                <Reveal key={l.id} variant="scale" delay={i * 120}>
-                  <Link
-                    to="/lecture/$id"
-                    params={{ id: l.id }}
-                    className="block bg-canvas rounded-lg p-6 card-lift group"
-                  >
-                    <span className="font-mono text-[12px] text-muted">Lecture {l.number}</span>
-                    <h3 className="font-serif text-xl mt-2 text-ink group-hover:text-primary transition-colors">{l.title}</h3>
-                    <p className="text-body text-[14px] mt-2 leading-relaxed line-clamp-2">{l.summary}</p>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
           </div>
         </section>
 
