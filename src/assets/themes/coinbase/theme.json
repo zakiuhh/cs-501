@@ -1,0 +1,11 @@
+{
+  "id": "coinbase",
+  "name": "Coinbase",
+  "bg": "#ffffff",
+  "accent": "#0052ff",
+  "surface": "#f7f7f7",
+  "ink": "#0a0b0d",
+  "body": "#5b616e",
+  "muted": "#7c828a",
+  "hairline": "#dee1e6"
+}

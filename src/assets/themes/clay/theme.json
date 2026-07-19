@@ -1,0 +1,11 @@
+{
+  "id": "clay",
+  "name": "Clay",
+  "bg": "#fffaf0",
+  "accent": "#0a0a0a",
+  "surface": "#faf5e8",
+  "ink": "#0a0a0a",
+  "body": "#3a3a3a",
+  "muted": "#6a6a6a",
+  "hairline": "#e5e5e5"
+}

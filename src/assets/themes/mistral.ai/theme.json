@@ -1,0 +1,11 @@
+{
+  "id": "mistral.ai",
+  "name": "Mistral AI",
+  "bg": "#ffffff",
+  "accent": "#fa520f",
+  "surface": "#f5f0e8",
+  "ink": "#1f1f1f",
+  "body": "#3d3d3a",
+  "muted": "#a8a8a8",
+  "hairline": "#e5e5e5"
+}

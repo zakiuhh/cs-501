@@ -1,0 +1,11 @@
+{
+  "id": "apple",
+  "name": "Apple",
+  "bg": "#ffffff",
+  "accent": "#0066cc",
+  "surface": "#f5f0e8",
+  "ink": "#1d1d1f",
+  "body": "#1d1d1f",
+  "muted": "#6c6a64",
+  "hairline": "#e0e0e0"
+}

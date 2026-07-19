@@ -1,0 +1,11 @@
+{
+  "id": "composio",
+  "name": "Composio",
+  "bg": "#0f0f0f",
+  "accent": "#0007cd",
+  "surface": "#181818",
+  "ink": "#ffffff",
+  "body": "#a8a8a8",
+  "muted": "#888888",
+  "hairline": "#222222"
+}

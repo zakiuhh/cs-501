@@ -1,0 +1,11 @@
+{
+  "id": "posthog",
+  "name": "Posthog",
+  "bg": "#eeefe9",
+  "accent": "#f7a501",
+  "surface": "#e5e7e0",
+  "ink": "#23251d",
+  "body": "#4d4f46",
+  "muted": "#6c6a64",
+  "hairline": "#bfc1b7"
+}

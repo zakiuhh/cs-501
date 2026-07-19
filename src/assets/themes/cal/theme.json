@@ -1,0 +1,11 @@
+{
+  "id": "cal",
+  "name": "Cal",
+  "bg": "#ffffff",
+  "accent": "#111111",
+  "surface": "#f8f9fa",
+  "ink": "#111111",
+  "body": "#374151",
+  "muted": "#6b7280",
+  "hairline": "#e5e7eb"
+}

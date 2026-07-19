@@ -1,0 +1,11 @@
+{
+  "id": "raycast",
+  "name": "Raycast",
+  "bg": "#07080a",
+  "accent": "#ffffff",
+  "surface": "#121212",
+  "ink": "#f4f4f6",
+  "body": "#cdcdcd",
+  "muted": "#6c6a64",
+  "hairline": "#242728"
+}

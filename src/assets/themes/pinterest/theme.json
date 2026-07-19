@@ -1,0 +1,11 @@
+{
+  "id": "pinterest",
+  "name": "Pinterest",
+  "bg": "#ffffff",
+  "accent": "#e60023",
+  "surface": "#fbfbf9",
+  "ink": "#000000",
+  "body": "#33332e",
+  "muted": "#6c6a64",
+  "hairline": "#dadad3"
+}

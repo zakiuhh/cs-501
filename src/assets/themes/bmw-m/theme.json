@@ -1,0 +1,11 @@
+{
+  "id": "bmw-m",
+  "name": "BMW M",
+  "bg": "#000000",
+  "accent": "#ffffff",
+  "surface": "#0d0d0d",
+  "ink": "#ffffff",
+  "body": "#bbbbbb",
+  "muted": "#7e7e7e",
+  "hairline": "#3c3c3c"
+}

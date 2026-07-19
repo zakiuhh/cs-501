@@ -1,0 +1,11 @@
+{
+  "id": "nintendo-2001",
+  "name": "Nintendo 2001",
+  "bg": "#7a8aba",
+  "accent": "#e60012",
+  "surface": "#f5f0e8",
+  "ink": "#21242e",
+  "body": "#3d3d3a",
+  "muted": "#6c6a64",
+  "hairline": "#5a5f8c"
+}

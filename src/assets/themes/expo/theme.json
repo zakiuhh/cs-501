@@ -1,0 +1,11 @@
+{
+  "id": "expo",
+  "name": "Expo",
+  "bg": "#ffffff",
+  "accent": "#000000",
+  "surface": "#ffffff",
+  "ink": "#171717",
+  "body": "#60646c",
+  "muted": "#999999",
+  "hairline": "#f0f0f3"
+}

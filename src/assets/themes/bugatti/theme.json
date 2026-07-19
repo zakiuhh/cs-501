@@ -1,0 +1,11 @@
+{
+  "id": "bugatti",
+  "name": "Bugatti",
+  "bg": "#000000",
+  "accent": "#ffffff",
+  "surface": "#0d0d0d",
+  "ink": "#ffffff",
+  "body": "#cccccc",
+  "muted": "#999999",
+  "hairline": "#262626"
+}

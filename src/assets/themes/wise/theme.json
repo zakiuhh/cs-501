@@ -1,0 +1,11 @@
+{
+  "id": "wise",
+  "name": "Wise",
+  "bg": "#ffffff",
+  "accent": "#9fe870",
+  "surface": "#f5f0e8",
+  "ink": "#0e0f0c",
+  "body": "#454745",
+  "muted": "#6c6a64",
+  "hairline": "#e6dfd8"
+}

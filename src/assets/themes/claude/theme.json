@@ -1,0 +1,11 @@
+{
+  "id": "claude",
+  "name": "Claude",
+  "bg": "#faf9f5",
+  "accent": "#cc785c",
+  "surface": "#f5f0e8",
+  "ink": "#141413",
+  "body": "#3d3d3a",
+  "muted": "#6c6a64",
+  "hairline": "#e6dfd8"
+}

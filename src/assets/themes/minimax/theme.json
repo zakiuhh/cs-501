@@ -1,0 +1,11 @@
+{
+  "id": "minimax",
+  "name": "Minimax",
+  "bg": "#ffffff",
+  "accent": "#0a0a0a",
+  "surface": "#f2f3f5",
+  "ink": "#0a0a0a",
+  "body": "#3d3d3a",
+  "muted": "#a8aab2",
+  "hairline": "#e5e7eb"
+}

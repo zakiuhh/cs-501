@@ -1,0 +1,11 @@
+{
+  "id": "clickhouse",
+  "name": "Clickhouse",
+  "bg": "#0a0a0a",
+  "accent": "#faff69",
+  "surface": "#121212",
+  "ink": "#ffffff",
+  "body": "#cccccc",
+  "muted": "#888888",
+  "hairline": "#2a2a2a"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "vercel",
+  "name": "Vercel",
+  "bg": "#ffffff",
+  "accent": "#171717",
+  "surface": "#f5f0e8",
+  "ink": "#171717",
+  "body": "#4d4d4d",
+  "muted": "#6c6a64",
+  "hairline": "#ebebeb"
+}

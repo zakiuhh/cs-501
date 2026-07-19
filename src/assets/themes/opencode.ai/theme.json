@@ -1,0 +1,11 @@
+{
+  "id": "opencode.ai",
+  "name": "OpenCode.ai",
+  "bg": "#fdfcfc",
+  "accent": "#201d1d",
+  "surface": "#f8f7f7",
+  "ink": "#201d1d",
+  "body": "#424245",
+  "muted": "#6c6a64",
+  "hairline": "rgba"
+}

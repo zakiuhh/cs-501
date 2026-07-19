@@ -1,0 +1,11 @@
+{
+  "id": "ferrari",
+  "name": "Ferrari",
+  "bg": "#181818",
+  "accent": "#da291c",
+  "surface": "#303030",
+  "ink": "#ffffff",
+  "body": "#969696",
+  "muted": "#666666",
+  "hairline": "#303030"
+}

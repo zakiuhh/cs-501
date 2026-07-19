@@ -16,42 +16,55 @@ The whole thing runs in the browser. No account needed, progress is stored local
 ## Pages
 
 ### `/` — Home
+
 The landing page. Introduces the platform with a hero section, animated headline, and a live code preview snippet. Lays out the core features (slides, playground, quiz, progress tracking) and includes a certificate showcase. Also links to Zenith C++ as a companion IDE.
 
 ### `/lectures` — Lecture Index
+
 Lists every lecture in the course as a browsable card grid. Shows the lecture number, title, summary, and completion indicators. Displays total progress and per-module completion trackers. Features a "Resume" pill that jumps directly to the last in-progress lecture.
 
 ### `/lecture/:id` — Individual Lecture
+
 The main learning interface containing three tabs:
+
 - **Slides** — step through the lecture using arrow keys or buttons. Supports fullscreen (`F`).
 - **Playground** — editable code block with pre-loaded lecture examples and simulated compiler output.
 - **Quiz** — multiple-choice quiz with color-coded review screens, explanations, and scores.
 
 ### `/playground` — Standalone Playground
+
 A dedicated page compiling all lecture playgrounds in one place with a selection sidebar on the left.
 
 ### `/practice` — Practice Problems
+
 A filterable problem set covering every module. Each problem card has a difficulty badge (Easy / Medium / Hard), a collapsible hint, a starter code block, and a full worked solution reveal. Completion state is persisted locally per problem.
 
 ### `/cheatsheet` — C++ Syntax Cheat Sheet
+
 An interactive, printable quick-reference guide covering every major C++ syntax topic in the course. Sections can be toggled on/off via a customizer panel to build a focused, printable cheat sheet. Supports copy-to-clipboard per snippet and full PDF/print export.
 
 ### `/flowchart` — Flowchart Puzzles
+
 An interactive drag-and-drop flowchart builder where students reconstruct algorithm flowcharts from scrambled blocks. Each puzzle maps to a real lecture topic. Progress and correctness are checked client-side.
 
 ### `/syllabus` — Course Outline
+
 Syllabus summary detailing lecture titles, numbering, module headers, and estimated durations.
 
 ### `/faq` — Frequently Asked Questions
+
 Accordion-style FAQ page answering common questions about the platform, the certificate, and the course content.
 
 ### `/verify` — Certificate Lookup
+
 A manual credential verification search engine where employers or peers can type a Verification ID (e.g. `CS501-XXXX-XXXX-XXXX`) to fetch and authenticate student credentials.
 
 ### `/verify/:id` — Verified Credential Page
+
 A public, dynamic route that queries the Supabase database. If the ID is valid, it retrieves credential metadata (student name, issue date, curriculum stats) and renders a live, high-resolution certificate canvas mockup. If invalid, displays a clean error status.
 
 ### `/about` — About
+
 Design philosophy, technical summaries, and background of the project.
 
 ---
@@ -76,7 +89,9 @@ The course is divided into **8 modules** covering the full CS501 syllabus:
 ## Key Features
 
 ### Multi-page, Dual-Orientation Certificate Export
+
 Once the course is 100% completed, users can click **Download Certificate** to select:
+
 - **Export as PNG:** A high-res A4 landscape certificate canvas drawing tailored to the active light/dark theme.
 - **Export as PDF:** A high-quality, dual-page PDF consisting of:
   - *Page 1 (Landscape):* The main completion certificate.
@@ -84,23 +99,29 @@ Once the course is 100% completed, users can click **Download Certificate** to s
 - **Export Syllabus Manual:** A beautiful, vector-drawn 2-page C++ Syntax Cheatsheet PDF containing references for all modules.
 
 ### LinkedIn Sharing & Auto-Drafting
+
 - **Add to Profile:** Directs users to the LinkedIn Certifications form, pre-filling name, provider, and the public verification URL.
 - **Copy LinkedIn Post:** Copies an engaging, pre-formatted completion announcement detailing all modules completed along with their specific verification link to the clipboard, then opens LinkedIn in a new tab.
 
 ### Command Palette & Navigation
+
 - Press `⌘K` or `Ctrl+K` to search and jump to any lecture, page, or module instantly.
 - Slide decks are keyboard-accessible (use `←` and `→` to navigate, `F` for fullscreen).
 
 ### Daily Streak Tracking
+
 A streak system that awards and tracks consecutive days of learning activity. Streak count and last-active date are persisted in `localStorage` and displayed via the `StreakBadge` component in the nav.
 
 ### Practice Problems
+
 A dedicated practice module with difficulty-filtered problem sets, inline hints, starter code, and full solution reveals. Solved state is tracked per-problem locally.
 
 ### Flowchart Puzzle Engine
+
 An interactive drag-and-drop flowchart builder with correctness validation, supporting multiple algorithm puzzles aligned to course lectures.
 
 ### Interactive C++ Cheat Sheet
+
 A fully customizable, printable C++ syntax reference. Students can toggle individual sections, copy code snippets, and print or export a tailored PDF reference card.
 
 ---
@@ -197,6 +218,7 @@ src/
 ## Getting Started
 
 ### Prerequisites
+
 - [Bun](https://bun.sh/) (recommended) or Node.js 18+
 
 ### Installation
@@ -261,4 +283,5 @@ Built by **Team DevZee** for the CS501 Hackathon:
   - [GitHub](https://github.com/zakiuhh/)
 - **Saad Qureshi** (Vibe Coder)
 - **Aliba Shakeel** (Vibe Coder)
+  - [LinkedIn](https://www.linkedin.com/in/zakiuh/)
 - **Anosha Shakeel** (Vibe Coder)

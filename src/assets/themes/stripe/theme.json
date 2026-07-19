@@ -1,0 +1,11 @@
+{
+  "id": "stripe",
+  "name": "Stripe",
+  "bg": "#ffffff",
+  "accent": "#533afd",
+  "surface": "#f5f0e8",
+  "ink": "#0d253d",
+  "body": "#3d3d3a",
+  "muted": "#6c6a64",
+  "hairline": "#e3e8ee"
+}

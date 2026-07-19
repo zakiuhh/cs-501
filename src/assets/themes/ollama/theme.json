@@ -1,0 +1,11 @@
+{
+  "id": "ollama",
+  "name": "Ollama",
+  "bg": "#ffffff",
+  "accent": "#000000",
+  "surface": "#fafafa",
+  "ink": "#000000",
+  "body": "#737373",
+  "muted": "#6c6a64",
+  "hairline": "#e5e5e5"
+}

@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { getProgress, toggleBookmark } from "@/lib/progress";
 import { ProgressActions } from "@/components/ProgressActions";
 import { StreakBadge } from "@/components/StreakBadge";
-import { Star, ChevronDown, CheckCircle2 } from "lucide-react";
+import { Star, ChevronDown, CheckCircle2, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   DropdownMenu, 
@@ -386,6 +386,22 @@ function LecturesPage() {
                                         </div>
                                       );
                                     })}
+                                  </div>
+
+                                  {/* Take Module Quiz CTA */}
+                                  <div className="mt-6 pt-5 border-t border-hairline/60 flex items-center justify-between gap-4 flex-wrap">
+                                    <div>
+                                      <p className="text-[13px] font-medium text-ink">Ready to test your knowledge?</p>
+                                      <p className="text-[12px] text-muted mt-0.5">Take the {group.title} module quiz with randomized MCQs.</p>
+                                    </div>
+                                    <Link
+                                      to="/quiz/$id"
+                                      params={{ id: group.id }}
+                                      className="inline-flex items-center gap-2 btn-primary py-2 px-5 text-[13px] hover:-translate-y-0.5 shrink-0"
+                                    >
+                                      <BookOpen className="w-4 h-4" />
+                                      Take Module Quiz
+                                    </Link>
                                   </div>
                                 </div>
                               </motion.div>
