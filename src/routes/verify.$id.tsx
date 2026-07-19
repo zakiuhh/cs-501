@@ -149,7 +149,7 @@ function VerifyPage() {
                 </div>
               </div>
               
-              <Link to="/" className="btn-secondary whitespace-nowrap shrink-0 hover:-translate-y-0.5 min-h-[44px] px-5 py-2.5 flex items-center gap-2 cursor-pointer">
+              <Link to="/syllabus" className="btn-secondary whitespace-nowrap shrink-0 hover:-translate-y-0.5 min-h-[44px] px-5 py-2.5 flex items-center gap-2 cursor-pointer">
                 <span>View Course Syllabus</span>
               </Link>
             </div>

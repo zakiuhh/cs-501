@@ -16,7 +16,7 @@ export const Route = createFileRoute("/about")({
 
 function About() {
   return (
-    <RevealFooter footer={<Footer />}>
+    <RevealFooter footer={<Footer transparent={true} />}>
       <div className="min-h-screen flex flex-col bg-canvas">
         <Nav />
         <section className="py-20">

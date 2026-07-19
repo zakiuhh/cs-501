@@ -114,7 +114,7 @@ function Landing() {
   return (
     <div className="relative min-h-screen flex flex-col bg-canvas overflow-hidden">
       <FloatingIllustrations />
-      <RevealFooter footer={<Footer />}>
+      <RevealFooter footer={<Footer transparent={true} />}>
         <div className="relative z-10 flex flex-col flex-1">
           <Nav />
 

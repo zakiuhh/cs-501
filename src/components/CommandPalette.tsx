@@ -21,6 +21,19 @@ export function CommandPalette() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Listen for outside clicks since backdrop has pointer-events-none to allow scrolling
+  useEffect(() => {
+    if (!open) return;
+    const handleOutsideClick = (e: MouseEvent) => {
+      const el = document.getElementById("command-palette-modal");
+      if (el && !el.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [open]);
+
   const go = (fn: () => void) => {
     setOpen(false);
     // small delay so the dialog can fade
@@ -31,13 +44,12 @@ export function CommandPalette() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-[12vh] px-4 bg-black/40 backdrop-blur-sm animate-blur-in-soft"
-      onClick={() => setOpen(false)}
+      className="fixed inset-0 z-[100] flex items-start justify-center pt-[12vh] px-4 bg-black/30 backdrop-blur-[2px] animate-blur-in-soft pointer-events-none"
     >
       <Command
+        id="command-palette-modal"
         label="Command Palette"
-        className="w-full max-w-xl bg-canvas border border-hairline rounded-xl shadow-2xl overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-xl bg-canvas border border-hairline rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
       >
         <div className="flex items-center gap-2 px-4 border-b border-hairline">
           <span className="text-muted font-mono text-[12px]">⌘K</span>

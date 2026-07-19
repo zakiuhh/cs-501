@@ -289,13 +289,13 @@
   }
   .animate-tilt { animation: tilt-soft 6s ease-in-out infinite; }
 
-  /* Floating illustrations - theme-aware tinting */
-  .float-glyph { color: var(--primary); opacity: 0.10; }
-  .float-glyph.tone-teal  { color: var(--accent-teal); }
-  .float-glyph.tone-amber { color: var(--accent-amber); }
-  .dark .float-glyph { opacity: 0.07; color: var(--muted); }
-  .dark .float-glyph.tone-teal  { color: var(--accent-teal); opacity: 0.06; }
-  .dark .float-glyph.tone-amber { color: var(--accent-amber); opacity: 0.05; }
+  /* Floating illustrations - inverted theme tinting (dark SVGs on Light theme, light SVGs on Dark theme) */
+  .float-glyph { color: var(--surface-dark); opacity: 0.07; }
+  .float-glyph.tone-teal  { color: var(--surface-dark-elevated); opacity: 0.06; }
+  .float-glyph.tone-amber { color: var(--muted); opacity: 0.08; }
+  .dark .float-glyph { color: var(--surface-cream-strong); opacity: 0.06; }
+  .dark .float-glyph.tone-teal  { color: var(--canvas); opacity: 0.05; }
+  .dark .float-glyph.tone-amber { color: var(--primary); opacity: 0.07; }
 
   /* Global themed scrollbars */
   * {

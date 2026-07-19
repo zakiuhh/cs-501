@@ -25,9 +25,9 @@ const itemVariants = {
   },
 };
 
-export function Footer() {
+export function Footer({ transparent = false }: { transparent?: boolean }) {
   return (
-    <footer className="bg-surface-soft text-muted border-t border-hairline overflow-hidden">
+    <footer className={`${transparent ? "bg-transparent border-t-0" : "bg-surface-soft border-t border-hairline"} text-muted overflow-hidden`}>
       <motion.div 
         variants={containerVariants}
         initial="hidden"

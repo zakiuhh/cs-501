@@ -10,18 +10,7 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-
-  // Detect mobile viewport (width < 768px) to safely fall back to standard layout
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   // Set up scroll progress detection scoped to the bottom spacer element area.
   // "start end": starts when top of spacerRef enters viewport bottom
@@ -66,28 +55,8 @@ export function RevealFooter({ children, footer }: RevealFooterProps) {
     [shouldReduceMotion ? 0 : 40, 0]
   );
 
-  // Mobile Fallback layout: standard non-fixed layout with standard fade in scroll reveal
-  if (isMobile) {
-    return (
-      <div className="relative w-full">
-        <div className="relative z-10 bg-canvas overflow-hidden rounded-b-xl shadow-md">
-          {children}
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.45 }}
-          className="relative z-0"
-        >
-          {footer}
-        </motion.div>
-      </div>
-    );
-  }
-
   return (
-    <div ref={containerRef} className="relative w-full bg-surface-dark overflow-hidden isolate z-0">
+    <div ref={containerRef} className="relative w-full bg-canvas overflow-hidden isolate z-0">
       {/* Main page content container - lifts and curls up as footer reveals */}
       <motion.div
         style={{
