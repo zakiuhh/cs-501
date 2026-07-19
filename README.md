@@ -240,7 +240,7 @@ bun run build
 
 ## Design System
 
-The visual design takes its cues from editorial interfaces — tinted cream canvas, slab-serif headlines (`Instrument Serif`), a coral/terracotta primary accent, and `JetBrains Mono` for all code elements. The goal is to make learning programming feel like reading a high-quality print textbook.
+The visual design takes its cues from editorial interfaces — a warm cream canvas, classic slab-serif headlines (`DM Serif Display`), a modern blue primary accent, and `JetBrains Mono` for all code elements. The goal is to make learning programming feel like reading a high-quality print textbook.
 
 All design tokens are defined as CSS variables in `styles.css`, adapting immediately to light/dark modes. Runtime `MutationObserver` instances track theme changes to redraw certificate canvas mockups and favicon assets on the fly.
 
@@ -262,3 +262,4 @@ Built by **Team DevZee** for the CS501 Hackathon:
 - **Saad Qureshi** (Vibe Coder)
 - **Aliba Shakeel** (Vibe Coder)
 - **Anosha Shakeel** (Vibe Coder)
+  - [LinkedIn](https://www.linkedin.com/in/anosha-shakeel-044300416/)
