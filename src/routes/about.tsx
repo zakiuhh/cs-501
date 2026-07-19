@@ -34,7 +34,7 @@ function About() {
 
           <Reveal variant="up" delay={150}>
             <p className="text-body mt-4 leading-relaxed">
-              The design takes its visual cues from <a className="text-link" href="https://claude.com">claude.com</a> - a tinted cream canvas, slab-serif headlines, and the signature coral accent. The hope is that learning to program should feel less like a SaaS landing page and more like reading a good book.
+              The design takes its visual cues from classic editorial print formats - featuring a warm cream canvas, editorial serif headlines, and our custom responsive design system. The hope is that learning to program should feel less like a SaaS landing page and more like reading a good book.
             </p>
           </Reveal>
 

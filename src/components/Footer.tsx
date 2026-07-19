@@ -103,7 +103,7 @@ export function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6, duration: 0.5 }}
-          className="max-w-[1200px] mx-auto px-6 py-5 text-[12px] flex justify-between"
+          className="max-w-[1200px] mx-auto px-6 py-5 text-[12px] flex justify-center text-center"
         >
           <span>© 2026 CS501 · C++ Crashed</span>
         </motion.div>

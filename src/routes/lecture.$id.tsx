@@ -17,7 +17,7 @@ export const Route = createFileRoute("/lecture/$id")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.lecture.title} - Claude++` },
+      { title: `${loaderData?.lecture.title} - C++ Crashed` },
       { name: "description", content: loaderData?.lecture.summary },
     ],
   }),
