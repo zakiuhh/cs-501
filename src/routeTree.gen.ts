@@ -20,7 +20,6 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerifyIndexRouteImport } from './routes/verify.index'
 import { Route as VerifyIdRouteImport } from './routes/verify.$id'
-import { Route as QuizIdRouteImport } from './routes/quiz.$id'
 import { Route as LectureIdRouteImport } from './routes/lecture.$id'
 
 const SyllabusRoute = SyllabusRouteImport.update({
@@ -78,11 +77,6 @@ const VerifyIdRoute = VerifyIdRouteImport.update({
   path: '/verify/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const QuizIdRoute = QuizIdRouteImport.update({
-  id: '/quiz/$id',
-  path: '/quiz/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LectureIdRoute = LectureIdRouteImport.update({
   id: '/lecture/$id',
   path: '/lecture/$id',
@@ -100,7 +94,6 @@ export interface FileRoutesByFullPath {
   '/practice': typeof PracticeRoute
   '/syllabus': typeof SyllabusRoute
   '/lecture/$id': typeof LectureIdRoute
-  '/quiz/$id': typeof QuizIdRoute
   '/verify/$id': typeof VerifyIdRoute
   '/verify/': typeof VerifyIndexRoute
 }
@@ -115,7 +108,6 @@ export interface FileRoutesByTo {
   '/practice': typeof PracticeRoute
   '/syllabus': typeof SyllabusRoute
   '/lecture/$id': typeof LectureIdRoute
-  '/quiz/$id': typeof QuizIdRoute
   '/verify/$id': typeof VerifyIdRoute
   '/verify': typeof VerifyIndexRoute
 }
@@ -131,7 +123,6 @@ export interface FileRoutesById {
   '/practice': typeof PracticeRoute
   '/syllabus': typeof SyllabusRoute
   '/lecture/$id': typeof LectureIdRoute
-  '/quiz/$id': typeof QuizIdRoute
   '/verify/$id': typeof VerifyIdRoute
   '/verify/': typeof VerifyIndexRoute
 }
@@ -148,7 +139,6 @@ export interface FileRouteTypes {
     | '/practice'
     | '/syllabus'
     | '/lecture/$id'
-    | '/quiz/$id'
     | '/verify/$id'
     | '/verify/'
   fileRoutesByTo: FileRoutesByTo
@@ -163,7 +153,6 @@ export interface FileRouteTypes {
     | '/practice'
     | '/syllabus'
     | '/lecture/$id'
-    | '/quiz/$id'
     | '/verify/$id'
     | '/verify'
   id:
@@ -178,7 +167,6 @@ export interface FileRouteTypes {
     | '/practice'
     | '/syllabus'
     | '/lecture/$id'
-    | '/quiz/$id'
     | '/verify/$id'
     | '/verify/'
   fileRoutesById: FileRoutesById
@@ -194,7 +182,6 @@ export interface RootRouteChildren {
   PracticeRoute: typeof PracticeRoute
   SyllabusRoute: typeof SyllabusRoute
   LectureIdRoute: typeof LectureIdRoute
-  QuizIdRoute: typeof QuizIdRoute
   VerifyIdRoute: typeof VerifyIdRoute
   VerifyIndexRoute: typeof VerifyIndexRoute
 }
@@ -278,13 +265,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/quiz/$id': {
-      id: '/quiz/$id'
-      path: '/quiz/$id'
-      fullPath: '/quiz/$id'
-      preLoaderRoute: typeof QuizIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/lecture/$id': {
       id: '/lecture/$id'
       path: '/lecture/$id'
@@ -306,7 +286,6 @@ const rootRouteChildren: RootRouteChildren = {
   PracticeRoute: PracticeRoute,
   SyllabusRoute: SyllabusRoute,
   LectureIdRoute: LectureIdRoute,
-  QuizIdRoute: QuizIdRoute,
   VerifyIdRoute: VerifyIdRoute,
   VerifyIndexRoute: VerifyIndexRoute,
 }

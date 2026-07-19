@@ -3,7 +3,6 @@ import { modules, getModuleProgress } from "@/data/modules";
 import { getProgress } from "@/lib/progress";
 import { jsPDF } from "jspdf";
 import { supabase } from "@/lib/supabase";
-import { BRAND_THEMES } from "@/assets/themes";
 
 export function exportProgressJSON() {
   const p = getProgress();
@@ -37,10 +36,8 @@ export function exportProgressJSON() {
  * Generates a high-DPI PNG certificate using the same visual language as the site:
  * canvas background, hairline borders, Instrument Serif headline, primary accent.
  */
-export type CertTheme = "cream" | "dark" | "slate" | "ocean" | "forest" | "amber" | (string & {});
-
-export function downloadCertificate(name: string, theme: CertTheme = "cream") {
-  registerCertificate(name, theme); // Register on Supabase async
+export function downloadCertificate(name: string) {
+  registerCertificate(name); // Register on Supabase async
   const W = 1600;
   const H = 1131; // ~A4 landscape ratio
   const scale = 2; // retina
@@ -52,7 +49,7 @@ export function downloadCertificate(name: string, theme: CertTheme = "cream") {
   if (!ctx) return;
   ctx.scale(scale, scale);
 
-  drawCertificateCanvas(ctx, W, H, name, theme);
+  drawCertificateCanvas(ctx, W, H, name);
 
   canvas.toBlob((blob) => {
     if (!blob) return;
@@ -67,9 +64,17 @@ export function downloadCertificate(name: string, theme: CertTheme = "cream") {
   }, "image/png");
 }
 
-export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, H: number, name: string, theme: CertTheme = "cream") {
-  const colors = resolveThemeColors(theme);
-  const { bg, surface, ink, body, muted, hairline, primary } = colors;
+export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, H: number, name: string, verificationId?: string, issuedAt?: string | Date) {
+  // read live theme tokens so light/dark certificates look native
+  const css = getComputedStyle(document.documentElement);
+  const t = (v: string, fb: string) => (css.getPropertyValue(v).trim() || fb);
+  const bg = t("--canvas", "#faf9f5");
+  const surface = t("--surface-soft", "#f5f0e8");
+  const ink = t("--ink", "#141413");
+  const body = t("--body", "#3d3d3a");
+  const muted = t("--muted", "#6c6a64");
+  const hairline = t("--hairline", "#e6dfd8");
+  const primary = t("--primary", "#cc785c");
 
   // background
   ctx.fillStyle = bg;
@@ -137,7 +142,7 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
   ctx.fillText("C++ CRASHED · CS501 · CERTIFICATE OF COMPLETION", 104, 130);
 
   ctx.textAlign = "right";
-  ctx.fillText(`VERIFY: ${getVerificationId(name)}`, W - 104, 130);
+  ctx.fillText(`VERIFY: ${verificationId || getVerificationId(name)}`, W - 104, 130);
 
   // 4-point spike mark, top-center
   drawSpike(ctx, W / 2, 230, 22, primary);
@@ -237,7 +242,7 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
   ctx.fillStyle = ink;
   ctx.font = "italic 26px 'Instrument Serif', Garamond, serif";
   ctx.textAlign = "left";
-  ctx.fillText(formatDate(new Date()), 120, 995);
+  ctx.fillText(formatDate(issuedAt ? new Date(issuedAt) : new Date()), 120, 995);
 
   // Draw handwritten signature above the line (line is at Y = 930) - shifted right to W - 180
   drawSignature(ctx, W - 180, 915, primary);
@@ -256,16 +261,46 @@ export function drawCertificateCanvas(ctx: CanvasRenderingContext2D, W: number, 
 }
 
 export function getVerificationId(name: string) {
-  let hash = 0;
-  const str = (name || "Learner") + "CS501-VERIFIED";
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
+  const activeName = (name || "Learner").trim();
+  const storageKey = "pf-certificates-v1";
+  
+  // Try to get cached IDs
+  let cachedIds: Record<string, string> = {};
+  if (typeof window !== "undefined") {
+    try {
+      cachedIds = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    } catch (e) {
+      console.error("Failed to parse cached certificate IDs", e);
+    }
   }
-  const hex = Math.abs(hash).toString(16).toUpperCase().padStart(8, "0");
-  const randomPart = Math.abs(hash * 31) % 65536;
-  const hex2 = randomPart.toString(16).toUpperCase().padStart(4, "0");
-  return `CS501-${hex.slice(0, 4)}-${hex.slice(4, 8)}-${hex2}`;
+
+  // If we already have a generated ID for this name, return it
+  if (cachedIds[activeName]) {
+    return cachedIds[activeName];
+  }
+
+  // Otherwise, generate a completely random and unique ID
+  const chars = "0123456789ABCDEF";
+  const genSegment = (len: number) => {
+    let s = "";
+    for (let i = 0; i < len; i++) {
+      s += chars[Math.floor(Math.random() * 16)];
+    }
+    return s;
+  };
+  const newId = `CS501-${genSegment(4)}-${genSegment(4)}-${genSegment(4)}`;
+
+  // Save the new ID in cache
+  if (typeof window !== "undefined") {
+    cachedIds[activeName] = newId;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(cachedIds));
+    } catch (e) {
+      console.error("Failed to save certificate ID", e);
+    }
+  }
+
+  return newId;
 }
 
 function drawSignature(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
@@ -399,8 +434,8 @@ function slug(s: string) {
   return (s || "learner").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "learner";
 }
 
-export function downloadCertificatePDF(name: string, theme: CertTheme = "cream") {
-  registerCertificate(name, theme); // Register on Supabase async
+export function downloadCertificatePDF(name: string) {
+  registerCertificate(name); // Register on Supabase async
   const W = 1600;
   const H = 1131; // A4 landscape ratio
   const scale = 2; // retina
@@ -412,7 +447,7 @@ export function downloadCertificatePDF(name: string, theme: CertTheme = "cream")
   const ctx1 = canvas1.getContext("2d");
   if (!ctx1) return;
   ctx1.scale(scale, scale);
-  drawCertificateCanvas(ctx1, W, H, name, theme);
+  drawCertificateCanvas(ctx1, W, H, name);
   const imgData1 = canvas1.toDataURL("image/png");
 
   // Page 2: Portrait Acknowledgement Canvas
@@ -424,7 +459,7 @@ export function downloadCertificatePDF(name: string, theme: CertTheme = "cream")
   const ctx2 = canvas2.getContext("2d");
   if (!ctx2) return;
   ctx2.scale(scale, scale);
-  drawAcknowledgementCanvas(ctx2, W2, H2, name, theme);
+  drawAcknowledgementCanvas(ctx2, W2, H2, name);
   const imgData2 = canvas2.toDataURL("image/png");
 
   // Create PDF
@@ -445,9 +480,18 @@ export function downloadCertificatePDF(name: string, theme: CertTheme = "cream")
   pdf.save(`cpp-crashed-credential-${slug(name)}.pdf`);
 }
 
-export function drawAcknowledgementCanvas(ctx: CanvasRenderingContext2D, W: number, H: number, name: string, theme: CertTheme = "cream") {
-  const colors = resolveThemeColors(theme);
-  const { bg, surface, ink, body, muted, hairline, primary, success } = colors;
+export function drawAcknowledgementCanvas(ctx: CanvasRenderingContext2D, W: number, H: number, name: string) {
+  // read live theme tokens so light/dark certificates look native
+  const css = getComputedStyle(document.documentElement);
+  const t = (v: string, fb: string) => (css.getPropertyValue(v).trim() || fb);
+  const bg = t("--canvas", "#faf9f5");
+  const surface = t("--surface-soft", "#f5f0e8");
+  const ink = t("--ink", "#141413");
+  const body = t("--body", "#3d3d3a");
+  const muted = t("--muted", "#6c6a64");
+  const hairline = t("--hairline", "#e6dfd8");
+  const primary = t("--primary", "#cc785c");
+  const success = t("--success", "#5db872");
 
   // background
   ctx.fillStyle = bg;
@@ -904,176 +948,68 @@ export function downloadSyllabusPDF() {
   pdf.setFont("helvetica", "normal");
   pdf.setFontSize(8);
   pdf.setTextColor(150, 150, 150);
-  pdf.text("CS501 C++ Crash Course Syllabus · Zaki Ul Hassan", 105, 282, { align: "center" });
+  pdf.text("CS501 C++ Crashed Course Syllabus · Zaki Ul Hassan", 105, 282, { align: "center" });
 
-  pdf.save("cpp-crashed-syllabus.pdf");
+  pdf.save("cpp-crashed-syllabus-manual.pdf");
 }
 
-export async function registerCertificate(name: string, theme: CertTheme = "cream") {
-  const verId = getVerificationId(name);
+export async function registerCertificate(name: string) {
+  const activeName = (name || "Learner").trim();
   try {
-    const { error } = await supabase.from("certificates").insert([
-      {
-        id: verId,
-        name: name,
-        course: `C++ Crashed: Interactive Programming Fundamentals (CS501) [theme:${theme}]`,
+    let isUnique = false;
+    let verId = "";
+    let attempts = 0;
+    const maxAttempts = 10;
+
+    while (!isUnique && attempts < maxAttempts) {
+      verId = getVerificationId(activeName);
+      
+      // Query the database to check if this ID already exists
+      const { data, error } = await supabase
+        .from("certificates")
+        .select("id")
+        .eq("id", verId)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Error checking ID uniqueness:", error);
+        break; // Other error, break to prevent infinite loop
       }
-    ]);
-    if (error && error.code !== "23505") { // 23505 is unique violation
-      console.error("Supabase insert error:", error);
+
+      if (!data) {
+        // ID is unique (no matching record found in Supabase)
+        isUnique = true;
+      } else {
+        // ID already exists, clear from cache to generate a new one
+        attempts++;
+        console.warn(`ID collision found for ${verId}. Regenerating a new unique ID... (Attempt ${attempts}/${maxAttempts})`);
+        if (typeof window !== "undefined") {
+          try {
+            const storageKey = "pf-certificates-v1";
+            const cachedIds = JSON.parse(localStorage.getItem(storageKey) || "{}");
+            delete cachedIds[activeName];
+            localStorage.setItem(storageKey, JSON.stringify(cachedIds));
+          } catch (e) {
+            console.error("Failed to clear colliding ID from cache", e);
+          }
+        }
+      }
+    }
+
+    // Now insert the verified unique ID
+    if (isUnique) {
+      const { error } = await supabase.from("certificates").insert([
+        {
+          id: verId,
+          name: activeName,
+          course: "C++ Crashed: Interactive Programming Fundamentals (CS501)",
+        }
+      ]);
+      if (error) {
+        console.error("Failed to insert certificate after uniqueness check:", error);
+      }
     }
   } catch (err) {
     console.error("Failed to register certificate:", err);
   }
-}
-
-function getContrastColor(hexBg: string): "light" | "dark" {
-  if (!hexBg || hexBg === "rgba") return "light";
-  let color = hexBg.replace("#", "");
-  if (color.length === 3) {
-    color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
-  }
-  const r = parseInt(color.slice(0, 2), 16);
-  const g = parseInt(color.slice(2, 4), 16);
-  const b = parseInt(color.slice(4, 6), 16);
-  
-  if (isNaN(r) || isNaN(g) || isNaN(b)) return "light";
-  
-  const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-  return brightness < 130 ? "dark" : "light";
-}
-
-function adjustHexLightness(hex: string, percent: number): string {
-  if (!hex || hex === "rgba") return "#1f1e1b";
-  let color = hex.replace("#", "");
-  if (color.length === 3) {
-    color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
-  }
-  let r = parseInt(color.slice(0, 2), 16);
-  let g = parseInt(color.slice(2, 4), 16);
-  let b = parseInt(color.slice(4, 6), 16);
-  
-  if (isNaN(r) || isNaN(g) || isNaN(b)) return hex;
-
-  const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-  if (brightness < 20) {
-    r += Math.round(percent * 1.2);
-    g += Math.round(percent * 1.2);
-    b += Math.round(percent * 1.3);
-  } else {
-    r = Math.round(r * (1 + percent / 100));
-    g = Math.round(g * (1 + percent / 100));
-    b = Math.round(b * (1 + percent / 100));
-  }
-
-  r = Math.max(0, Math.min(255, r));
-  g = Math.max(0, Math.min(255, g));
-  b = Math.max(0, Math.min(255, b));
-
-  const rHex = r.toString(16).padStart(2, "0");
-  const gHex = g.toString(16).padStart(2, "0");
-  const bHex = b.toString(16).padStart(2, "0");
-  return `#${rHex}${gHex}${bHex}`;
-}
-
-export interface ResolvedThemeColors {
-  bg: string;
-  surface: string;
-  ink: string;
-  body: string;
-  muted: string;
-  hairline: string;
-  primary: string;
-  success: string;
-}
-
-export function resolveThemeColors(theme: CertTheme): ResolvedThemeColors {
-  let bg = "#faf9f5";
-  let surface = "#f5f0e8";
-  let ink = "#141413";
-  let body = "#3d3d3a";
-  let muted = "#6c6a64";
-  let hairline = "#e6dfd8";
-  let primary = "#cc785c";
-  let success = "#5db872";
-
-  const brand = BRAND_THEMES.find((t) => t.id === theme);
-  if (brand) {
-    bg = brand.bg && brand.bg !== "rgba" ? brand.bg : bg;
-    primary = brand.accent && brand.accent !== "rgba" ? brand.accent : primary;
-    ink = brand.ink && brand.ink !== "rgba" ? brand.ink : ink;
-    body = brand.body && brand.body !== "rgba" ? brand.body : body;
-    muted = brand.muted && brand.muted !== "rgba" ? brand.muted : muted;
-    hairline = brand.hairline && brand.hairline !== "rgba" ? brand.hairline : hairline;
-    surface = brand.surface && brand.surface !== "rgba" ? brand.surface : surface;
-
-    const isDark = getContrastColor(bg) === "dark";
-
-    if (isDark) {
-      if (getContrastColor(ink) === "dark") ink = "#ffffff";
-      if (body === "rgba" || getContrastColor(body) === "dark") body = "#c9c4ba";
-      if (muted === "rgba" || getContrastColor(muted) === "dark") muted = "#a09d96";
-      if (surface === "rgba" || getContrastColor(surface) === "light" || surface === "#f5f0e8") {
-        surface = adjustHexLightness(bg, 15);
-      }
-      if (hairline === "rgba" || getContrastColor(hairline) === "light" || hairline === "#e6dfd8") {
-        hairline = adjustHexLightness(bg, 25);
-      }
-      success = primary;
-    } else {
-      if (getContrastColor(ink) === "light") ink = "#141413";
-      if (body === "rgba" || getContrastColor(body) === "light") body = "#3d3d3a";
-      if (muted === "rgba" || getContrastColor(muted) === "light") muted = "#6c6a64";
-      if (surface === "rgba" || getContrastColor(surface) === "dark") surface = "#f5f0e8";
-      if (hairline === "rgba" || getContrastColor(hairline) === "dark") hairline = "#e6dfd8";
-      success = "#5db872";
-    }
-  } else if (theme === "dark") {
-    bg = "#181715";
-    surface = "#1f1e1b";
-    ink = "#faf9f5";
-    body = "#c9c4ba";
-    muted = "#a09d96";
-    hairline = "#2f2c28";
-    primary = "#e88f73";
-    success = "#7fcf90";
-  } else if (theme === "slate") {
-    bg = "#f8fafc";
-    surface = "#f1f5f9";
-    ink = "#0f172a";
-    body = "#334155";
-    muted = "#64748b";
-    hairline = "#cbd5e1";
-    primary = "#3b82f6";
-    success = "#10b981";
-  } else if (theme === "ocean") {
-    bg = "#f0f9ff";
-    surface = "#e0f2fe";
-    ink = "#0c4a6e";
-    body = "#0369a1";
-    muted = "#0284c7";
-    hairline = "#bae6fd";
-    primary = "#0284c7";
-    success = "#0284c7";
-  } else if (theme === "forest") {
-    bg = "#f0fdf4";
-    surface = "#dcfce7";
-    ink = "#14532d";
-    body = "#15803d";
-    muted = "#16a34a";
-    hairline = "#bbf7d0";
-    primary = "#16a34a";
-    success = "#15803d";
-  } else if (theme === "amber") {
-    bg = "#fffbeb";
-    surface = "#fef3c7";
-    ink = "#78350f";
-    body = "#b45309";
-    muted = "#d97706";
-    hairline = "#fde68a";
-    primary = "#d97706";
-    success = "#b45309";
-  }
-
-  return { bg, surface, ink, body, muted, hairline, primary, success };
 }

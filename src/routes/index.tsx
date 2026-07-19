@@ -11,9 +11,6 @@ import { Testimonials } from "@/components/Testimonials";
 import { useRef, useEffect } from "react";
 import { lectures } from "@/data/lectures";
 import { drawCertificateCanvas } from "@/lib/export";
-import certCream from "@/assets/cert-cream.png";
-import certDark from "@/assets/cert-dark.png";
-import certSlate from "@/assets/cert-slate.png";
 import { 
   ChevronRight, 
   ArrowUpRight, 
@@ -113,28 +110,6 @@ function CertificatePreview() {
   );
 }
 
-function MiniCertificate({ image, rotation, translate, zIndex, alt }: { image: string; rotation: string; translate: string; zIndex: string; alt: string }) {
-  return (
-    <div
-      className="absolute w-[240px] sm:w-[300px] md:w-[380px] shadow-2xl rounded-lg border border-hairline bg-canvas transition-all duration-500 ease-out hover:rotate-0 hover:translate-y-[-12px] hover:z-50 hover:scale-105 select-none"
-      style={{ transform: `rotate(${rotation}) ${translate}`, zIndex: zIndex, aspectRatio: "1600/1131" }}
-    >
-      <img src={image} alt={alt} className="w-full h-auto block rounded-lg pointer-events-none" />
-    </div>
-  );
-}
-
-function StackedCertificates() {
-  return (
-    <div className="relative w-full h-[200px] sm:h-[280px] md:h-[340px] flex items-center justify-center max-w-[500px] mx-auto select-none mt-8 md:mt-0">
-      <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-accent-teal/15 blur-3xl rounded-full scale-110 pointer-events-none" />
-      <MiniCertificate image={certSlate} alt="CS501 Certificate (Slate Theme)" rotation="-6deg" translate="translate(-25px, 20px)" zIndex="10" />
-      <MiniCertificate image={certDark} alt="CS501 Certificate (Midnight Theme)" rotation="4deg" translate="translate(25px, -10px)" zIndex="20" />
-      <MiniCertificate image={certCream} alt="CS501 Certificate (Warm Editorial Theme)" rotation="-2deg" translate="translate(0px, 0px)" zIndex="30" />
-    </div>
-  );
-}
-
 function Landing() {
   return (
     <div className="relative min-h-screen flex flex-col bg-canvas overflow-hidden">
@@ -199,62 +174,58 @@ int main() {
           </div>
         </section>
 
-        {/* CERTIFICATE SHOWCASE */}
-        <section className="py-20 md:py-28 border-b border-hairline">
-          <div className="max-w-[1180px] mx-auto px-5 sm:px-6 grid md:grid-cols-12 gap-12 md:gap-16 items-center">
-            <div className="md:col-span-6 space-y-6">
-              <Reveal variant="scale">
-                <span className="inline-flex items-center text-[11.5px] tracking-[0.15em] uppercase text-muted bg-surface-soft px-3.5 py-1.5 rounded-pill font-mono">
-                  Verified Accreditation
-                </span>
-              </Reveal>
-              <Reveal variant="scale" delay={100}>
-                <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-ink leading-tight">
-                  Earn a verified C++ completion credential.
-                </h2>
-              </Reveal>
-              <Reveal variant="scale" delay={200}>
-                <p className="text-body text-sm sm:text-base leading-relaxed">
-                  Complete all learning slides, write and run C++ code, and pass assessments to unlock your certificate. Select from multiple premium designer themes and print as PDF or export PNG.
-                </p>
-              </Reveal>
-              <Reveal variant="scale" delay={300}>
-                <ul className="space-y-4 text-[13.5px] sm:text-[14px] text-body">
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center font-mono text-[11px] shrink-0 mt-0.5 font-bold">1</span>
+        {/* CORE FEATURES */}
+        <section className="py-14 sm:py-20 md:py-24">
+          <div className="max-w-[1180px] mx-auto px-5 sm:px-6">
+            <Reveal variant="left">
+              <p className="text-muted text-[11px] sm:text-[12px] tracking-[0.15em] uppercase mb-3 font-mono">Why C++ Crashed</p>
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl max-w-2xl text-ink">
+                Built to help concepts stick.
+              </h2>
+            </Reveal>
+
+            <div className="mt-8 sm:mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {features.map((f, i) => {
+                const Icon = f.icon;
+                return (
+                  <Reveal key={f.k} delay={i * 100} className="bg-surface-card rounded-lg p-5 sm:p-7 card-lift flex flex-col justify-between">
                     <div>
-                      <strong className="text-ink">Multiple Premium Themes</strong>
-                      <p className="text-muted text-[12.5px] mt-0.5">Select from Warm Editorial, Midnight Developer, Minimalist Slate, Ocean Breeze, and 60+ brand themes.</p>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="font-mono text-[12px] text-muted">{f.k}</span>
+                        <Icon className="w-5 h-5 text-primary opacity-80" />
+                      </div>
+                      <h3 className="font-serif text-xl sm:text-2xl text-ink">{f.t}</h3>
+                      <p className="text-body mt-2.5 text-[14px] leading-relaxed">{f.d}</p>
                     </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center font-mono text-[11px] shrink-0 mt-0.5 font-bold">2</span>
-                    <div>
-                      <strong className="text-ink">Online Verification Lookup</strong>
-                      <p className="text-muted text-[12.5px] mt-0.5">Every credential has a unique ID registered in our Supabase backend for employers to verify.</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center font-mono text-[11px] shrink-0 mt-0.5 font-bold">3</span>
-                    <div>
-                      <strong className="text-ink">Dual-Page PDF Export</strong>
-                      <p className="text-muted text-[12.5px] mt-0.5">Export a full dossier containing your certificate and a complete curriculum transcript.</p>
-                    </div>
-                  </li>
-                </ul>
-              </Reveal>
-              <Reveal variant="scale" delay={400} className="pt-2">
-                <Link to="/lectures" className="btn-primary inline-flex items-center gap-1.5 cursor-pointer">
-                  <span>Start earning your certificate</span>
-                  <ChevronRight className="w-4 h-4" />
-                </Link>
-              </Reveal>
+                  </Reveal>
+                );
+              })}
             </div>
-            <div className="md:col-span-6 flex items-center justify-center py-8">
-              <Reveal variant="scale" delay={300} className="w-full">
-                <StackedCertificates />
-              </Reveal>
-            </div>
+
+            {/* Certificate showcase */}
+            <Reveal variant="scale" className="mt-12 sm:mt-16">
+              <div className="bg-surface-card rounded-xl p-5 sm:p-6 md:p-10 border border-hairline">
+                <div className="grid md:grid-cols-12 gap-6 sm:gap-8 items-center">
+                  <div className="md:col-span-5 order-2 md:order-1">
+                    <span className="font-mono text-[12px] text-muted">04</span>
+                    <h3 className="font-serif text-2xl sm:text-3xl text-ink mt-2">Earn recognition.</h3>
+                    <p className="text-body mt-3 text-[14px] sm:text-base leading-relaxed">
+                      Complete all curriculum lectures to unlock your database-verified completion certificate. Signed by the full team and exportable as PNG or PDF.
+                    </p>
+                    <div className="mt-4 sm:mt-5 flex flex-wrap gap-2 text-[12px]">
+                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">PNG & PDF</span>
+                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">Database Verified</span>
+                      <span className="bg-canvas border border-hairline text-muted px-2.5 py-1 rounded-pill">Team Signed</span>
+                    </div>
+                  </div>
+                  <div className="md:col-span-7 order-1 md:order-2">
+                    <div className="rounded-lg overflow-hidden border border-hairline shadow-xl shadow-ink/10 w-full">
+                      <CertificatePreview />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
           </div>
         </section>
 
