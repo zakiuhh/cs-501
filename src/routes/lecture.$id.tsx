@@ -144,30 +144,15 @@ function LecturePage() {
               <div ref={slideRef} className={isFullscreen ? "bg-canvas p-12 h-full flex flex-col justify-center" : ""}>
                 <SlideView slide={lecture.slides[slideIdx]} index={slideIdx} total={lecture.slides.length} />
               </div>
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+              <div className="mt-6 grid grid-cols-2 sm:flex sm:items-center sm:justify-between gap-4">
                 <button 
                   onClick={goPrev} 
                   disabled={slideIdx === 0} 
-                  className="btn-secondary disabled:opacity-40 disabled:cursor-not-allowed px-4 py-2.5 text-sm w-[47%] sm:w-auto order-1 sm:order-none justify-center"
+                  className="btn-secondary disabled:opacity-40 disabled:cursor-not-allowed px-4 py-2.5 text-sm sm:text-base order-1 sm:order-1 justify-center min-h-[44px] w-full sm:w-auto"
                 >
                   ← Previous
                 </button>
-                {slideIdx < lecture.slides.length - 1 ? (
-                  <button 
-                    onClick={goNext} 
-                    className="btn-primary px-4 py-2.5 text-sm w-[47%] sm:w-auto order-2 sm:order-none justify-center"
-                  >
-                    Next →
-                  </button>
-                ) : (
-                  <button 
-                    onClick={() => setTab(lecture.playground ? "playground" : "quiz")} 
-                    className="btn-primary px-4 py-2.5 text-sm w-[47%] sm:w-auto order-2 sm:order-none justify-center"
-                  >
-                    {lecture.playground ? "Playground →" : "Quiz →"}
-                  </button>
-                )}
-                <div className="w-full sm:flex-1 min-w-[120px] mx-2 sm:mx-4 flex flex-wrap items-center gap-1.5 justify-center order-3 sm:order-none mt-2 sm:mt-0">
+                <div className="col-span-2 sm:col-span-1 flex flex-wrap items-center gap-1.5 justify-center order-3 sm:order-2 py-1 sm:py-0">
                   {lecture.slides.map((_s: unknown, i: number) => (
                     <button
                       key={i}
@@ -177,6 +162,21 @@ function LecturePage() {
                     />
                   ))}
                 </div>
+                {slideIdx < lecture.slides.length - 1 ? (
+                  <button 
+                    onClick={goNext} 
+                    className="btn-primary px-4 py-2.5 text-sm sm:text-base order-2 sm:order-3 justify-center min-h-[44px] w-full sm:w-auto"
+                  >
+                    Next →
+                  </button>
+                ) : (
+                  <button 
+                    onClick={() => setTab(lecture.playground ? "playground" : "quiz")} 
+                    className="btn-primary px-4 py-2.5 text-sm sm:text-base order-2 sm:order-3 justify-center min-h-[44px] w-full sm:w-auto"
+                  >
+                    {lecture.playground ? "Playground →" : "Quiz →"}
+                  </button>
+                )}
               </div>
               <div className="mt-6 text-center text-muted text-[11px] sm:text-[12px] font-mono flex flex-wrap justify-center gap-x-2.5 gap-y-1.5 px-4">
                 <span>← / → navigate</span>
