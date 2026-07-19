@@ -106,7 +106,6 @@ export function Footer() {
           className="max-w-[1200px] mx-auto px-6 py-5 text-[12px] flex justify-between"
         >
           <span>© 2026 CS501 · C++ Crashed</span>
-          <span>Styling Inspired by Claude</span>
         </motion.div>
       </div>
     </footer>
