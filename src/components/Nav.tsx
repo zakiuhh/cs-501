@@ -105,16 +105,7 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreHoverRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleMoreMouseEnter = () => {
-    if (moreHoverRef.current) clearTimeout(moreHoverRef.current);
-    setMoreOpen(true);
-  };
-  const handleMoreMouseLeave = () => {
-    moreHoverRef.current = setTimeout(() => setMoreOpen(false), 120);
-  };
   const routerState = useRouterState();
   const isLanding = routerState.location.pathname === "/";
 
@@ -182,46 +173,36 @@ export function Nav() {
             <Link to="/playground" className="hover:text-ink transition-colors story-link">Playground</Link>
             <Link to="/flowchart"  className="hover:text-ink transition-colors story-link">Flowcharts</Link>
             <Link to="/cheatsheet" className="hover:text-ink transition-colors story-link">Cheat Sheet</Link>
-            <div
-              onMouseEnter={handleMoreMouseEnter}
-              onMouseLeave={handleMoreMouseLeave}
-            >
-              <DropdownMenu open={moreOpen} onOpenChange={setMoreOpen}>
-                <DropdownMenuTrigger asChild>
-                  <button className={`flex items-center gap-1 hover:text-ink transition-colors story-link cursor-pointer outline-none border-none bg-transparent p-0 text-[14px] font-inherit text-body`}>
-                    <span>More</span>
-                    <ChevronDown className={`w-3.5 h-3.5 opacity-80 transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`} />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="bg-canvas border border-hairline rounded-lg p-1.5 shadow-lg min-w-[150px]"
-                  onMouseEnter={handleMoreMouseEnter}
-                  onMouseLeave={handleMoreMouseLeave}
-                >
-                  <DropdownMenuItem asChild>
-                    <Link to="/syllabus" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
-                      Syllabus
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/verify" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
-                      Verify
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/faq" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
-                      FAQ
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/about" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
-                      About
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-1 hover:text-ink transition-colors story-link cursor-pointer outline-none border-none bg-transparent p-0 text-[14px] font-inherit text-body">
+                  <span>More</span>
+                  <ChevronDown className="w-3.5 h-3.5 opacity-80" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-canvas border border-hairline rounded-lg p-1.5 shadow-lg min-w-[150px]">
+                <DropdownMenuItem asChild>
+                  <Link to="/syllabus" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
+                    Syllabus
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/verify" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
+                    Verify
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/faq" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
+                    FAQ
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about" className="flex items-center w-full px-3 py-2 text-[13px] text-ink hover:bg-surface-soft rounded-md cursor-pointer transition-colors outline-none decoration-none">
+                    About
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
 
           {/* Right actions */}
