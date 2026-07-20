@@ -4,7 +4,7 @@ import { flowcharts } from "@/data/flowcharts";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { FlowchartBuilder } from "@/components/FlowchartBuilder";
-import { HelpCircle, CheckCircle2 } from "lucide-react";
+import { HelpCircle, CheckCircle2, Monitor } from "lucide-react";
 import {
   Dialog,
   DialogTrigger,
@@ -31,7 +31,50 @@ function FlowchartGamePage() {
   return (
     <div className="min-h-screen flex flex-col bg-canvas">
       <Nav />
-      <section className="max-w-[1200px] mx-auto px-6 py-14 w-full flex-1">
+
+      {/* ── Mobile gate ─────────────────────────────────────────── */}
+      <div className="flex md:hidden flex-1 flex-col items-center justify-center min-h-[calc(100vh-64px)] px-6 py-16 relative overflow-hidden">
+        {/* Decorative background orb */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full opacity-20"
+          style={{ background: "radial-gradient(circle, var(--color-primary) 0%, transparent 70%)" }}
+        />
+
+        <div className="relative z-10 flex flex-col items-center gap-8 max-w-sm w-full">
+          {/* Icon card */}
+          <div className="w-24 h-24 rounded-3xl bg-surface-card border border-hairline flex items-center justify-center shadow-md">
+            <Monitor className="w-11 h-11 text-primary" />
+          </div>
+
+          {/* Text block */}
+          <div className="space-y-4 text-center">
+            {/* Eyebrow */}
+            <p className="text-muted text-[11px] tracking-[0.18em] uppercase font-medium">CS501 · Flowchart Puzzles</p>
+
+            {/* Headline */}
+            <h1 className="font-serif text-4xl text-ink leading-tight">
+              Built for <em className="italic text-primary">bigger</em> screens.
+            </h1>
+
+            {/* Body */}
+            <p className="text-body text-[15px] leading-relaxed">
+              The drag-and-drop Flowchart Puzzle builder requires a mouse and a larger workspace to use properly.
+            </p>
+          </div>
+
+          {/* URL chip */}
+          <div className="w-full bg-surface-card border border-hairline rounded-xl px-5 py-4 flex flex-col gap-1 shadow-sm">
+            <span className="text-muted text-[11px] uppercase tracking-widest font-medium">Open on desktop</span>
+            <span className="font-mono text-primary text-[13px] font-semibold break-all">
+              cs501.vercel.app/flowchart
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Desktop layout ──────────────────────────────────────── */}
+      <section className="hidden md:block max-w-[1200px] mx-auto px-6 py-14 w-full flex-1">
         <div className="mb-8">
           <p className="text-muted text-[12px] tracking-[0.15em] uppercase mb-2">CS501 · Practice Puzzles</p>
           <h1 className="font-serif text-4xl md:text-5xl text-ink">Flowchart Logic Puzzles</h1>

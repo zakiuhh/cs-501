@@ -23,7 +23,7 @@ function About() {
         <div className="max-w-[820px] mx-auto px-6">
           <Reveal variant="up" delay={0}>
             <p className="text-muted text-[12px] tracking-[0.15em] uppercase">About</p>
-            <h1 className="font-serif text-5xl text-ink mt-3 leading-tight">A warmer way to learn programming.</h1>
+            <h1 className="font-serif text-5xl text-ink mt-3 leading-tight">A warmer way to <em className="italic text-primary">learn</em> programming.</h1>
           </Reveal>
 
           <Reveal variant="up" delay={100}>
@@ -42,7 +42,7 @@ function About() {
             <Reveal variant="up" delay={200}>
               <div>
                 <p className="text-muted text-[12px] tracking-[0.15em] uppercase">Developers</p>
-                <h2 className="font-serif text-4xl text-ink mt-3">Team DevZee</h2>
+                <h2 className="font-serif text-4xl text-ink mt-3">Team <em className="italic text-primary">DevZee</em></h2>
                 <p className="text-body mt-4 leading-relaxed max-w-xl">
                   We are the development team behind this platform - turning lecture decks into an interactive, readable course.
                 </p>

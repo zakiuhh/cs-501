@@ -109,12 +109,12 @@ export function CodePlayground({ code, output, description }: { code: string; ou
         value={editedCode}
         onChange={(e) => setEditedCode(e.target.value)}
         spellCheck={false}
-        className="w-full bg-surface-dark text-on-dark font-mono text-[14px] leading-relaxed p-5 min-h-[260px] resize-y focus:outline-none custom-scrollbar"
+        className="w-full bg-surface-dark text-on-dark font-mono text-[14px] leading-relaxed p-5 h-[clamp(160px,35vh,300px)] resize-none focus:outline-none custom-scrollbar"
       />
       {out !== null && (
         <div className="border-t border-[#2a2825] bg-surface-dark-soft">
           <div className="px-5 py-2 text-on-dark-soft text-[11px] uppercase tracking-wider">Output</div>
-          <pre className="px-5 pb-5 text-on-dark font-mono text-[13.5px] whitespace-pre-wrap overflow-x-auto custom-scrollbar">{out}</pre>
+          <pre className="px-5 pb-5 text-on-dark font-mono text-[13.5px] whitespace-pre-wrap overflow-x-auto overflow-y-auto max-h-[clamp(80px,20vh,180px)] custom-scrollbar">{out}</pre>
         </div>
       )}
     </div>
